@@ -1,9 +1,9 @@
 import { configureReanimatedLogger } from 'react-native-reanimated'
 
-import { Modes } from '@pages/modes'
+import { Connect } from '@pages/connect'
 
 import '../global.css'
 
 configureReanimatedLogger({ strict: false })
 
-export default Modes
+export default Connect

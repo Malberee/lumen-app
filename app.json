@@ -20,7 +20,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.malberee.lumen"
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +36,13 @@
         {
           "root": "./src/app/routes"
         }
-      ]
-    ]
+      ],
+      "react-native-wifi-reborn"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b849292a-2223-4f58-aaf0-64e031539ff2"
+      }
+    }
   }
 }

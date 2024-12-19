@@ -1,9 +1,8 @@
 import { Button, Chip, Slider } from '@malberee/nextui-native'
-import MaskedView from '@react-native-masked-view/masked-view'
-import { LinearGradient } from 'expo-linear-gradient'
-import { cssInterop } from 'nativewind'
 import { type FC } from 'react'
-import { type LayoutChangeEvent, Text, View } from 'react-native'
+import { type LayoutChangeEvent, View } from 'react-native'
+
+import { GradientText } from '@shared/ui'
 
 import { BubbleIcon } from './bubble-icon'
 
@@ -21,32 +20,16 @@ interface ModeProps {
   onLayout: (e: LayoutChangeEvent) => void
 }
 
-cssInterop(MaskedView, {
-  className: 'style',
-})
-
 export const Mode: FC<ModeProps> = ({ mode, onLayout }) => {
   return (
     <View className="w-full" onLayout={onLayout}>
       <View className="h-48 flex-col justify-center rounded-t-3xl border border-[#27272A] bg-[#3F3F46]/30">
-        <MaskedView
-          className="h-10"
-          maskElement={
-            <View className="flex-1">
-              <Text className="text-center text-4xl font-medium capitalize">
-                {mode.name}
-              </Text>
-            </View>
-          }
-        >
-          <LinearGradient
-            style={{ flex: 1 }}
-            colors={['#ffffff', '#ffffff80']}
-          />
-        </MaskedView>
+        <GradientText className="text-center text-4xl font-medium capitalize">
+          {mode.name}
+        </GradientText>
       </View>
 
-      <View className="h-[250px] w-full flex-col gap-6 rounded-b-3xl border-x border-b border-[#E5E7EB]/10 bg-default-50 p-4">
+      <View className="h-[250px] w-full flex-col gap-6 rounded-b-3xl border-x border-b border-[#2d2d2f] bg-default-50 p-4">
         <View className="flex-row items-center justify-between">
           <Chip size="lg" color="success" variant="flat">
             Active
