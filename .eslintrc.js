@@ -11,6 +11,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-console': 'error',
+    'react/display-name': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',

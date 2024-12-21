@@ -6,11 +6,16 @@ import {
   Group,
 } from '@shopify/react-native-skia'
 import { cssInterop } from 'nativewind'
-import { useState } from 'react'
+import { type FC, useState } from 'react'
 import { View } from 'react-native'
+import type { SharedValue } from 'react-native-reanimated'
 
 import { Led } from './led'
 import { useLedRing } from './model'
+
+interface LedRingProps {
+  shouldAnimate: SharedValue<boolean>
+}
 
 cssInterop(Canvas, {
   className: 'style',
@@ -25,9 +30,9 @@ const StyledCircle = cssInterop(Circle, {
   },
 })
 
-export const LedRing = () => {
+export const LedRing: FC<LedRingProps> = ({ shouldAnimate }) => {
   const [size, setSize] = useState({ width: 0, height: 0 })
-  const { leds, colors } = useLedRing(24)
+  const { leds, colors } = useLedRing(24, shouldAnimate)
 
   return (
     <View className="absolute h-screen w-screen flex-row items-center justify-center">
