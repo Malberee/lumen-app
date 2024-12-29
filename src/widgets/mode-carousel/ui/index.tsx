@@ -1,8 +1,10 @@
-import { type FC, useState } from 'react'
+import { type FC, memo, useState } from 'react'
 import { Dimensions, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
 
-import { Mode, type ModeType } from '@entities/mode'
+import type { ModeType } from '@entities/mode'
+
+import { Mode } from './mode'
 
 const width = Dimensions.get('window').width
 
@@ -10,7 +12,7 @@ interface ModeCarouseProps {
   modes: ModeType[]
 }
 
-export const ModeCarousel: FC<ModeCarouseProps> = ({ modes }) => {
+export const ModeCarousel: FC<ModeCarouseProps> = memo(({ modes }) => {
   const [height, setHeight] = useState(0)
 
   return (
@@ -21,9 +23,9 @@ export const ModeCarousel: FC<ModeCarouseProps> = ({ modes }) => {
         data={modes}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.9,
+          parallaxScrollingScale: 1,
           parallaxScrollingOffset: 50,
-          parallaxAdjacentItemScale: 0.8,
+          parallaxAdjacentItemScale: 0.9,
         }}
         renderItem={({ item }) => (
           <Mode
@@ -34,4 +36,4 @@ export const ModeCarousel: FC<ModeCarouseProps> = ({ modes }) => {
       />
     </View>
   )
-}
+})

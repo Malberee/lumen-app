@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { cssInterop } from 'nativewind'
-import { type FC } from 'react'
+import { type FC, memo } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 
 import type { ModeType } from '@entities/mode'
@@ -19,31 +19,30 @@ const StyledBottomSheet = cssInterop(BottomSheet, {
   handleIndicatorClassname: 'handleIndicatorStyle',
 })
 
-export const ModeList: FC<ModeListProps> = ({
-  modes,
-  shouldAnimateLedRing,
-}) => {
-  return (
-    <StyledBottomSheet
-      className="rounded-t-3xl border border-default-100 bg-default-50 px-4"
-      backgroundClassname="bg-transparent"
-      handleClassname="p-4"
-      handleIndicatorClassname="bg-default-100 h-1 w-1/4 rounded-full"
-      enableContentPanningGesture={false}
-      enableOverDrag={false}
-      enableDynamicSizing={false}
-      snapPoints={[32, '75%']}
-      onChange={(index) => {
-        if (!index) {
-          shouldAnimateLedRing.value = true
-        } else {
-          shouldAnimateLedRing.value = false
-        }
-      }}
-    >
-      <BottomSheetView>
-        <List modes={modes} />
-      </BottomSheetView>
-    </StyledBottomSheet>
-  )
-}
+export const ModeList: FC<ModeListProps> = memo(
+  ({ modes, shouldAnimateLedRing }) => {
+    return (
+      <StyledBottomSheet
+        className="rounded-t-3xl border border-default-100 bg-default-50 px-4"
+        backgroundClassname="bg-transparent"
+        handleClassname="p-4"
+        handleIndicatorClassname="bg-default-100 h-1 w-1/4 rounded-full"
+        enableContentPanningGesture={false}
+        enableOverDrag={false}
+        enableDynamicSizing={false}
+        snapPoints={[32, '75%']}
+        onChange={(index) => {
+          if (!index) {
+            shouldAnimateLedRing.value = true
+          } else {
+            shouldAnimateLedRing.value = false
+          }
+        }}
+      >
+        <BottomSheetView>
+          <List modes={modes} />
+        </BottomSheetView>
+      </StyledBottomSheet>
+    )
+  },
+)
