@@ -5,7 +5,7 @@ import type { ModeType } from '@entities/mode'
 
 interface RadioProps {
   isSelected: boolean
-  mode: ModeType
+  mode: ModeType & { name: string }
 }
 
 export const Radio = memo<RadioProps>(({ isSelected, mode }) => {

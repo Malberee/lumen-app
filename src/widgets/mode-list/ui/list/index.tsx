@@ -1,24 +1,27 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import { RadioGroup } from '@malberee/nextui-native'
-import { type FC, useState } from 'react'
+import { useShallow } from 'zustand/shallow'
 
-import type { ModeType } from '@entities/mode'
+import {
+  selectCurrentMode,
+  selectModes,
+  useModesContext,
+  useModesStore,
+} from '@entities/mode'
 
 import { Radio } from './radio'
 
-interface ListProps {
-  modes: ModeType[]
-}
-
-export const List: FC<ListProps> = ({ modes }) => {
-  const [value, setValue] = useState('snake')
+export const List = () => {
+  const currentMode = useModesStore(selectCurrentMode)
+  const modes = useModesStore(useShallow(selectModes))
+  const { handleSelect } = useModesContext()
 
   return (
-    <RadioGroup onValueChange={setValue} value={value}>
+    <RadioGroup onValueChange={handleSelect} value={currentMode.name}>
       <BottomSheetFlatList
         data={modes}
         renderItem={({ item }) => (
-          <Radio mode={item} isSelected={value === item.name} />
+          <Radio mode={item} isSelected={currentMode.name === item.name} />
         )}
         keyExtractor={(item) => item.name}
         contentContainerStyle={{

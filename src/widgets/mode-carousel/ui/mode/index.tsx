@@ -4,11 +4,12 @@ import { type LayoutChangeEvent, View } from 'react-native'
 
 import { ColorPicker } from '@features/color-picker'
 
-import type { ModeType } from '@entities/mode'
+import { type ModeType, useModesStore } from '@entities/mode'
 
 import { GradientText } from '@shared/ui'
 
-import { BubbleIcon } from './bubble-icon'
+import { BubbleIcon } from '../bubble-icon'
+import { ColorsPreview } from './colors-preview'
 
 interface ModeProps {
   mode: ModeType
@@ -17,6 +18,9 @@ interface ModeProps {
 
 export const Mode: FC<ModeProps> = ({ mode, onLayout }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const modes = useModesStore((state) => state.modes)
+  const colors = modes[mode.name.replace(/ /g, '-')].colors
 
   return (
     <View className="w-full flex-row justify-center">
@@ -34,10 +38,12 @@ export const Mode: FC<ModeProps> = ({ mode, onLayout }) => {
             </Chip>
 
             <View className="size-8 rounded-full bg-[#00A3FF]" />
+            <ColorsPreview colors={Object.values(colors)} />
           </View>
 
           <View className="flex-1 flex-col justify-between">
             <Slider
+              defaultValue={mode.params.speed}
               label="Speed"
               step={50}
               minValue={100}
@@ -45,8 +51,9 @@ export const Mode: FC<ModeProps> = ({ mode, onLayout }) => {
               getValue={(value) => `${value}ms`}
               classNames={{ thumb: 'bg-default-50' }}
             />
-            {mode.params.includes('length') ? (
+            {'length' in mode.params ? (
               <Slider
+                defaultValue={mode.params.length}
                 label="Length"
                 maxValue={10}
                 getValue={(value) => `${value} leds`}
@@ -65,7 +72,9 @@ export const Mode: FC<ModeProps> = ({ mode, onLayout }) => {
           </View>
         </View>
 
-        {isOpen ? <ColorPicker onClose={() => setIsOpen(false)} /> : null}
+        {isOpen ? (
+          <ColorPicker colors={colors} onClose={() => setIsOpen(false)} />
+        ) : null}
       </View>
     </View>
   )
