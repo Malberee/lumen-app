@@ -1,9 +1,15 @@
 import { memo, useState } from 'react'
 import { Dimensions, View } from 'react-native'
 import Carousel from 'react-native-reanimated-carousel'
-import { useShallow } from 'zustand/shallow'
 
-import { selectModes, useModesContext, useModesStore } from '@entities/mode'
+import { ColorPicker } from '@features/color-picker'
+
+import {
+  selectAllModes,
+  selectCurrentMode,
+  useModesContext,
+  useModesStore,
+} from '@entities/mode'
 
 import { Mode } from './mode'
 
@@ -11,8 +17,12 @@ const width = Dimensions.get('window').width
 
 export const ModeCarousel = memo(() => {
   const [height, setHeight] = useState(0)
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
   const setMode = useModesStore((state) => state.setMode)
-  const modes = useModesStore(useShallow(selectModes))
+  const modes = useModesStore(selectAllModes)
+  const colors = useModesStore(selectCurrentMode).colors
+
   const { ref } = useModesContext()
 
   return (
@@ -33,10 +43,17 @@ export const ModeCarousel = memo(() => {
         renderItem={({ item }) => (
           <Mode
             mode={item}
+            showColorPicker={() => setShowColorPicker(true)}
             onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
           />
         )}
       />
+      {showColorPicker ? (
+        <ColorPicker
+          onClose={() => setShowColorPicker(false)}
+          colors={colors}
+        />
+      ) : null}
     </View>
   )
 })

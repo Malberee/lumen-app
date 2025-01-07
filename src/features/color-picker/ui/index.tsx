@@ -1,23 +1,20 @@
 import { Button } from '@malberee/nextui-native'
-import { type FC } from 'react'
+import type { FC } from 'react'
 import { View } from 'react-native'
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated'
-import ReanimatedColorPicker, {
-  BrightnessSlider,
-  HueSlider,
-  SaturationSlider,
-} from 'reanimated-color-picker'
+import ReanimatedColorPicker from 'reanimated-color-picker'
 
 import { useColorPicker } from '../model'
 import { Preview } from './preview'
+import { Sliders } from './sliders'
 import { Thumb } from './thumb'
 
 interface ColorPickerProps {
-  onClose: () => void
+  onApply: () => void
 }
 
-export const ColorPicker: FC<ColorPickerProps> = ({ onClose }) => {
-  const { selectedColor, primaryColor, secondaryColor, ref } = useColorPicker()
+export const ColorPicker: FC<ColorPickerProps> = ({ onApply }) => {
+  const { colors, ref, onChange } = useColorPicker()
 
   return (
     <Animated.View
@@ -26,50 +23,24 @@ export const ColorPicker: FC<ColorPickerProps> = ({ onClose }) => {
       className="absolute left-0 top-0 h-full w-full flex-row items-center justify-center"
     >
       <View
+        className="w-[80%] rounded-3xl border border-default-100 bg-default-50 p-4"
         style={{ elevation: 8 }}
-        className="w-[80%] flex-col gap-3 rounded-3xl border border-[#2d2d2f] bg-default-50 p-3"
       >
         <ReanimatedColorPicker
-          value="cyan"
+          ref={ref}
+          value={Object.values(colors.value)[0]}
           boundedThumb
-          thumbShape="circle"
-          thumbSize={21}
           style={{ borderRadius: 9999 }}
+          sliderThickness={10.5}
+          thumbSize={21}
           thumbScaleAnimationValue={1}
           renderThumb={Thumb}
-          sliderThickness={10.5}
-          ref={ref}
-          onChange={(value) => {
-            if (selectedColor.value === 'primary') {
-              primaryColor.value = value.hex
-            } else {
-              secondaryColor.value = value.hex
-            }
-          }}
+          onChange={({ hex }) => onChange(hex)}
         >
-          <View className="flex-col gap-4">
-            <View className="h-16 flex-row">
-              <Preview
-                color={primaryColor}
-                colorType="primary"
-                selectedColor={selectedColor}
-                onPress={() => (selectedColor.value = 'primary')}
-              />
-              <Preview
-                color={secondaryColor}
-                colorType="secondary"
-                selectedColor={selectedColor}
-                onPress={() => (selectedColor.value = 'secondary')}
-              />
-            </View>
-
-            <View className="flex-col gap-6">
-              <HueSlider />
-              <SaturationSlider />
-              <BrightnessSlider />
-            </View>
-
-            <Button size="lg" onPress={onClose}>
+          <Preview />
+          <View className="flex-col gap-6">
+            <Sliders />
+            <Button size="lg" onPress={onApply}>
               Apply
             </Button>
           </View>

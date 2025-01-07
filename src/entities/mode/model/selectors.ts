@@ -1,6 +1,6 @@
 import type { ModesState } from './store'
 
-export const selectModes = (state: ModesState) => Object.values(state.modes)
+export const selectAllModes = (state: ModesState) => state.modes
 
 export const selectCurrentMode = (state: ModesState) =>
-  state.modes[state.currentMode]
+  state.modes.find((mode) => mode.name === state.currentMode)!

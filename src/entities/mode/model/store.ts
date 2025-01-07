@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '../config'
 
@@ -9,27 +10,31 @@ export type ColorType = 'primary' | 'secondary'
 export type ModeType = {
   name: string
   params: Partial<Record<Param, number>>
-  colors: Partial<Record<ColorType, string>>
+  colors: Record<string, string>
 }
 
 export interface ModesState {
   currentMode: string
-  modes: Record<string, ModeType>
+  modes: ModeType[]
   setMode: (mode: string) => void
+  updateColors: (colors: Record<string, string>) => void
 }
 
-export const useModesStore = create<ModesState>((set, get) => ({
-  currentMode: 'loading',
-  modes,
-  setMode: (mode) => {
-    set({ currentMode: mode.replace(/ /g, '-') })
-  },
-  updateParams: (params: Partial<ModeType>) => {
-    set((state) => ({
-      modes: {
-        ...state.modes,
-        [state.currentMode]: { ...state.modes[state.currentMode], ...params },
-      },
-    }))
-  },
-}))
+export const useModesStore = create<ModesState>()(
+  immer((set) => ({
+    currentMode: 'loading',
+    modes,
+    setMode: (mode) => {
+      set({ currentMode: mode })
+    },
+    updateColors: (colors: Record<string, string>) => {
+      set((state) => {
+        const currentModeIndex = state.modes.findIndex(
+          (mode) => mode.name === state.currentMode,
+        )
+
+        state.modes[currentModeIndex].colors = colors
+      })
+    },
+  })),
+)

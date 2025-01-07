@@ -1,10 +1,8 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import { RadioGroup } from '@malberee/nextui-native'
-import { useShallow } from 'zustand/shallow'
 
 import {
   selectCurrentMode,
-  selectModes,
   useModesContext,
   useModesStore,
 } from '@entities/mode'
@@ -13,7 +11,7 @@ import { Radio } from './radio'
 
 export const List = () => {
   const currentMode = useModesStore(selectCurrentMode)
-  const modes = useModesStore(useShallow(selectModes))
+  const modes = useModesStore((state) => state.modes)
   const { handleSelect } = useModesContext()
 
   return (

@@ -1,75 +1,36 @@
-export const modes = {
-  loading: {
+import type { ModeType } from './model'
+
+export const modes: ModeType[] = [
+  {
     name: 'loading',
-    params: {
-      speed: 250,
-    },
-    colors: {
-      primary: '#ffffff',
-      secondary: '#000000',
-    },
+    colors: { primary: '#ffffff', secondary: '#000000' },
+    params: { speed: 250 },
   },
-  snake: {
+  {
     name: 'snake',
-    params: {
-      speed: 250,
-      length: 3,
-    },
-    colors: {
-      primary: '#ffffff',
-      secondary: '#000000',
-    },
+    colors: { primary: '#ffffff', secondary: '#000000' },
+    params: { length: 3, speed: 250 },
   },
-  'double-snake': {
+  {
     name: 'double snake',
-    params: {
-      speed: 250,
-      length: 3,
-    },
-    colors: {
-      primary: '#ffffff',
-      secondary: '#000000',
-    },
+    colors: { primary: '#ffffff', secondary: '#000000' },
+    params: { length: 3, speed: 250 },
   },
-  fill: {
+  {
     name: 'fill',
-    params: {
-      speed: 250,
-    },
-    colors: {
-      primary: '#ffffff',
-      secondary: '#000000',
-    },
+    colors: { primary: '#ffffff', secondary: '#000000' },
+    params: { speed: 250 },
   },
-  'double-fill': {
+  {
     name: 'double fill',
-    params: {
-      speed: 250,
-    },
-    colors: {
-      primary: '#ffffff',
-      secondary: '#000000',
-    },
+    colors: { primary: '#ffffff', secondary: '#000000' },
+    params: { speed: 250 },
   },
-  static: {
+  {
     name: 'static',
+    colors: { primary: '#ffffff' },
     params: {},
-    colors: {
-      primary: '#ffffff',
-    },
   },
-  chroma: {
-    name: 'chroma',
-    params: {
-      speed: 250,
-    },
-    colors: {},
-  },
-  rainbow: {
-    name: 'rainbow',
-    params: {
-      speed: 250,
-    },
-    colors: {},
-  },
-}
+  { name: 'chroma', colors: {}, params: { speed: 250 } },
+  { name: 'rainbow', colors: {}, params: { speed: 250 } },
+]
