@@ -25,6 +25,7 @@ type Context = {
   selectColor: (color: string) => void
   onApply: () => void
   onChange: (color: string) => void
+  onClose: () => void
 }
 
 const ColorPickerContext = createContext<Context | null>(null)
@@ -66,6 +67,7 @@ export const ColorPickerProvider: FC<ColorPickerProviderProps> = ({
         selectColor,
         onChange,
         onApply,
+        onClose,
       }}
     >
       <ColorPicker onApply={onApply} />

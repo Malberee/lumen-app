@@ -1,6 +1,6 @@
 import { Button } from '@malberee/nextui-native'
 import type { FC } from 'react'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated'
 import ReanimatedColorPicker from 'reanimated-color-picker'
 
@@ -13,18 +13,22 @@ interface ColorPickerProps {
   onApply: () => void
 }
 
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+
 export const ColorPicker: FC<ColorPickerProps> = ({ onApply }) => {
-  const { colors, ref, onChange } = useColorPicker()
+  const { colors, ref, onChange, onClose } = useColorPicker()
 
   return (
-    <Animated.View
+    <AnimatedPressable
       entering={ZoomIn.duration(100)}
       exiting={ZoomOut.duration(100)}
-      className="absolute left-0 top-0 h-full w-full flex-row items-center justify-center"
+      className="absolute left-0 top-0 h-full w-full flex-row items-center justify-center shadow"
+      onPress={onClose}
     >
-      <View
+      <Pressable
         className="w-[80%] rounded-3xl border border-default-100 bg-default-50 p-4"
         style={{ elevation: 8 }}
+        onPress={(e) => e.stopPropagation()}
       >
         <ReanimatedColorPicker
           ref={ref}
@@ -45,7 +49,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ onApply }) => {
             </Button>
           </View>
         </ReanimatedColorPicker>
-      </View>
-    </Animated.View>
+      </Pressable>
+    </AnimatedPressable>
   )
 }
