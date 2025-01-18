@@ -2,7 +2,7 @@ import type { ModeType } from './model'
 
 export const modes: ModeType[] = [
   {
-    name: 'loading',
+    name: 'carousel',
     colors: { primary: '#ffffff', secondary: '#000000' },
     params: { speed: 250 },
   },

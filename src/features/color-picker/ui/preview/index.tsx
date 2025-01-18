@@ -12,7 +12,7 @@ export const Preview = () => {
     <View className="mb-6 h-16 w-full flex-row">
       {items.map((color, index) => (
         <Color
-          key={color}
+          key={index}
           label={color}
           isFirst={index === 0}
           isLast={index === items.length - 1}

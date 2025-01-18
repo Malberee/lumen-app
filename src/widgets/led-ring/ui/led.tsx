@@ -12,6 +12,9 @@ import {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated'
+import { colorKit } from 'reanimated-color-picker'
+
+import { brightnessToAlpha } from '../lib'
 
 interface LedProps {
   index: number
@@ -22,23 +25,27 @@ interface LedProps {
 export const Led: FC<LedProps> = ({ index, parentWidth, colors }) => {
   const ledSize = 16
   const ledsCount = colors.value.length
-  const angle = (index / ledsCount) * 2 * Math.PI
+  const angle = (index / -ledsCount) * 2 * Math.PI
   const radius = parentWidth / 3
 
-  const y = radius * Math.sin(angle) + parentWidth / 2 - ledSize / 2
-  const x = radius * Math.cos(angle) + parentWidth / 2 - ledSize / 2
+  const y = radius * Math.cos(angle) + parentWidth / 2 - ledSize / 2
+  const x = radius * Math.sin(angle) + parentWidth / 2 - ledSize / 2
 
-  const color = useSharedValue(colors.value[index])
+  const color = useSharedValue(brightnessToAlpha(colors.value[index]).hex())
 
   useAnimatedReaction(
     () => colors.value[index],
     (result) => {
-      color.value = result
+      color.value = brightnessToAlpha(result).hex()
     },
     [colors],
   )
 
-  const gradient = useDerivedValue(() => ['white', color.value])
+  const gradient = useDerivedValue(() => {
+    const start = colorKit.runOnUI().setSaturation(color.value, 0).hex()
+
+    return [start, color.value]
+  })
 
   return (
     <Group

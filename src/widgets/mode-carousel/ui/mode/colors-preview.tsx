@@ -8,9 +8,9 @@ interface ColorsPreviewProps {
 export const ColorsPreview: FC<ColorsPreviewProps> = ({ colors }) => {
   return (
     <View className="size-8 flex-row overflow-hidden rounded-full">
-      {colors.map((color) => (
+      {colors.map((color, index) => (
         <View
-          key={color}
+          key={index}
           className="flex-1"
           style={{ backgroundColor: color }}
         />

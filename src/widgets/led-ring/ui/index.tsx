@@ -9,8 +9,6 @@ import { cssInterop } from 'nativewind'
 import { useState } from 'react'
 import { View } from 'react-native'
 
-import { useModesContext } from '@entities/mode'
-
 import { Led } from './led'
 import { useLedRing } from './model'
 
@@ -28,9 +26,8 @@ const StyledCircle = cssInterop(Circle, {
 })
 
 export const LedRing = () => {
-  const { shouldAnimateLeds } = useModesContext()
   const [size, setSize] = useState({ width: 0, height: 0 })
-  const { leds, colors } = useLedRing(24, shouldAnimateLeds)
+  const { leds } = useLedRing(24)
 
   return (
     <View className="absolute h-screen w-screen flex-row items-center justify-center">
@@ -52,11 +49,11 @@ export const LedRing = () => {
             className="bg-default-900"
             strokeWidth={24}
           />
-          {leds.map((_, index) => (
+          {leds.value.map((_, index) => (
             <Led
               key={index}
               index={index}
-              colors={colors}
+              colors={leds}
               parentWidth={size.width}
             />
           ))}

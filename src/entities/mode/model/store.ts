@@ -22,7 +22,7 @@ export interface ModesState {
 
 export const useModesStore = create<ModesState>()(
   immer((set) => ({
-    currentMode: 'loading',
+    currentMode: 'carousel',
     modes,
     setMode: (mode) => {
       set({ currentMode: mode })

@@ -1,24 +1,56 @@
 import { useEffect } from 'react'
-import { type SharedValue, useSharedValue } from 'react-native-reanimated'
+import { useSharedValue } from 'react-native-reanimated'
 
-const offset = (arr: string[]) => [...arr.slice(-1), ...arr.slice(0, -1)]
+import {
+  selectCurrentMode,
+  useModesContext,
+  useModesStore,
+} from '@entities/mode'
 
-export const useLedRing = (
-  ledsCount: number,
-  shouldAnimate: SharedValue<boolean>,
-) => {
-  const leds = Array(ledsCount).fill('#18c965', 0, 3).fill('#ff4ecd', 3)
-  const colors = useSharedValue<string[]>(leds)
+import {
+  carousel,
+  chroma,
+  doubleFill,
+  doubleSnake,
+  fill,
+  rainbow,
+  snake,
+  staticMode,
+} from '../lib'
+
+const modes = {
+  carousel,
+  snake,
+  'double snake': doubleSnake,
+  fill,
+  'double fill': doubleFill,
+  chroma,
+  rainbow,
+  static: staticMode,
+}
+
+export const useLedRing = (ledsCount: number) => {
+  const { shouldAnimateLeds } = useModesContext()
+  const { name, colors } = useModesStore(selectCurrentMode)
+  const modeName = name as keyof typeof modes
+
+  const leds = useSharedValue<string[]>(
+    modes[modeName].initial(ledsCount, colors),
+  )
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (shouldAnimate.value) {
-        colors.value = offset(colors.value)
-      }
-    }, 300)
+    leds.value = modes[modeName].initial(ledsCount, colors)
 
-    return () => clearInterval(interval)
-  }, [])
+    if (modeName !== 'static') {
+      const interval = setInterval(() => {
+        if (shouldAnimateLeds.value) {
+          leds.value = modes[modeName].progress(leds.value, colors)
+        }
+      }, 100)
 
-  return { leds, colors }
+      return () => clearInterval(interval)
+    }
+  }, [colors])
+
+  return { leds }
 }
