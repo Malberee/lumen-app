@@ -2,7 +2,7 @@ import { Button, Chip, Slider } from '@malberee/nextui-native'
 import { type FC } from 'react'
 import { type LayoutChangeEvent, View } from 'react-native'
 
-import { type ModeType } from '@entities/mode'
+import { type ModeType, useModesStore } from '@entities/mode'
 
 import { GradientText } from '@shared/ui'
 
@@ -16,6 +16,8 @@ interface ModeProps {
 }
 
 export const Mode: FC<ModeProps> = ({ mode, showColorPicker, onLayout }) => {
+  const updateParams = useModesStore((state) => state.updateParams)
+
   return (
     <View className="w-full flex-row justify-center">
       <View className="w-[90%]" onLayout={onLayout}>
@@ -35,24 +37,36 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker, onLayout }) => {
           </View>
 
           <View className="flex-1 flex-col justify-between">
-            <Slider
-              defaultValue={mode.params.speed}
-              label="Speed"
-              step={50}
-              minValue={100}
-              maxValue={1000}
-              getValue={(value) => `${value}ms`}
-              classNames={{ thumb: 'bg-default-50' }}
-            />
-            {'length' in mode.params ? (
-              <Slider
-                defaultValue={mode.params.length}
-                label="Length"
-                maxValue={10}
-                getValue={(value) => `${value} leds`}
-                classNames={{ thumb: 'bg-default-50' }}
-              />
-            ) : null}
+            <View className="flex-col justify-between gap-4">
+              {'speed' in mode.params ? (
+                <Slider
+                  defaultValue={mode.params.speed}
+                  label="Speed"
+                  step={50}
+                  minValue={100}
+                  maxValue={1000}
+                  getValue={(value) => `${value}ms`}
+                  classNames={{ thumb: 'bg-default-50' }}
+                  onChangeEnd={(value) =>
+                    updateParams({ speed: value as number })
+                  }
+                />
+              ) : null}
+              {'length' in mode.params ? (
+                <Slider
+                  defaultValue={mode.params.length}
+                  label="Length"
+                  minValue={1}
+                  maxValue={12}
+                  getValue={(value) => `${value} leds`}
+                  classNames={{ thumb: 'bg-default-50' }}
+                  onChangeEnd={(value) =>
+                    updateParams({ length: value as number })
+                  }
+                />
+              ) : null}
+            </View>
+
             <Button
               size="lg"
               radius="sm"

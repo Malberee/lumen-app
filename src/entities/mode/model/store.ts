@@ -18,6 +18,7 @@ export interface ModesState {
   modes: ModeType[]
   setMode: (mode: string) => void
   updateColors: (colors: Record<string, string>) => void
+  updateParams: (params: Partial<Record<Param, number>>) => void
 }
 
 export const useModesStore = create<ModesState>()(
@@ -27,13 +28,25 @@ export const useModesStore = create<ModesState>()(
     setMode: (mode) => {
       set({ currentMode: mode })
     },
-    updateColors: (colors: Record<string, string>) => {
+    updateColors: (colors) => {
       set((state) => {
         const currentModeIndex = state.modes.findIndex(
           (mode) => mode.name === state.currentMode,
         )
 
         state.modes[currentModeIndex].colors = colors
+      })
+    },
+    updateParams: (params) => {
+      set((state) => {
+        const currentModeIndex = state.modes.findIndex(
+          (mode) => mode.name === state.currentMode,
+        )
+
+        state.modes[currentModeIndex].params = {
+          ...state.modes[currentModeIndex].params,
+          ...params,
+        }
       })
     },
   })),

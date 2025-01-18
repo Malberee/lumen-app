@@ -31,26 +31,28 @@ const modes = {
 
 export const useLedRing = (ledsCount: number) => {
   const { shouldAnimateLeds } = useModesContext()
-  const { name, colors } = useModesStore(selectCurrentMode)
+  const { name, colors, params } = useModesStore(selectCurrentMode)
+
+  const { length, speed } = params
   const modeName = name as keyof typeof modes
 
   const leds = useSharedValue<string[]>(
-    modes[modeName].initial(ledsCount, colors),
+    modes[modeName].initial(ledsCount, colors, length),
   )
 
   useEffect(() => {
-    leds.value = modes[modeName].initial(ledsCount, colors)
+    leds.value = modes[modeName].initial(ledsCount, colors, length)
 
     if (modeName !== 'static') {
       const interval = setInterval(() => {
         if (shouldAnimateLeds.value) {
           leds.value = modes[modeName].progress(leds.value, colors)
         }
-      }, 100)
+      }, speed)
 
       return () => clearInterval(interval)
     }
-  }, [colors])
+  }, [colors, speed, length, modeName])
 
   return { leds }
 }
