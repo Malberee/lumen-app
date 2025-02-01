@@ -1,12 +1,8 @@
 import MaskedView from '@react-native-masked-view/masked-view'
+import { Slot } from 'expo-router'
 import { cssInterop } from 'nativewind'
-import { useState } from 'react'
-import { View } from 'react-native'
+import { KeyboardAvoidingView, View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
-
-import { WifiList } from '@widgets/wifi-list'
-
-import { ConnectToDevice } from '@features/connect-to-device'
 
 import { GradientText } from '@shared/ui'
 
@@ -16,9 +12,10 @@ cssInterop(MaskedView, {
   className: 'style',
 })
 
-export const Connect = () => {
-  const [showForm, setShowForm] = useState(false)
+const AnimatedKeyboardAvoidingView =
+  Animated.createAnimatedComponent(KeyboardAvoidingView)
 
+export const Connect = () => {
   return (
     <View className="size-full flex-col items-center justify-center gap-4">
       <Blob />
@@ -27,13 +24,13 @@ export const Connect = () => {
           Lumen
         </GradientText>
       </Animated.View>
-      <View className="w-full flex-row justify-center">
-        {showForm ? (
-          <ConnectToDevice />
-        ) : (
-          <WifiList navigateToForm={() => setShowForm(true)} />
-        )}
-      </View>
+      <AnimatedKeyboardAvoidingView
+        layout={LinearTransition.duration(200)}
+        behavior="padding"
+        className="w-full flex-row justify-center"
+      >
+        <Slot />
+      </AnimatedKeyboardAvoidingView>
     </View>
   )
 }

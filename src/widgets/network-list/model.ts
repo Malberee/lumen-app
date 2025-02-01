@@ -18,35 +18,33 @@ const requestPermission = async () => {
   return granted
 }
 
-export const useWifiList = () => {
+export const useNetworkList = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [wifiList, setWifiList] = useState<WifiEntry[]>([])
+  const [networkList, setNetworkList] = useState<WifiEntry[]>([])
 
-  const reScanWifiList = async () => {
+  const reScanNetworkList = async () => {
     setIsLoading(true)
     const list = await WifiManager.reScanAndLoadWifiList()
-    setWifiList(list)
+    setNetworkList(list)
     setIsLoading(false)
   }
 
-  const handleConnect = () => {}
-
   useEffect(() => {
-    const getWifiList = async () => {
+    const getNetworkList = async () => {
       const granted = await requestPermission()
 
       if (granted === 'granted') {
         setIsLoading(true)
         const list = await WifiManager.loadWifiList()
-        setWifiList(list)
+        setNetworkList(list)
         setIsLoading(false)
       }
     }
 
-    const timeout = setTimeout(() => getWifiList(), 300)
+    const timeout = setTimeout(() => getNetworkList(), 300)
 
     return () => clearTimeout(timeout)
   }, [])
 
-  return { wifiList, isLoading, reScanWifiList, handleConnect }
+  return { networkList, isLoading, reScanNetworkList }
 }
