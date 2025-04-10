@@ -3,8 +3,9 @@ import { Slot } from 'expo-router'
 import { cssInterop } from 'nativewind'
 import { KeyboardAvoidingView, View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
+import Toast from 'react-native-toast-message'
 
-import { GradientText } from '@shared/ui'
+import { ErrorToast, GradientText } from '@shared/ui'
 
 import { Blob } from './blob'
 
@@ -31,6 +32,10 @@ export const Connect = () => {
       >
         <Slot />
       </AnimatedKeyboardAvoidingView>
+      <Toast
+        config={{ error: (props) => <ErrorToast {...props} /> }}
+        position="bottom"
+      />
     </View>
   )
 }
