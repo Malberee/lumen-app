@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 import Toast from 'react-native-toast-message'
 import WiFiManager from 'react-native-wifi-reborn'
@@ -16,7 +17,7 @@ export const useConnectToDevice = () => {
     const response = await UDP.waitForResponse()
 
     if (response === 'OK') {
-      // router.navigate()
+      router.navigate('./ap')
     }
 
     UDP.close()

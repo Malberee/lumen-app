@@ -1,3 +1,4 @@
+import { PortalProvider } from '@gorhom/portal'
 import * as NavigationBar from 'expo-navigation-bar'
 import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
@@ -15,12 +16,14 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView>
-      <StatusBar style="light" backgroundColor="#09090b" />
+      <StatusBar style="light" />
       <View
         style={{ height: windowHeight }}
         className="flex w-screen items-center justify-center bg-[#09090B] dark"
       >
-        <Slot />
+        <PortalProvider>
+          <Slot />
+        </PortalProvider>
       </View>
     </GestureHandlerRootView>
   )
