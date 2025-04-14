@@ -39,8 +39,8 @@ export const ModeCarousel = memo(() => {
         <Carousel
           data={modes}
           ref={ref}
-          width={Math.round(width)}
-          height={Math.round(height)}
+          width={width}
+          height={height}
           windowSize={5}
           mode="parallax"
           onProgressChange={progress}
