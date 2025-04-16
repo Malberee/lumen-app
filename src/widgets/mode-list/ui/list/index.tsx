@@ -7,6 +7,8 @@ import {
   useModesStore,
 } from '@entities/mode'
 
+import { modesToArr } from '@shared/lib'
+
 import { Radio } from './radio'
 
 export const List = () => {
@@ -14,10 +16,12 @@ export const List = () => {
   const modes = useModesStore((state) => state.modes)
   const { handleSelect } = useModesContext()
 
+  const data = modesToArr(modes)
+
   return (
     <RadioGroup onValueChange={handleSelect} value={currentMode.name}>
       <BottomSheetFlatList
-        data={modes}
+        data={data}
         renderItem={({ item }) => (
           <Radio mode={item} isSelected={currentMode.name === item.name} />
         )}

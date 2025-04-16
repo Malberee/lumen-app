@@ -1,36 +1,31 @@
-import type { ModeType } from './model'
+import type { ModesList } from './model'
 
-export const modes: ModeType[] = [
-  {
-    name: 'carousel',
+export const modes: ModesList = {
+  carousel: {
     colors: { primary: '#ffffff', secondary: '#000000' },
-    params: { speed: 250 },
+    speed: 250,
   },
-  {
-    name: 'snake',
+  snake: {
     colors: { primary: '#ffffff', secondary: '#000000' },
-    params: { length: 3, speed: 250 },
+    length: 3,
+    speed: 250,
   },
-  {
-    name: 'double snake',
+  'double snake': {
     colors: { primary: '#ffffff', secondary: '#000000' },
-    params: { length: 3, speed: 250 },
+    length: 3,
+    speed: 250,
   },
-  {
-    name: 'fill',
+  fill: {
     colors: { primary: '#ffffff', secondary: '#000000' },
-    params: { speed: 250 },
+    speed: 250,
   },
-  {
-    name: 'double fill',
+  'double fill': {
     colors: { primary: '#ffffff', secondary: '#000000' },
-    params: { speed: 250 },
+    speed: 250,
   },
-  {
-    name: 'static',
+  solid: {
     colors: { primary: '#ffffff' },
-    params: {},
   },
-  { name: 'chroma', colors: {}, params: { speed: 250 } },
-  { name: 'rainbow', colors: {}, params: { speed: 250 } },
-]
+  chroma: { colors: {}, speed: 250 },
+  rainbow: { colors: {}, speed: 250 },
+}

@@ -13,6 +13,8 @@ import {
   useModesStore,
 } from '@entities/mode'
 
+import { modesToArr } from '@shared/lib'
+
 import { Mode } from './mode'
 
 const StyledPagination = cssInterop(Pagination.Basic, {
@@ -33,18 +35,20 @@ export const ModeCarousel = memo(() => {
 
   const { ref } = useModesContext()
 
+  const data = modesToArr(modes)
+
   return (
     <View className="flex-1 flex-row items-center">
       <View>
         <Carousel
-          data={modes}
+          data={data}
           ref={ref}
           width={width}
           height={height}
           windowSize={5}
           mode="parallax"
           onProgressChange={progress}
-          onScrollEnd={(index) => setMode(modes[index].name)}
+          onScrollEnd={(index) => setMode(data[index].name)}
           modeConfig={{
             parallaxScrollingScale: 1,
             parallaxScrollingOffset: 50,
@@ -59,7 +63,7 @@ export const ModeCarousel = memo(() => {
           )}
         />
         <StyledPagination
-          data={modes}
+          data={data}
           progress={progress}
           dotClassName="bg-default-100 opacity-50 rounded-full "
           activeDotClassName="rounded-full bg-default-200 "

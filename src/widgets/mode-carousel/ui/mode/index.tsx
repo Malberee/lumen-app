@@ -38,9 +38,9 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker, onLayout }) => {
 
           <View className="flex-1 flex-col justify-between">
             <View className="flex-col justify-between gap-4">
-              {'speed' in mode.params ? (
+              {'speed' in mode ? (
                 <Slider
-                  defaultValue={mode.params.speed}
+                  defaultValue={mode.speed}
                   label="Speed"
                   step={50}
                   minValue={100}
@@ -48,20 +48,20 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker, onLayout }) => {
                   getValue={(value) => `${value}ms`}
                   classNames={{ thumb: 'bg-default-50' }}
                   onChangeEnd={(value) =>
-                    updateParams({ speed: value as number })
+                    updateParams({ param: 'speed', value: value as number })
                   }
                 />
               ) : null}
-              {'length' in mode.params ? (
+              {'length' in mode ? (
                 <Slider
-                  defaultValue={mode.params.length}
+                  defaultValue={mode.length}
                   label="Length"
                   minValue={1}
                   maxValue={12}
                   getValue={(value) => `${value} leds`}
                   classNames={{ thumb: 'bg-default-50' }}
                   onChangeEnd={(value) =>
-                    updateParams({ length: value as number })
+                    updateParams({ param: 'length', value: value as number })
                   }
                 />
               ) : null}

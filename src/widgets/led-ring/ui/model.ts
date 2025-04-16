@@ -31,9 +31,8 @@ const modes = {
 
 export const useLedRing = (ledsCount: number) => {
   const { shouldAnimateLeds } = useModesContext()
-  const { name, colors, params } = useModesStore(selectCurrentMode)
+  const { name, colors, length, speed } = useModesStore(selectCurrentMode)
 
-  const { length, speed } = params
   const modeName = name as keyof typeof modes
 
   const leds = useSharedValue<string[]>(

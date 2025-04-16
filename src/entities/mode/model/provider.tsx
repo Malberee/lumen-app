@@ -9,6 +9,8 @@ import {
 import { type SharedValue, useSharedValue } from 'react-native-reanimated'
 import type { ICarouselInstance } from 'react-native-reanimated-carousel'
 
+import { modesToArr } from '@shared/lib'
+
 import { useModesStore } from './store'
 
 type Context = {
@@ -25,9 +27,11 @@ export const ModesProvider: FC<PropsWithChildren> = ({ children }) => {
   const modes = useModesStore((state) => state.modes)
   const ref = useRef<ICarouselInstance>(null)
 
+  const data = modesToArr(modes)
+
   const handleSelect = (value: string) => {
     ref.current?.scrollTo({
-      index: modes.findIndex((mode) => mode.name === value),
+      index: data.findIndex((mode) => mode.name === value),
       animated: true,
     })
     setMode(value)

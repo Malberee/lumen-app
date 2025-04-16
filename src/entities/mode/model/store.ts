@@ -3,50 +3,44 @@ import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '../config'
 
-type Param = 'speed' | 'length'
-
 export type ColorType = 'primary' | 'secondary'
-
 export type ModeType = {
   name: string
-  params: Partial<Record<Param, number>>
+  speed?: number
+  length?: number
   colors: Record<string, string>
 }
+export type ModesList = Record<string, Omit<ModeType, 'name'>>
 
 export interface ModesState {
-  currentMode: string
-  modes: ModeType[]
+  currentMode: ModeType
+  modes: ModesList
   setMode: (mode: string) => void
   updateColors: (colors: Record<string, string>) => void
-  updateParams: (params: Partial<Record<Param, number>>) => void
+  updateParams: (params: { param: 'speed' | 'length'; value: number }) => void
 }
 
 export const useModesStore = create<ModesState>()(
   immer((set) => ({
-    currentMode: 'carousel',
+    currentMode: {
+      name: 'carousel',
+      speed: 200,
+      colors: { primary: '#ffffff', secondary: '#000000' },
+    },
     modes,
     setMode: (mode) => {
-      set({ currentMode: mode })
+      set({ currentMode: { name: mode, ...modes[mode] } })
     },
     updateColors: (colors) => {
       set((state) => {
-        const currentModeIndex = state.modes.findIndex(
-          (mode) => mode.name === state.currentMode,
-        )
-
-        state.modes[currentModeIndex].colors = colors
+        state.modes[state.currentMode.name].colors = colors
+        state.currentMode.colors = colors
       })
     },
-    updateParams: (params) => {
+    updateParams: ({ param, value }) => {
       set((state) => {
-        const currentModeIndex = state.modes.findIndex(
-          (mode) => mode.name === state.currentMode,
-        )
-
-        state.modes[currentModeIndex].params = {
-          ...state.modes[currentModeIndex].params,
-          ...params,
-        }
+        state.modes[state.currentMode.name][param] = value
+        state.currentMode[param] = value
       })
     },
   })),
