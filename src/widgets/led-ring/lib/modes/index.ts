@@ -5,7 +5,7 @@ export * from './fill'
 export * from './double-fill'
 export * from './chroma'
 export * from './rainbow'
-export * from './static'
+export * from './solid'
 
 export type InitialFunction = (
   ledsCount: number,

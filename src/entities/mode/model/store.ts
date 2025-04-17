@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '../config'
@@ -21,27 +22,29 @@ export interface ModesState {
 }
 
 export const useModesStore = create<ModesState>()(
-  immer((set) => ({
-    currentMode: {
-      name: 'carousel',
-      speed: 200,
-      colors: { primary: '#ffffff', secondary: '#000000' },
-    },
-    modes,
-    setMode: (mode) => {
-      set({ currentMode: { name: mode, ...modes[mode] } })
-    },
-    updateColors: (colors) => {
-      set((state) => {
-        state.modes[state.currentMode.name].colors = colors
-        state.currentMode.colors = colors
-      })
-    },
-    updateParams: ({ param, value }) => {
-      set((state) => {
-        state.modes[state.currentMode.name][param] = value
-        state.currentMode[param] = value
-      })
-    },
-  })),
+  subscribeWithSelector(
+    immer((set) => ({
+      currentMode: {
+        name: 'carousel',
+        speed: 200,
+        colors: { primary: '#ffffff', secondary: '#000000' },
+      },
+      modes,
+      setMode: (mode) => {
+        set({ currentMode: { name: mode, ...modes[mode] } })
+      },
+      updateColors: (colors) => {
+        set((state) => {
+          state.modes[state.currentMode.name].colors = colors
+          state.currentMode.colors = colors
+        })
+      },
+      updateParams: ({ param, value }) => {
+        set((state) => {
+          state.modes[state.currentMode.name][param] = value
+          state.currentMode[param] = value
+        })
+      },
+    })),
+  ),
 )

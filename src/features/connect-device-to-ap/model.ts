@@ -2,8 +2,9 @@ import { router } from 'expo-router'
 import { useReducer, useState } from 'react'
 import Toast from 'react-native-toast-message'
 
+import { objToString } from '@shared/lib'
+
 import { sendCredentials } from './api'
-import { objToString } from './lib'
 
 type Fields = {
   ssid: string

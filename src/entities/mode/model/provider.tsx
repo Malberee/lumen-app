@@ -4,14 +4,17 @@ import {
   type RefObject,
   createContext,
   useContext,
+  useEffect,
   useRef,
 } from 'react'
 import { type SharedValue, useSharedValue } from 'react-native-reanimated'
 import type { ICarouselInstance } from 'react-native-reanimated-carousel'
 
+import { UDP } from '@shared/api'
 import { modesToArr } from '@shared/lib'
 
 import { useModesStore } from './store'
+import { subscribeStore } from './subscribe-store'
 
 type Context = {
   ref: RefObject<ICarouselInstance>
@@ -36,6 +39,17 @@ export const ModesProvider: FC<PropsWithChildren> = ({ children }) => {
     })
     setMode(value)
   }
+
+  useEffect(() => {
+    UDP.init()
+
+    const unsubscribe = subscribeStore()
+
+    return () => {
+      unsubscribe()
+      UDP.close()
+    }
+  }, [])
 
   return (
     <ModesContext.Provider value={{ ref, shouldAnimateLeds, handleSelect }}>

@@ -15,7 +15,7 @@ import {
   fill,
   rainbow,
   snake,
-  staticMode,
+  solid,
 } from '../lib'
 
 const modes = {
@@ -26,7 +26,7 @@ const modes = {
   'double fill': doubleFill,
   chroma,
   rainbow,
-  static: staticMode,
+  solid: solid,
 }
 
 export const useLedRing = (ledsCount: number) => {
@@ -42,7 +42,7 @@ export const useLedRing = (ledsCount: number) => {
   useEffect(() => {
     leds.value = modes[modeName].initial(ledsCount, colors, length)
 
-    if (modeName !== 'static') {
+    if (modeName !== 'solid') {
       const interval = setInterval(() => {
         if (shouldAnimateLeds.value) {
           leds.value = modes[modeName].progress(leds.value, colors)

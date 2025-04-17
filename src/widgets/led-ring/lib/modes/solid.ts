@@ -6,4 +6,4 @@ const initial: InitialFunction = (ledsCount, colors = {}) => {
   return Array(ledsCount).fill(primary)
 }
 
-export const staticMode = { initial }
+export const solid = { initial }
