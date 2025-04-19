@@ -25,13 +25,14 @@ export const useModesStore = create<ModesState>()(
   subscribeWithSelector(
     immer((set) => ({
       currentMode: {
-        name: 'carousel',
-        speed: 200,
-        colors: { primary: '#ffffff', secondary: '#000000' },
+        name: 'solid',
+        ...modes.solid,
       },
       modes,
       setMode: (mode) => {
-        set({ currentMode: { name: mode, ...modes[mode] } })
+        set((state) => {
+          state.currentMode = { name: mode, ...state.modes[mode] }
+        })
       },
       updateColors: (colors) => {
         set((state) => {

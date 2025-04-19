@@ -1,6 +1,9 @@
 import type { ModesList } from './model'
 
 export const modes: ModesList = {
+  solid: {
+    colors: { primary: '#ffffff' },
+  },
   carousel: {
     colors: { primary: '#ffffff', secondary: '#000000' },
     speed: 250,
@@ -22,9 +25,6 @@ export const modes: ModesList = {
   'double fill': {
     colors: { primary: '#ffffff', secondary: '#000000' },
     speed: 250,
-  },
-  solid: {
-    colors: { primary: '#ffffff' },
   },
   chroma: { colors: {}, speed: 250 },
   rainbow: { colors: {}, speed: 250 },

@@ -51,7 +51,7 @@ export const useLedRing = (ledsCount: number) => {
 
       return () => clearInterval(interval)
     }
-  }, [colors, speed, length, modeName])
+  }, [colors, speed, length, name])
 
-  return { leds }
+  return leds
 }

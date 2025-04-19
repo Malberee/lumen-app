@@ -27,7 +27,7 @@ const StyledCircle = cssInterop(Circle, {
 
 export const LedRing = () => {
   const [size, setSize] = useState({ width: 0, height: 0 })
-  const { leds } = useLedRing(24)
+  const leds = useLedRing(24)
 
   return (
     <View className="absolute h-screen w-screen flex-row items-center justify-center">
