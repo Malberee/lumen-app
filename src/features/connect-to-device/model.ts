@@ -20,7 +20,7 @@ export const useConnectToDevice = () => {
       router.navigate('./ap')
     }
 
-    UDP.close()
+    await UDP.close()
   }
 
   const onConnect = async (ssid: string) => {

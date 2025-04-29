@@ -1,3 +1,4 @@
+import { useNetInfo } from '@react-native-community/netinfo'
 import {
   type FC,
   type PropsWithChildren,
@@ -40,9 +41,18 @@ export const ModesProvider: FC<PropsWithChildren> = ({ children }) => {
     setMode(value)
   }
 
-  useEffect(() => {
-    UDP.init()
+  const { isConnected } = useNetInfo()
 
+  useEffect(() => {
+    const init = async () => {
+      await UDP.close()
+      await UDP.init()
+    }
+
+    init()
+  }, [isConnected])
+
+  useEffect(() => {
     const unsubscribe = subscribeStore()
 
     return () => {

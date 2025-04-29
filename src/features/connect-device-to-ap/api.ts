@@ -6,7 +6,7 @@ export const sendCredentials = async (credentials: string) => {
 
   const response = await UDP.waitForResponse()
 
-  UDP.close()
+  await UDP.close()
 
   if (response.includes('.')) {
     UDP.setIP(response)

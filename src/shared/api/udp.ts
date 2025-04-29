@@ -18,8 +18,8 @@ const init = (): Promise<void> => {
 
     socket = dgram.createSocket({ type: 'udp4', debug: true })
 
-    socket.on('error', (err) => {
-      close()
+    socket.on('error', async (err) => {
+      await close()
       reject(err)
     })
 
@@ -33,11 +33,15 @@ const init = (): Promise<void> => {
   })
 }
 
-const close = () => {
-  if (socket) {
-    socket.close()
-    socket = null
-  }
+const close = (): Promise<void> => {
+  return new Promise((resolve) => {
+    if (!socket) return resolve()
+
+    socket?.close(() => {
+      socket = null
+      resolve()
+    })
+  })
 }
 
 const sendMessage = (message: string): Promise<void> => {

@@ -1718,10 +1718,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@malberee/nextui-native@^1.1.9":
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/@malberee/nextui-native/-/nextui-native-1.1.9.tgz#b41d3fb8a254e962f62c5b80485c97133bed67ca"
-  integrity sha512-0Y7EKCRSKWtM7s7TcGDIyJp0J87jgOsRZVq4TMxAYU5U0ii+F4RdLVImVCFRZr4c+rH7PnsqMyPiDFCOGTxRgg==
+"@malberee/nextui-native@^1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@malberee/nextui-native/-/nextui-native-1.1.10.tgz#673b360521dc49d265d3d608014a1a9453b62009"
+  integrity sha512-5wpk9WaiRtfFw/Z75FxvzXMqhn18tZ3N6lCVkn0v0cQBJdscRsjEharUOetfPX2g2um1PJv9NZhjgyPeO8NyyA==
   dependencies:
     "@react-aria/label" "^3.7.11"
     "@react-aria/progress" "^3.4.17"
@@ -2197,6 +2197,11 @@
     graceful-fs "^4.1.3"
     prompts "^2.4.2"
     semver "^7.5.2"
+
+"@react-native-community/netinfo@^11.4.1":
+  version "11.4.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-11.4.1.tgz#a3c247aceab35f75dd0aa4bfa85d2be5a4508688"
+  integrity sha512-B0BYAkghz3Q2V09BF88RA601XursIEA111tnc2JOaN7axJWmNefmfjZqw/KdSxKZp7CZUuPpjBmz/WCR9uaHYg==
 
 "@react-native-masked-view/masked-view@0.3.2":
   version "0.3.2"
