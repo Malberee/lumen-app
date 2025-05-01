@@ -1,25 +1,17 @@
 {
   "expo": {
-    "name": "lumen-app",
+    "name": "Lumen",
     "slug": "lumen-app",
     "scheme": "com.malberee.lumen",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/adaptive-icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#09090b"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#09090B"
       },
       "permissions": ["android.permission.ACCESS_FINE_LOCATION"],
       "package": "com.malberee.lumen"
@@ -33,6 +25,14 @@
         "expo-router",
         {
           "root": "./src/app/routes"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#09090B",
+          "image": "./assets/splash-icon-light.png",
+          "imageWidth": 200
         }
       ],
       "react-native-wifi-reborn"
