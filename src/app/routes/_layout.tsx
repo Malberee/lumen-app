@@ -16,7 +16,7 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView>
-      <StatusBar style="light" />
+      <StatusBar style="light" translucent />
       <View
         style={{ height: windowHeight }}
         className="flex w-screen items-center justify-center bg-[#09090B] dark"

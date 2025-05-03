@@ -3,6 +3,7 @@ import { useSharedValue } from 'react-native-reanimated'
 
 import {
   selectCurrentMode,
+  selectPower,
   useModesContext,
   useModesStore,
 } from '@entities/mode'
@@ -32,6 +33,7 @@ const modes = {
 export const useLedRing = (ledsCount: number) => {
   const { shouldAnimateLeds } = useModesContext()
   const { name, colors, length, speed } = useModesStore(selectCurrentMode)
+  const power = useModesStore(selectPower)
 
   const modeName = name as keyof typeof modes
 
@@ -40,18 +42,24 @@ export const useLedRing = (ledsCount: number) => {
   )
 
   useEffect(() => {
-    leds.value = modes[modeName].initial(ledsCount, colors, length)
+    if (power) {
+      leds.value = modes[modeName].initial(ledsCount, colors, length)
 
-    if (modeName !== 'solid') {
-      const interval = setInterval(() => {
-        if (shouldAnimateLeds.value) {
-          leds.value = modes[modeName].progress(leds.value, colors)
+      if (modeName !== 'solid') {
+        const interval = setInterval(() => {
+          if (shouldAnimateLeds.value && power) {
+            leds.value = modes[modeName].progress(leds.value, colors)
+          }
+        }, speed)
+
+        return () => {
+          clearInterval(interval)
         }
-      }, speed)
-
-      return () => clearInterval(interval)
+      }
+    } else {
+      leds.value = leds.value.map(() => '#000000')
     }
-  }, [colors, speed, length, name])
+  }, [colors, speed, length, name, power])
 
   return leds
 }

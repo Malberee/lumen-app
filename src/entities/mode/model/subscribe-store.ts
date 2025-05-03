@@ -61,10 +61,20 @@ export const subscribeStore = () => {
     },
   )
 
+  const unsubPower = useModesStore.subscribe(
+    (state) => state.power,
+    (power) => {
+      if (skipNext) return
+
+      UDP.sendMessage(power ? 'P_ON' : 'P_OFF')
+    },
+  )
+
   return () => {
     unsubCurrentMode()
     unsubColors()
     unsubSpeed()
     unsubLength()
+    unsubPower()
   }
 }

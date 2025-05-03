@@ -16,9 +16,11 @@ export type ModesList = Record<string, Omit<ModeType, 'name'>>
 export interface ModesState {
   currentMode: ModeType
   modes: ModesList
+  power: boolean
   setMode: (mode: string) => void
   updateColors: (colors: Record<string, string>) => void
   updateParams: (params: { param: 'speed' | 'length'; value: number }) => void
+  setPower: (power: boolean) => void
 }
 
 export const useModesStore = create<ModesState>()(
@@ -29,6 +31,7 @@ export const useModesStore = create<ModesState>()(
         ...modes.solid,
       },
       modes,
+      power: true,
       setMode: (mode) => {
         set((state) => {
           state.currentMode = { name: mode, ...state.modes[mode] }
@@ -44,6 +47,11 @@ export const useModesStore = create<ModesState>()(
         set((state) => {
           state.modes[state.currentMode.name][param] = value
           state.currentMode[param] = value
+        })
+      },
+      setPower: (power) => {
+        set((state) => {
+          state.power = power
         })
       },
     })),
