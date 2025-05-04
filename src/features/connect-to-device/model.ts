@@ -12,7 +12,7 @@ export const useConnectToDevice = () => {
 
   const fetchConnect = async () => {
     await UDP.init()
-    await UDP.sendMessage('CONNECT')
+    await UDP.sendMessage('CNT')
 
     const response = await UDP.waitForResponse()
 
