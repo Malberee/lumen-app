@@ -1,6 +1,6 @@
 import { Button, Chip, Slider } from '@malberee/nextui-native'
 import { type FC } from 'react'
-import { type LayoutChangeEvent, View } from 'react-native'
+import { View } from 'react-native'
 
 import { type ModeType, useModesStore } from '@entities/mode'
 
@@ -12,15 +12,14 @@ import { ColorsPreview } from './colors-preview'
 interface ModeProps {
   mode: ModeType
   showColorPicker: () => void
-  onLayout: (e: LayoutChangeEvent) => void
 }
 
-export const Mode: FC<ModeProps> = ({ mode, showColorPicker, onLayout }) => {
+export const Mode: FC<ModeProps> = ({ mode, showColorPicker }) => {
   const updateParams = useModesStore((state) => state.updateParams)
 
   return (
     <View className="w-full flex-row justify-center">
-      <View className="w-[90%]" onLayout={onLayout}>
+      <View className="w-[90%]">
         <View className="h-48 flex-col justify-center rounded-t-3xl border border-[#27272A] bg-[#3F3F46]/30">
           <GradientText className="text-center text-4xl font-medium capitalize">
             {mode.name}

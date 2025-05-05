@@ -1,4 +1,4 @@
-import { cssInterop } from 'nativewind'
+import { cssInterop, rem } from 'nativewind'
 import { memo, useState } from 'react'
 import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
@@ -22,10 +22,8 @@ const StyledPagination = cssInterop(Pagination.Basic, {
   activeDotClassName: 'activeDotStyle',
 })
 
-const width = Dimensions.get('window').width
-
 export const ModeCarousel = memo(() => {
-  const [height, setHeight] = useState(0)
+  const width = Dimensions.get('window').width
   const [showColorPicker, setShowColorPicker] = useState(false)
   const progress = useSharedValue(0)
 
@@ -44,7 +42,7 @@ export const ModeCarousel = memo(() => {
           data={data}
           ref={ref}
           width={width}
-          height={height}
+          height={12 * rem.get() + 250} // h-48 + h-[250px]
           windowSize={5}
           mode="parallax"
           onProgressChange={progress}
@@ -58,7 +56,6 @@ export const ModeCarousel = memo(() => {
             <Mode
               mode={item}
               showColorPicker={() => setShowColorPicker(true)}
-              onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
             />
           )}
         />

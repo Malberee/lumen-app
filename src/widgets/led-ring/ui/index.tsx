@@ -6,8 +6,7 @@ import {
   Group,
 } from '@shopify/react-native-skia'
 import { cssInterop } from 'nativewind'
-import { useState } from 'react'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 
 import { Led } from './led'
 import { useLedRing } from './model'
@@ -26,36 +25,23 @@ const StyledCircle = cssInterop(Circle, {
 })
 
 export const LedRing = () => {
-  const [size, setSize] = useState({ width: 0, height: 0 })
+  const { width, height } = Dimensions.get('window')
   const leds = useLedRing(24)
 
   return (
     <View className="absolute h-screen w-screen flex-row items-center justify-center">
-      <Canvas
-        className="size-full"
-        onLayout={(e) =>
-          setSize({
-            width: e.nativeEvent.layout.width,
-            height: e.nativeEvent.layout.height,
-          })
-        }
-      >
-        <Group transform={[{ translateY: size.height / 4 }]}>
+      <Canvas className="size-full">
+        <Group transform={[{ translateY: height / 4 }]}>
           <StyledCircle
-            cx={size.width / 2}
-            cy={size.width / 2}
-            r={size.width / 3}
+            cx={width / 2}
+            cy={width / 2}
+            r={width / 3}
             style="stroke"
             className="bg-default-900"
             strokeWidth={24}
           />
           {leds.value.map((_, index) => (
-            <Led
-              key={index}
-              index={index}
-              colors={leds}
-              parentWidth={size.width}
-            />
+            <Led key={index} index={index} colors={leds} parentWidth={width} />
           ))}
           <BackdropBlur blur={70} />
           <Blur blur={4} />
