@@ -1,5 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
-import { subscribeWithSelector } from 'zustand/middleware'
+import {
+  createJSONStorage,
+  persist,
+  subscribeWithSelector,
+} from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '../config'
@@ -24,36 +29,46 @@ export interface ModesState {
 }
 
 export const useModesStore = create<ModesState>()(
-  subscribeWithSelector(
-    immer((set) => ({
-      currentMode: {
-        name: 'solid',
-        ...modes.solid,
-      },
-      modes,
-      power: true,
-      setMode: (mode) => {
-        set((state) => {
-          state.currentMode = { name: mode, ...state.modes[mode] }
-        })
-      },
-      updateColors: (colors) => {
-        set((state) => {
-          state.modes[state.currentMode.name].colors = colors
-          state.currentMode.colors = colors
-        })
-      },
-      updateParams: ({ param, value }) => {
-        set((state) => {
-          state.modes[state.currentMode.name][param] = value
-          state.currentMode[param] = value
-        })
-      },
-      setPower: (power) => {
-        set((state) => {
-          state.power = power
-        })
-      },
-    })),
+  persist(
+    subscribeWithSelector(
+      immer((set) => ({
+        currentMode: {
+          name: 'solid',
+          ...modes.solid,
+        },
+        modes,
+        power: true,
+        setMode: (mode) => {
+          set((state) => {
+            state.currentMode = { name: mode, ...state.modes[mode] }
+          })
+        },
+        updateColors: (colors) => {
+          set((state) => {
+            state.modes[state.currentMode.name].colors = colors
+            state.currentMode.colors = colors
+          })
+        },
+        updateParams: ({ param, value }) => {
+          set((state) => {
+            state.modes[state.currentMode.name][param] = value
+            state.currentMode[param] = value
+          })
+        },
+        setPower: (power) => {
+          set((state) => {
+            state.power = power
+          })
+        },
+      })),
+    ),
+    {
+      name: 'modes',
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({
+        modes: state.modes,
+        currentMode: state.currentMode,
+      }),
+    },
   ),
 )

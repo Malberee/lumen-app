@@ -29,7 +29,7 @@ export const ModeCarousel = memo(() => {
 
   const setMode = useModesStore((state) => state.setMode)
   const modes = useModesStore(selectAllModes)
-  const colors = useModesStore(selectCurrentMode).colors
+  const { colors, name } = useModesStore(selectCurrentMode)
 
   const { ref } = useModesContext()
 
@@ -39,6 +39,7 @@ export const ModeCarousel = memo(() => {
     <View className="flex-1 flex-row items-center">
       <View>
         <Carousel
+          defaultIndex={data.findIndex((mode) => mode.name === name)}
           data={data}
           ref={ref}
           width={width}
