@@ -1,4 +1,4 @@
-import { Radio as RadioNextUI, cn } from '@malberee/nextui-native'
+import { Radio as RadioHeroUI, cn } from '@malberee/heroui-native'
 import { memo } from 'react'
 
 import type { ModeType } from '@entities/mode'
@@ -10,7 +10,7 @@ interface RadioProps {
 
 export const Radio = memo<RadioProps>(({ isSelected, mode }) => {
   return (
-    <RadioNextUI
+    <RadioHeroUI
       value={mode.name}
       size="lg"
       classNames={{
@@ -22,6 +22,6 @@ export const Radio = memo<RadioProps>(({ isSelected, mode }) => {
       }}
     >
       {mode.name}
-    </RadioNextUI>
+    </RadioHeroUI>
   )
 })

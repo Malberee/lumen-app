@@ -1,5 +1,5 @@
 import { Portal } from '@gorhom/portal'
-import { Button } from '@malberee/nextui-native'
+import { Button } from '@malberee/heroui-native'
 import type { FC } from 'react'
 import { Pressable, Text } from 'react-native'
 import Animated, {

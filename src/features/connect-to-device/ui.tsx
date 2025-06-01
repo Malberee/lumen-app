@@ -1,4 +1,4 @@
-import { Button, CloseIcon } from '@malberee/nextui-native'
+import { Button, CloseIcon } from '@malberee/heroui-native'
 import { Link, useLocalSearchParams } from 'expo-router'
 import { Text, View } from 'react-native'
 

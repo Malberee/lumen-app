@@ -15,4 +15,4 @@ Lumen is a mobile application for controlling a NeoPixel-based LED ring powered 
 ![NativeWind](https://img.shields.io/badge/NativeWind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Zustand](https://img.shields.io/badge/🐻%20Zustand-443e38?style=for-the-badge)
 
-Developed using a custom ported component library [NextUI](https://github.com/Malberee/nextui-native) (now HeroUI)
+Developed using a custom ported component library [HeroUI](https://github.com/Malberee/heroui-native)

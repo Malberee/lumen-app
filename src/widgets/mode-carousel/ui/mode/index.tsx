@@ -1,4 +1,4 @@
-import { Button, Chip, Slider } from '@malberee/nextui-native'
+import { Button, Chip, Slider } from '@malberee/heroui-native'
 import { type FC } from 'react'
 import { View } from 'react-native'
 

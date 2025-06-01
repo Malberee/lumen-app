@@ -1,4 +1,4 @@
-import { Switch } from '@malberee/nextui-native'
+import { Switch } from '@malberee/heroui-native'
 
 import { useModesStore } from '@entities/mode'
 

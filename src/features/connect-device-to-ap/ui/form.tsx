@@ -1,4 +1,4 @@
-import { Button, Input } from '@malberee/nextui-native'
+import { Button, Input } from '@malberee/heroui-native'
 import type { FC } from 'react'
 import { View } from 'react-native'
 
@@ -32,13 +32,15 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
         }
         isInvalid={!!state.errors.ssid}
         errorMessage={state.errors.ssid}
-        onValueChange={(value) => dispatch({ field: 'ssid', value })}
+        onValueChange={(value: string) => dispatch({ field: 'ssid', value })}
         value={state.values.ssid}
       />
       <PasswordInput
         isInvalid={!!state.errors.password}
         errorMessage={state.errors.password}
-        onValueChange={(value) => dispatch({ field: 'password', value })}
+        onValueChange={(value: string) =>
+          dispatch({ field: 'password', value })
+        }
         value={state.values.password}
       />
       <Button size="lg" isLoading={isLoading} onPress={onSubmit}>

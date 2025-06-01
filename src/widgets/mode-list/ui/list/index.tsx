@@ -1,5 +1,5 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
-import { RadioGroup } from '@malberee/nextui-native'
+import { RadioGroup } from '@malberee/heroui-native'
 
 import {
   selectCurrentMode,

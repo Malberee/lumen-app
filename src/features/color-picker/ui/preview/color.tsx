@@ -1,4 +1,4 @@
-import { cn } from '@malberee/nextui-native'
+import { cn } from '@malberee/heroui-native'
 import type { FC } from 'react'
 import { Pressable } from 'react-native'
 import Animated, {

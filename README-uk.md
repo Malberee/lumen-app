@@ -15,4 +15,4 @@ Lumen - це мобільний додаток для керування сві�
 ![NativeWind](https://img.shields.io/badge/NativeWind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Zustand](https://img.shields.io/badge/🐻%20Zustand-443e38?style=for-the-badge)
 
-Розроблено з використанням власноруч портованної бібліотеки компонентів [NextUI (нині HeroUI)](https://github.com/Malberee/nextui-native) 
+Розроблено з використанням власноруч портованної бібліотеки компонентів [HeroUI](https://github.com/Malberee/heroui-native) 

@@ -1,4 +1,4 @@
-import { Button } from '@malberee/nextui-native'
+import { Button } from '@malberee/heroui-native'
 import React from 'react'
 
 import { Dialog } from './dialog'

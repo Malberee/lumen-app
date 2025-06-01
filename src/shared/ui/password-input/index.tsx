@@ -1,4 +1,4 @@
-import { Input, type InputProps } from '@malberee/nextui-native'
+import { Input, type InputProps } from '@malberee/heroui-native'
 import { type FC, useState } from 'react'
 import { Pressable } from 'react-native'
 

@@ -1,4 +1,4 @@
-import { Button } from '@malberee/nextui-native'
+import { Button } from '@malberee/heroui-native'
 import type { FC } from 'react'
 import { Pressable, View } from 'react-native'
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated'

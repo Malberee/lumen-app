@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@malberee/nextui-native'
+import { Button, Spinner } from '@malberee/heroui-native'
 import { View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 
