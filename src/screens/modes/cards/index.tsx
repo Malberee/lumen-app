@@ -1,5 +1,5 @@
 import { cssInterop, rem } from 'nativewind'
-import { memo, useState } from 'react'
+import { memo } from 'react'
 import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import Carousel, { Pagination } from 'react-native-reanimated-carousel'
@@ -8,7 +8,6 @@ import { useModesContext } from '@providers'
 import { selectAllModes, selectCurrentMode, useModesStore } from '@store'
 import { modesToArray } from '@utils'
 
-import { ColorPickerProvider } from './color-picker/provider'
 import { Mode } from './mode'
 
 const StyledPagination = cssInterop(Pagination.Basic, {
@@ -16,15 +15,13 @@ const StyledPagination = cssInterop(Pagination.Basic, {
   activeDotClassName: 'activeDotStyle',
 })
 
-export const ModeCarousel = memo(() => {
+export const Cards = memo(() => {
   const width = Dimensions.get('window').width
-  const [showColorPicker, setShowColorPicker] = useState(false)
-  const progress = useSharedValue(0)
 
+  const progress = useSharedValue(0)
   const setMode = useModesStore((state) => state.setMode)
   const modes = useModesStore(selectAllModes)
-  const { colors, name } = useModesStore(selectCurrentMode)
-
+  const { name } = useModesStore(selectCurrentMode)
   const { ref } = useModesContext()
 
   const data = modesToArray(modes)
@@ -47,12 +44,7 @@ export const ModeCarousel = memo(() => {
             parallaxScrollingOffset: 50,
             parallaxAdjacentItemScale: 0.9,
           }}
-          renderItem={({ item }) => (
-            <Mode
-              mode={item}
-              showColorPicker={() => setShowColorPicker(true)}
-            />
-          )}
+          renderItem={({ item }) => <Mode {...item} />}
         />
         <StyledPagination
           data={data}
@@ -62,13 +54,6 @@ export const ModeCarousel = memo(() => {
           containerStyle={{ gap: 4, marginTop: 8 }}
         />
       </View>
-
-      {showColorPicker ? (
-        <ColorPickerProvider
-          onClose={() => setShowColorPicker(false)}
-          colors={colors}
-        />
-      ) : null}
     </View>
   )
 })

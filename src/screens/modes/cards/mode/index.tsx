@@ -1,27 +1,25 @@
 import { Button, Chip, Slider } from '@malberee/heroui-native'
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import { View } from 'react-native'
 
 import { GradientText } from '@components'
 import { type ModeType, useModesStore } from '@store'
 
 import { BubbleIcon } from './bubble-icon'
+import { ColorPicker } from './color-picker'
 import { ColorsPreview } from './colors-preview'
 
-interface ModeProps {
-  mode: ModeType
-  showColorPicker: () => void
-}
-
-export const Mode: FC<ModeProps> = ({ mode, showColorPicker }) => {
+export const Mode: FC<ModeType> = ({ name, colors, length, speed }) => {
   const updateParams = useModesStore((state) => state.updateParams)
+
+  const [showColorPicker, setShowColorPicker] = useState(false)
 
   return (
     <View className="w-full flex-row justify-center">
       <View className="w-[90%]">
         <View className="h-48 flex-col justify-center rounded-t-3xl border border-[#27272A] bg-[#3F3F46]/30">
           <GradientText className="text-center text-4xl font-medium capitalize">
-            {mode.name}
+            {name}
           </GradientText>
         </View>
 
@@ -31,14 +29,14 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker }) => {
               Active
             </Chip>
 
-            <ColorsPreview colors={Object.values(mode.colors)} />
+            <ColorsPreview colors={Object.values(colors)} />
           </View>
 
           <View className="flex-1 flex-col justify-between">
             <View className="flex-col justify-between gap-4">
-              {'speed' in mode ? (
+              {speed !== undefined ? (
                 <Slider
-                  defaultValue={mode.speed}
+                  defaultValue={speed}
                   label="Speed"
                   step={50}
                   minValue={100}
@@ -50,9 +48,9 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker }) => {
                   }
                 />
               ) : null}
-              {'length' in mode ? (
+              {length !== undefined ? (
                 <Slider
-                  defaultValue={mode.length}
+                  defaultValue={length}
                   label="Length"
                   minValue={1}
                   maxValue={12}
@@ -69,15 +67,22 @@ export const Mode: FC<ModeProps> = ({ mode, showColorPicker }) => {
               size="lg"
               radius="sm"
               variant="solid"
-              isDisabled={Object.keys(mode.colors).length === 0}
+              isDisabled={Object.keys(colors).length === 0}
               startContent={<BubbleIcon />}
-              onPress={showColorPicker}
+              onPress={() => setShowColorPicker(true)}
             >
               Select color
             </Button>
           </View>
         </View>
       </View>
+
+      {showColorPicker ? (
+        <ColorPicker
+          onClose={() => setShowColorPicker(false)}
+          colors={colors}
+        />
+      ) : null}
     </View>
   )
 }

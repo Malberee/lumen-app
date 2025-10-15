@@ -2,7 +2,7 @@ import React from 'react'
 
 import { ModesProvider } from '@providers'
 
-import { ModeCarousel } from './carousel'
+import { Cards } from './cards'
 import { Header } from './header'
 import { LedRing } from './led-ring'
 
@@ -11,7 +11,7 @@ export const Modes = () => {
     <ModesProvider>
       <Header />
       <LedRing />
-      <ModeCarousel />
+      <Cards />
     </ModesProvider>
   )
 }
