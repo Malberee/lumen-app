@@ -2,6 +2,7 @@ import { cn } from '@malberee/heroui-native'
 import type { FC } from 'react'
 import { Pressable } from 'react-native'
 import Animated, {
+  type SharedValue,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
@@ -9,19 +10,25 @@ import Animated, {
 } from 'react-native-reanimated'
 import { colorKit } from 'reanimated-color-picker'
 
-import { useColorPicker } from '../provider'
-
-interface ColorProps {
+interface ColorPreviewProps {
+  colors: SharedValue<Record<string, string>>
+  selectedColor: SharedValue<string>
   label: string
   isFirst: boolean
   isLast: boolean
+  onSelect: (color: string) => void
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export const Color: FC<ColorProps> = ({ label, isFirst, isLast }) => {
-  const { colors, selectedColor, selectColor } = useColorPicker()
-
+export const ColorPreview: FC<ColorPreviewProps> = ({
+  colors,
+  selectedColor,
+  label,
+  isFirst,
+  isLast,
+  onSelect,
+}) => {
   const isSingleColor = Object.keys(colors.value).length === 1
 
   const textColor = useSharedValue('#ffffff')
@@ -64,7 +71,7 @@ export const Color: FC<ColorProps> = ({ label, isFirst, isLast }) => {
         isFirst && 'rounded-l-xl',
         isLast && 'rounded-r-lg',
       )}
-      onPress={() => selectColor(label)}
+      onPress={() => onSelect(label)}
     >
       <Animated.Text
         style={labelAnimatedStyle}

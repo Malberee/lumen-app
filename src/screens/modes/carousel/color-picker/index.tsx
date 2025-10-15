@@ -1,22 +1,51 @@
 import { Button } from '@malberee/heroui-native'
-import type { FC } from 'react'
+import { useRef, type FC } from 'react'
 import { Pressable, View } from 'react-native'
-import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated'
-import ReanimatedColorPicker from 'reanimated-color-picker'
+import Animated, {
+  useSharedValue,
+  ZoomIn,
+  ZoomOut,
+} from 'react-native-reanimated'
+import ReanimatedColorPicker, {
+  BrightnessSlider,
+  type ColorPickerRef,
+  HueSlider,
+  SaturationSlider,
+} from 'reanimated-color-picker'
 
-import { Preview } from './preview'
-import { useColorPicker } from './provider'
-import { Sliders } from './sliders'
+import { useModesStore } from '@store'
+
+import { ColorPreview } from './color-preview'
 import { Thumb } from './thumb'
 
 interface ColorPickerProps {
-  onApply: () => void
+  colors: Record<string, string>
+  onClose: () => void
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-export const ColorPicker: FC<ColorPickerProps> = ({ onApply }) => {
-  const { colors, ref, onChange, onClose } = useColorPicker()
+export const ColorPicker: FC<ColorPickerProps> = ({ colors, onClose }) => {
+  const colorsList = useSharedValue(colors)
+  const selectedColor = useSharedValue(Object.keys(colors)[0])
+  const updateColors = useModesStore((state) => state.updateColors)
+  const ref = useRef<ColorPickerRef>(null)
+
+  const handleChange = (color: string) => {
+    colorsList.value = { ...colorsList.value, [selectedColor.value]: color }
+  }
+
+  const handleSelect = (color: string) => {
+    if (ref.current === null) return
+
+    ref.current.setColor(colorsList.value[color])
+    selectedColor.value = color
+  }
+
+  const onApply = () => {
+    updateColors(colorsList.value)
+    onClose()
+  }
 
   return (
     <AnimatedPressable
@@ -32,18 +61,34 @@ export const ColorPicker: FC<ColorPickerProps> = ({ onApply }) => {
       >
         <ReanimatedColorPicker
           ref={ref}
-          value={Object.values(colors.value)[0]}
+          value={Object.values(colors)[0]}
           boundedThumb
           style={{ borderRadius: 9999 }}
           sliderThickness={10.5}
           thumbSize={21}
           thumbScaleAnimationValue={1}
           renderThumb={Thumb}
-          onChange={({ hex }) => onChange(hex)}
+          onChange={({ hex }) => handleChange(hex)}
         >
-          <Preview />
+          <View className="mb-6 h-16 w-full flex-row">
+            {Object.keys(colors).map((color, index, array) => (
+              <ColorPreview
+                key={index}
+                colors={colorsList}
+                selectedColor={selectedColor}
+                label={color}
+                isFirst={index === 0}
+                isLast={index === array.length - 1}
+                onSelect={handleSelect}
+              />
+            ))}
+          </View>
+
           <View className="flex-col gap-6">
-            <Sliders />
+            <HueSlider />
+            <SaturationSlider />
+            <BrightnessSlider />
+
             <Button size="lg" onPress={onApply}>
               Apply
             </Button>
