@@ -7,4 +7,4 @@ global.Buffer = require('buffer/').Buffer
 
 configureReanimatedLogger({ strict: false })
 
-export default () => <Redirect href="/modes" />
+export default () => <Redirect href="/connect" />

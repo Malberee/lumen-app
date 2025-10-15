@@ -1,3 +1,3 @@
-import { ConnectDeviceToAP } from '@features/connect-device-to-ap'
+import { ConnectDeviceToAPForm } from '@screens'
 
-export default ConnectDeviceToAP
+export default ConnectDeviceToAPForm

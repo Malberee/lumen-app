@@ -1,3 +1,3 @@
-import { NetworkList } from '@widgets/network-list'
+import { NetworkList } from '@screens'
 
 export default NetworkList
