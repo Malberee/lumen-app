@@ -1,4 +1,4 @@
-import { Button, Chip, Slider } from '@malberee/heroui-native'
+import { Button, Chip, Slider } from 'merlo-ui'
 import { useState, type FC } from 'react'
 import { View } from 'react-native'
 

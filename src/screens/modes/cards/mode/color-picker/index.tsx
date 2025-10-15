@@ -1,4 +1,4 @@
-import { Button } from '@malberee/heroui-native'
+import { Button } from 'merlo-ui'
 import { useRef, type FC } from 'react'
 import { Pressable, View } from 'react-native'
 import Animated, {

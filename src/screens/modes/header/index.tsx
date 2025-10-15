@@ -1,5 +1,5 @@
-import { Button, Switch } from '@malberee/heroui-native'
 import { router } from 'expo-router'
+import { Button, Switch } from 'merlo-ui'
 import { useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'

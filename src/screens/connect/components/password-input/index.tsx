@@ -1,4 +1,4 @@
-import { Input, type InputProps } from '@malberee/heroui-native'
+import { Input, type InputProps } from 'merlo-ui'
 import { type FC, useState } from 'react'
 import { Pressable } from 'react-native'
 

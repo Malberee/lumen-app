@@ -1,4 +1,4 @@
-import { cn } from '@malberee/heroui-native'
+import { cn } from 'merlo-ui'
 import type { FC } from 'react'
 import { Pressable } from 'react-native'
 import Animated, {

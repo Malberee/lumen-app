@@ -11,9 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^5",
     "@gorhom/portal": "^1.0.14",
-    "@malberee/heroui-native": "^1.1.12",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/netinfo": "^11.4.1",
     "@react-native-masked-view/masked-view": "0.3.2",
@@ -28,6 +26,7 @@
     "expo-splash-screen": "~0.29.24",
     "expo-status-bar": "~2.0.0",
     "immer": "^10.1.1",
+    "merlo-ui": "^1.1.14",
     "nativewind": "4.1.21",
     "react": "18.3.1",
     "react-dom": "^19.1.0",

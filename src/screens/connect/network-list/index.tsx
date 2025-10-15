@@ -1,4 +1,4 @@
-import { Button, Spinner } from '@malberee/heroui-native'
+import { Button, Spinner } from 'merlo-ui'
 import { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import WifiManager, { type WifiEntry } from 'react-native-wifi-reborn'

@@ -1,5 +1,5 @@
 import { Portal } from '@gorhom/portal'
-import { Button } from '@malberee/heroui-native'
+import { Button } from 'merlo-ui'
 import type { FC } from 'react'
 import { Pressable, Text } from 'react-native'
 import Animated, {

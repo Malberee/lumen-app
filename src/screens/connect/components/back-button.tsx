@@ -1,4 +1,4 @@
-import { Button, CloseIcon } from '@malberee/heroui-native'
+import { Button, CloseIcon } from 'merlo-ui'
 
 export const BackButton = () => (
   <Button
