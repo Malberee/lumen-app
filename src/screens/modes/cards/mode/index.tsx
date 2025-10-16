@@ -2,7 +2,7 @@ import { Button, Chip, Slider } from 'merlo-ui'
 import { useState, type FC } from 'react'
 import { View } from 'react-native'
 
-import { GradientText } from '@components'
+import { GradientText, Modal } from '@components'
 import { type ModeType, useModesStore } from '@store'
 
 import { BubbleIcon } from './bubble-icon'
@@ -78,10 +78,12 @@ export const Mode: FC<ModeType> = ({ name, colors, length, speed }) => {
       </View>
 
       {showColorPicker ? (
-        <ColorPicker
-          onClose={() => setShowColorPicker(false)}
-          colors={colors}
-        />
+        <Modal transparent onClose={() => setShowColorPicker(false)}>
+          <ColorPicker
+            onApply={() => setShowColorPicker(false)}
+            colors={colors}
+          />
+        </Modal>
       ) : null}
     </View>
   )
