@@ -10,7 +10,17 @@
       "@widgets/*": ["./widgets/*"],
       "@features/*": ["./features/*"],
       "@entities/*": ["./entities/*"],
-      "@shared/*": ["./shared/*"]
+      "@shared/*": ["./shared/*"],
+
+      "@screens": ["./screens"],
+      "@components": ["./components"],
+      "@icons": ["./components/icons"],
+      "@hooks": ["./hooks"],
+      "@utils": ["./utils"],
+      "@constants": ["./constants"],
+      "@providers": ["./providers"],
+      "@store": ["./store"],
+      "@services": ["./services"]
     }
   }
 }

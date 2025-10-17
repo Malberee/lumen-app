@@ -1,17 +1,14 @@
-// https://docs.expo.dev/guides/using-eslint/
+const prettierConfig = require('./prettier.config.js')
+
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: [
-    '@feature-sliced/eslint-config/rules/public-api',
-    '@feature-sliced/eslint-config/rules/layers-slices',
-    'expo',
-    'prettier',
-  ],
   plugins: ['prettier'],
+  ignorePatterns: ['android/*'],
+  extends: ['universe', 'universe/shared/typescript-analysis', 'prettier'],
   rules: {
-    'prettier/prettier': 'error',
     'no-console': 'error',
-    'react/display-name': 'off',
+    'import/order': 'off',
+    '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/consistent-type-imports': [
       'error',
@@ -20,6 +17,17 @@ module.exports = {
         fixStyle: 'inline-type-imports',
       },
     ],
+    'prettier/prettier': ['error', prettierConfig],
   },
-  ignorePatterns: ['/dist/*'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx', '*.d.ts'],
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+  ],
+  env: {
+    node: true,
+  },
 }

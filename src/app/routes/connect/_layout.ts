@@ -1,3 +1,3 @@
-import { Connect } from '@pages/connect'
+import { Connect } from '@screens'
 
 export default Connect

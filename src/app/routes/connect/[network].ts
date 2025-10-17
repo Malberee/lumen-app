@@ -1,3 +1,3 @@
-import { ConnectToDevice } from '@features/connect-to-device'
+import { ConnectToDeviceForm } from '@screens'
 
-export default ConnectToDevice
+export default ConnectToDeviceForm

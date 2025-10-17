@@ -1,3 +1,3 @@
-import { Modes } from '@pages/modes'
+import { Modes } from '@screens'
 
 export default Modes
