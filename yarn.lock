@@ -7870,11 +7870,6 @@ react-native-is-edge-to-edge@^1.1.6, react-native-is-edge-to-edge@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz#64e10851abd9d176cbf2b40562f751622bde3358"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
 
-react-native-quick-base64@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-quick-base64/-/react-native-quick-base64-2.2.2.tgz#52005a0b455b04acc1c6ff3eb8fa220401656aae"
-  integrity sha512-WLHSifHLoamr2kF00Gov0W9ud6CfPshe1rmqWTquVIi9c62qxOaJCFVDrXFZhEBU8B8PvGLVuOlVKH78yhY0Fg==
-
 react-native-reanimated-carousel@^4.0.2:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/react-native-reanimated-carousel/-/react-native-reanimated-carousel-4.0.3.tgz#975f4ff3f5da5bb3790fe60850a46ad8119612bc"
