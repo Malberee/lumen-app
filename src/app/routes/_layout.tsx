@@ -1,28 +1,27 @@
 import { PortalProvider } from '@gorhom/portal'
-import * as NavigationBar from 'expo-navigation-bar'
-import { Slot } from 'expo-router'
+import { Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect } from 'react'
-import { Dimensions, View } from 'react-native'
+import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { configureReanimatedLogger } from 'react-native-reanimated'
+
+import '../global.css'
+
+global.Buffer = require('buffer/').Buffer
+configureReanimatedLogger({ strict: false })
 
 const RootLayout = () => {
-  const windowHeight = Dimensions.get('screen').height
-
-  useEffect(() => {
-    NavigationBar.setBehaviorAsync('overlay-swipe')
-    NavigationBar.setVisibilityAsync('hidden')
-  }, [])
-
   return (
     <GestureHandlerRootView>
       <StatusBar style="light" translucent />
-      <View
-        style={{ height: windowHeight }}
-        className="flex w-screen items-center justify-center bg-[#09090B] dark"
-      >
+      <View className="flex-1 bg-[#09090B] dark">
         <PortalProvider>
-          <Slot />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: '#09090B' },
+            }}
+          />
         </PortalProvider>
       </View>
     </GestureHandlerRootView>
