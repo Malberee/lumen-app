@@ -1,6 +1,7 @@
 import { PortalProvider } from '@gorhom/portal'
-import { Stack } from 'expo-router'
+import { router, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
+import { Button } from 'merlo-ui'
 import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { configureReanimatedLogger } from 'react-native-reanimated'
@@ -23,6 +24,14 @@ const RootLayout = () => {
             }}
           />
         </PortalProvider>
+      </View>
+
+      {/* DEV */}
+      <View className="absolute bottom-8 left-1/2 -translate-x-1/2 flex-row gap-4">
+        <Button onPress={() => router.navigate('/connect')}>
+          Connect page
+        </Button>
+        <Button onPress={() => router.navigate('/modes')}>Modes page</Button>
       </View>
     </GestureHandlerRootView>
   )

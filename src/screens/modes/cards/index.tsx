@@ -4,7 +4,6 @@ import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import Carousel, { Pagination } from 'react-native-reanimated-carousel'
 
-import { useModesContext } from '@providers'
 import { selectAllModes, selectCurrentMode, useModesStore } from '@store'
 import { modesToArray } from '@utils'
 
@@ -22,7 +21,6 @@ export const Cards = memo(() => {
   const setMode = useModesStore((state) => state.setMode)
   const modes = useModesStore(selectAllModes)
   const { name } = useModesStore(selectCurrentMode)
-  const { ref } = useModesContext()
 
   const data = modesToArray(modes)
 
@@ -32,7 +30,6 @@ export const Cards = memo(() => {
         <Carousel
           defaultIndex={data.findIndex((mode) => mode.name === name)}
           data={data}
-          ref={ref}
           width={width}
           height={12 * rem.get() + 250} // h-48 + h-[250px]
           windowSize={5}

@@ -10,7 +10,6 @@ import { useEffect } from 'react'
 import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
-import { useModesContext } from '@providers'
 import { selectCurrentMode, selectPower, useModesStore } from '@store'
 
 import { modes } from './helpers'
@@ -33,7 +32,6 @@ export const LedRing = () => {
   const { width, height } = Dimensions.get('window')
   const ledsCount = 24
 
-  const { shouldAnimateLeds } = useModesContext()
   const { name, colors, length, speed } = useModesStore(selectCurrentMode)
   const power = useModesStore(selectPower)
 
@@ -49,7 +47,7 @@ export const LedRing = () => {
 
       if (modeName !== 'solid') {
         const interval = setInterval(() => {
-          if (shouldAnimateLeds.value && power) {
+          if (power) {
             leds.value = modes[modeName].progress(leds.value, colors)
           }
         }, speed)
