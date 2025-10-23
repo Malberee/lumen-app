@@ -9,7 +9,7 @@ import ReanimatedColorPicker, {
   SaturationSlider,
 } from 'reanimated-color-picker'
 
-import { useModesStore } from '@store'
+import { useStore } from '@store'
 
 import { ColorPreview } from './color-preview'
 import { Thumb } from './thumb'
@@ -24,7 +24,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ colors, onApply }) => {
 
   const colorsList = useSharedValue(colors)
   const selectedColor = useSharedValue(Object.keys(colors)[0])
-  const updateColors = useModesStore((state) => state.updateColors)
+  const updateColors = useStore((state) => state.updateColors)
   const ref = useRef<ColorPickerRef>(null)
 
   const handleChange = (color: string) => {

@@ -1,5 +1,5 @@
-import type { ModesState } from './index'
+import type { State } from './index'
 
-export const selectAllModes = (state: ModesState) => state.modes
-export const selectCurrentMode = (state: ModesState) => state.currentMode
-export const selectPower = (state: ModesState) => state.power
+export const selectAllModes = (state: State) => state.modes
+export const selectCurrentMode = (state: State) => state.currentMode
+export const selectPower = (state: State) => state.power

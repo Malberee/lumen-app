@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
-import { selectCurrentMode, selectPower, useModesStore } from '@store'
+import { selectCurrentMode, selectPower, useStore } from '@store'
 
 import { modes } from './helpers'
 import { Led } from './led'
@@ -32,8 +32,8 @@ export const LedRing = () => {
   const { width, height } = Dimensions.get('window')
   const ledsCount = 24
 
-  const { name, colors, length, speed } = useModesStore(selectCurrentMode)
-  const power = useModesStore(selectPower)
+  const { name, colors, length, speed } = useStore(selectCurrentMode)
+  const power = useStore(selectPower)
 
   const modeName = name as keyof typeof modes
 

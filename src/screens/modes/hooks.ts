@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { UDP } from '@services'
-import { useModesStore } from '@store'
+import { useStore } from '@store'
 import { objToString } from '@utils'
 
 import { flatObject } from './utils'
@@ -10,12 +10,12 @@ let skipNext = false
 
 export const useUdpSync = () => {
   useEffect(() => {
-    const unsubCurrentMode = useModesStore.subscribe(
+    const unsubCurrentMode = useStore.subscribe(
       ({ currentMode }) => currentMode.name,
       () => {
         skipNext = true
 
-        const currentMode = useModesStore.getState().currentMode
+        const currentMode = useStore.getState().currentMode
         const data = objToString(
           flatObject({
             ...currentMode,
@@ -33,7 +33,7 @@ export const useUdpSync = () => {
       },
     )
 
-    const unsubColors = useModesStore.subscribe(
+    const unsubColors = useStore.subscribe(
       ({ currentMode }) => currentMode.colors,
       (colors) => {
         if (skipNext) return
@@ -46,7 +46,7 @@ export const useUdpSync = () => {
       },
     )
 
-    const unsubSpeed = useModesStore.subscribe(
+    const unsubSpeed = useStore.subscribe(
       ({ currentMode }) => currentMode.speed,
       (speed) => {
         if (skipNext) return
@@ -55,7 +55,7 @@ export const useUdpSync = () => {
       },
     )
 
-    const unsubLength = useModesStore.subscribe(
+    const unsubLength = useStore.subscribe(
       ({ currentMode }) => currentMode.length,
       (length) => {
         if (skipNext) return
@@ -64,7 +64,7 @@ export const useUdpSync = () => {
       },
     )
 
-    const unsubPower = useModesStore.subscribe(
+    const unsubPower = useStore.subscribe(
       (state) => state.power,
       (power) => {
         if (skipNext) return

@@ -3,14 +3,14 @@ import { useState, type FC } from 'react'
 import { View } from 'react-native'
 
 import { GradientText, Modal } from '@components'
-import { type ModeType, useModesStore } from '@store'
+import { type ModeType, useStore } from '@store'
 
 import { BubbleIcon } from './bubble-icon'
 import { ColorPicker } from './color-picker'
 import { ColorsPreview } from './colors-preview'
 
 export const Mode: FC<ModeType> = ({ name, colors, length, speed }) => {
-  const updateParams = useModesStore((state) => state.updateParams)
+  const updateParams = useStore((state) => state.updateParams)
 
   const [showColorPicker, setShowColorPicker] = useState(false)
 

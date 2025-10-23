@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { UDP } from '@services'
-import { useModesStore } from '@store'
+import { useStore } from '@store'
 
 import { Dialog } from './dialog'
 import { LogoutIcon } from './logout-icon'
@@ -13,7 +13,7 @@ import { LogoutIcon } from './logout-icon'
 export const Header = () => {
   const { top } = useSafeAreaInsets()
   const [showDialog, setShowDialog] = useState(false)
-  const setPower = useModesStore((state) => state.setPower)
+  const setPower = useStore((state) => state.setPower)
 
   const disconnect = async () => {
     await UDP.sendMessage('DSCNT')

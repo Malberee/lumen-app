@@ -18,7 +18,7 @@ export type ModeType = {
 }
 export type ModesList = Record<string, Omit<ModeType, 'name'>>
 
-export interface ModesState {
+export interface State {
   currentMode: ModeType
   modes: ModesList
   power: boolean
@@ -28,7 +28,7 @@ export interface ModesState {
   setPower: (power: boolean) => void
 }
 
-export const useModesStore = create<ModesState>()(
+export const useStore = create<State>()(
   persist(
     subscribeWithSelector(
       immer((set) => ({

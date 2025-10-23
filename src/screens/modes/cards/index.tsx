@@ -4,7 +4,7 @@ import { Dimensions, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import Carousel, { Pagination } from 'react-native-reanimated-carousel'
 
-import { selectAllModes, selectCurrentMode, useModesStore } from '@store'
+import { selectAllModes, selectCurrentMode, useStore } from '@store'
 import { modesToArray } from '@utils'
 
 import { Mode } from './mode'
@@ -18,9 +18,9 @@ export const Cards = memo(() => {
   const width = Dimensions.get('window').width
 
   const progress = useSharedValue(0)
-  const setMode = useModesStore((state) => state.setMode)
-  const modes = useModesStore(selectAllModes)
-  const { name } = useModesStore(selectCurrentMode)
+  const setMode = useStore((state) => state.setMode)
+  const modes = useStore(selectAllModes)
+  const { name } = useStore(selectCurrentMode)
 
   const data = modesToArray(modes)
 
