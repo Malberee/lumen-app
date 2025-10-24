@@ -11,7 +11,7 @@ export const NetworkItem: FC<WifiEntry> = ({ SSID, capabilities }) => {
     capabilities.includes('WEP') || capabilities.includes('WPA')
 
   return (
-    <Link href={`/connect/${SSID}`} asChild>
+    <Link href={`/${SSID}`} asChild>
       <Pressable className="flex-row items-center justify-between rounded-xl px-2 py-1 transition-colors active:bg-default-100">
         <View className="flex-row items-center gap-2">
           <WiFiIcon className="text-foreground" />

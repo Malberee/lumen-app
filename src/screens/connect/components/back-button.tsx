@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { Button, CloseIcon } from 'merlo-ui'
 
 export const BackButton = () => (
@@ -7,6 +8,6 @@ export const BackButton = () => (
     color="default"
     variant="light"
     startContent={<CloseIcon className="text-foreground" width={20} />}
-    onPress={() => history.back()}
+    onPress={() => router.back()}
   />
 )

@@ -19,7 +19,7 @@ export const Header = () => {
     await UDP.sendMessage('DSCNT')
     await UDP.close()
     UDP.setIP('192.168.4.1')
-    router.replace('/connect')
+    router.replace('/')
   }
 
   return (
