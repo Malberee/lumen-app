@@ -28,6 +28,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ colors, onApply }) => {
   const ref = useRef<ColorPickerRef>(null)
 
   const handleChange = (color: string) => {
+    'worklet'
     colorsList.value = { ...colorsList.value, [selectedColor.value]: color }
   }
 
@@ -53,7 +54,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ colors, onApply }) => {
       thumbSize={21}
       thumbScaleAnimationValue={1}
       renderThumb={Thumb}
-      onChange={({ hex }) => handleChange(hex)}
+      onChangeJS={({ hex }) => handleChange(hex)}
     >
       <View className="mb-6 h-16 w-full flex-row">
         {Object.keys(colors).map((color, index, array) => (

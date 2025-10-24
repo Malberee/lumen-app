@@ -42,7 +42,7 @@
     "react-native-udp": "^4.1.7",
     "react-native-wifi-reborn": "^4.13.6",
     "react-native-worklets": "0.5.1",
-    "reanimated-color-picker": "^3.0.6",
+    "reanimated-color-picker": "^4.1.1",
     "tailwindcss": "3.4.16",
     "zustand": "^5.0.2"
   },

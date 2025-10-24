@@ -14,20 +14,22 @@ export const Thumb: FC<RenderThumbProps> = ({
   }))
 
   return (
-    <Animated.View
-      style={[
-        {
-          width,
-          height,
-          borderRadius: 9999,
-          borderWidth: 2,
-          overflow: 'hidden',
-        },
-        animatedStyle,
-        positionStyle,
-      ]}
-    >
-      <View className="size-full bg-default-50" />
+    <Animated.View style={positionStyle}>
+      <Animated.View
+        style={[
+          {
+            width,
+            height,
+            borderRadius: 9999,
+            borderWidth: 2,
+            overflow: 'hidden',
+          },
+          animatedStyle,
+        ]}
+      >
+        <View className="size-full bg-default-50" />
+      </Animated.View>
+      <View className="pointer-events-auto absolute z-10 size-9" />
     </Animated.View>
   )
 }
