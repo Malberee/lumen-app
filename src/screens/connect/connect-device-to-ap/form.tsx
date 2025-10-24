@@ -1,4 +1,3 @@
-import { router } from 'expo-router'
 import { Button, Input } from 'merlo-ui'
 import { useState, type FC } from 'react'
 import { View } from 'react-native'
@@ -33,9 +32,6 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
       setIsLoading(true)
       await sendCredentials(`CRD ${objToString(state.values)}`)
       onSuccess()
-      setTimeout(() => {
-        router.navigate('/modes')
-      }, 500)
     } catch (error) {
       let errorMessage = 'Error'
       if (error instanceof Error) errorMessage = error.message
