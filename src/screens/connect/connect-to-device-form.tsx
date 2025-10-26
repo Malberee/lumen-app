@@ -28,13 +28,13 @@ export const ConnectToDeviceForm = () => {
     await UDP.close()
   }
 
-  const handleConnect = async (ssid: string) => {
+  const handleSubmit = async () => {
     setIsLoading(true)
     try {
       setError('')
       await WiFiManager.forceWifiUsageWithOptions(true, { noInternet: true })
       await WiFiManager.connectToProtectedSSID(
-        ssid,
+        network,
         password,
         true,
         false,
@@ -74,10 +74,11 @@ export const ConnectToDeviceForm = () => {
         />
         <Button
           isLoading={isLoading}
+          isDisabled={!password.trim()}
           size="lg"
-          onPress={() => handleConnect(network)}
+          onPress={() => handleSubmit()}
         >
-          Connect
+          {isLoading ? 'Connecting...' : 'Connect'}
         </Button>
       </View>
     </Card>
