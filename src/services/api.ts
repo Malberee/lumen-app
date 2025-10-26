@@ -73,7 +73,11 @@ const waitForResponse = (): Promise<string> => {
         socket?.off('message', messageListener)
         messageListener = null
       }
-      reject(new Error('Timeout'))
+      reject(
+        new Error(
+          'There`s no connection to the board.\nLooks like you are connected to the\nwrong network.',
+        ),
+      )
     }, 30000)
 
     messageListener = (msgBuffer) => {
