@@ -1,6 +1,8 @@
 import dgram from 'react-native-udp'
 
-export let ESP_IP = '192.168.4.1'
+const DEFAULT_ESP_IP = '192.168.4.1'
+
+export let ESP_IP = DEFAULT_ESP_IP
 const ESP_PORT = 8888
 
 type Listener = (msg: Buffer, rinfo: { address: string; port: number }) => void
@@ -16,7 +18,10 @@ const init = (): Promise<void> => {
       return resolve()
     }
 
-    socket = dgram.createSocket({ type: 'udp4', debug: true })
+    socket = dgram.createSocket({
+      type: 'udp4',
+      debug: process.env.NODE_ENV === 'development',
+    })
 
     socket.on('error', async (err) => {
       await close()
@@ -83,4 +88,18 @@ const waitForResponse = (): Promise<string> => {
   })
 }
 
-export const UDP = { socket, init, close, sendMessage, waitForResponse, setIP }
+const disconnect = async () => {
+  await UDP.sendMessage('DSCNT')
+  await UDP.close()
+  UDP.setIP(DEFAULT_ESP_IP)
+}
+
+export const UDP = {
+  socket,
+  init,
+  close,
+  sendMessage,
+  waitForResponse,
+  disconnect,
+  setIP,
+}

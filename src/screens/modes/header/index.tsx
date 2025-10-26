@@ -15,10 +15,8 @@ export const Header = () => {
   const [showDialog, setShowDialog] = useState(false)
   const setPower = useStore((state) => state.setPower)
 
-  const disconnect = async () => {
-    await UDP.sendMessage('DSCNT')
-    await UDP.close()
-    UDP.setIP('192.168.4.1')
+  const handleSubmit = async () => {
+    await UDP.disconnect()
     router.replace('/')
   }
 
@@ -43,7 +41,7 @@ export const Header = () => {
       />
 
       {showDialog ? (
-        <Dialog onClose={() => setShowDialog(false)} onSubmit={disconnect} />
+        <Dialog onClose={() => setShowDialog(false)} onSubmit={handleSubmit} />
       ) : null}
     </View>
   )

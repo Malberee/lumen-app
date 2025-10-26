@@ -1,5 +1,6 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
+import WiFiManager from 'react-native-wifi-reborn'
 
 import { BackButton, Card } from '../components'
 import { Form } from './form'
@@ -13,13 +14,15 @@ export const ConnectDeviceToAPForm = () => {
 
     setTimeout(() => {
       setShowSuccessOverlay(false)
-
       router.navigate('/modes')
     }, 500)
   }
 
   return (
-    <Card title="Connect device to access point" action={<BackButton />}>
+    <Card
+      title="Connect device to access point"
+      action={<BackButton onPress={() => WiFiManager.disconnect()} />}
+    >
       <Form onSuccess={handleSuccess} />
       {showSuccessOverlay ? <SuccessOverlay /> : null}
     </Card>

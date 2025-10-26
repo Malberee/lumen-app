@@ -17,7 +17,7 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
   const { state, dispatch, resetFields } = useForm()
   const [isLoading, setIsLoading] = useState(false)
 
-  const onSubmit = async () => {
+  const handleSubmit = async () => {
     const errors = validateFields(state.values)
     if (Object.keys(errors).length) {
       if (errors.ssid) dispatch({ field: 'ssid', error: errors.ssid })
@@ -70,7 +70,7 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
         }
         value={state.values.password}
       />
-      <Button size="lg" isLoading={isLoading} onPress={onSubmit}>
+      <Button size="lg" isLoading={isLoading} onPress={handleSubmit}>
         Submit
       </Button>
     </View>
