@@ -7,11 +7,7 @@ export const sendCredentials = async (credentials: string) => {
   const response = await UDP.waitForResponse()
 
   await UDP.close()
+  UDP.setIP(response)
 
-  if (response.includes('.')) {
-    UDP.setIP(response)
-    return response
-  } else {
-    throw new Error(response)
-  }
+  return response
 }

@@ -35,6 +35,7 @@ export const Connect = () => {
       <Toast
         config={{ error: (props) => <ErrorToast {...props} /> }}
         position="bottom"
+        autoHide
       />
     </View>
   )

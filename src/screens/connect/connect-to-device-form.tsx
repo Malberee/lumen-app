@@ -16,22 +16,35 @@ export const ConnectToDeviceForm = () => {
   const [error, setError] = useState('')
 
   const fetchConnect = async () => {
-    await UDP.init()
-    await UDP.sendMessage('CNT')
+    try {
+      await UDP.init()
+      await UDP.sendMessage('CNT')
 
-    const response = await UDP.waitForResponse()
+      const response = await UDP.waitForResponse()
 
-    if (response === 'OK') {
-      router.navigate('./ap')
+      await UDP.close()
+
+      if (response === 'OK') {
+        router.navigate('./ap')
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        Toast.show({
+          type: 'error',
+          text1: e.message === 'Timeout' ? 'Error' : 'Unknown error',
+          text2:
+            e.message === 'Timeout'
+              ? 'There`s no connection to the board.\nLooks like you are connected to the\nwrong network.'
+              : undefined,
+        })
+      }
     }
-
-    await UDP.close()
   }
 
   const handleSubmit = async () => {
+    setError('')
     setIsLoading(true)
     try {
-      setError('')
       await WiFiManager.forceWifiUsageWithOptions(true, { noInternet: true })
       await WiFiManager.connectToProtectedSSID(
         network,
@@ -63,7 +76,12 @@ export const ConnectToDeviceForm = () => {
   }
 
   return (
-    <Card title="Connect to device" action={<BackButton />}>
+    <Card
+      title="Connect to device"
+      action={
+        <BackButton onPress={() => WiFiManager.isRemoveWifiNetwork(network)} />
+      }
+    >
       <View className="flex-col gap-4">
         <Text className="text-2xl text-foreground">{network}</Text>
         <PasswordInput
