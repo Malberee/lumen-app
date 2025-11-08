@@ -63,7 +63,7 @@ const sendMessage = (message: string): Promise<void> =>
     })
   })
 
-const waitForResponse = (): Promise<string> =>
+const waitForResponse = (timeoutMs = 10_000): Promise<string> =>
   new Promise((resolve, reject) => {
     if (!socket) return reject(new Error('Socket is not initialized!'))
 
@@ -80,7 +80,7 @@ const waitForResponse = (): Promise<string> =>
     timeout = setTimeout(() => {
       socket?.off('message', onMessage)
       reject(new Error('Timeout'))
-    }, 10_000)
+    }, timeoutMs)
   })
 
 const setIP = (ip: string) => (ESP_IP = ip)

@@ -26,7 +26,7 @@
     "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
     "immer": "^10.1.1",
-    "merlo-ui": "^1.1.14",
+    "merlo-ui": "^1.1.15",
     "nativewind": "^4.2.1",
     "react": "19.1.0",
     "react-dom": "^19.1.0",

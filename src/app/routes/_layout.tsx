@@ -28,8 +28,9 @@ const RootLayout = () => {
 
       {/* DEV */}
       <View className="absolute bottom-8 left-1/2 -translate-x-1/2 flex-row gap-4">
-        <Button onPress={() => router.replace('/ap')}>Connect page</Button>
-        <Button onPress={() => router.replace('/modes')}>Modes page</Button>
+        <Button onPress={() => router.replace('/')}>Connect</Button>
+        <Button onPress={() => router.replace('/ap')}>Ap</Button>
+        <Button onPress={() => router.replace('/modes')}>Modes</Button>
       </View>
     </GestureHandlerRootView>
   )
