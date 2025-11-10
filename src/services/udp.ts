@@ -1,9 +1,9 @@
 import dgram from 'react-native-udp'
 
-export const DEFAULT_ESP_IP = '192.168.4.1'
-
-let ESP_IP = DEFAULT_ESP_IP
-const ESP_PORT = 8888
+const DEFAULT_DEVICE_IP = '192.168.4.1'
+let DEVICE_IP = DEFAULT_DEVICE_IP
+const DEVICE_PORT = 8888
+const PORT = 8888
 
 let socket: ReturnType<typeof dgram.createSocket> | null = null
 
@@ -27,7 +27,7 @@ const init = (): Promise<void> =>
 
       socket.on('listening', () => resolve())
 
-      socket.bind(ESP_PORT)
+      socket.bind(PORT)
     } catch (error) {
       reject(error)
     }
@@ -40,7 +40,6 @@ const close = () =>
     try {
       socket.close(() => {
         socket = null
-        ESP_IP = DEFAULT_ESP_IP
         resolve('Socket closed')
       })
     } catch {
@@ -54,7 +53,7 @@ const sendMessage = (message: string): Promise<void> =>
     if (!socket) return reject(new Error('Socket is not initialized!'))
 
     const buffer = Buffer.from(message, 'utf-8')
-    socket.send(buffer, 0, buffer.length, ESP_PORT, ESP_IP, (error) => {
+    socket.send(buffer, 0, buffer.length, DEVICE_PORT, DEVICE_IP, (error) => {
       if (error) {
         reject(error)
       } else {
@@ -83,7 +82,8 @@ const waitForResponse = (timeoutMs = 10_000): Promise<string> =>
     }, timeoutMs)
   })
 
-const setIP = (ip: string) => (ESP_IP = ip)
+const setIP = (ip: string) => (DEVICE_IP = ip)
+const resetIP = () => (DEVICE_IP = DEFAULT_DEVICE_IP)
 
 export const UDP = {
   init,
@@ -91,5 +91,6 @@ export const UDP = {
   sendMessage,
   waitForResponse,
   setIP,
+  resetIP,
   isInitialized: () => !!socket,
 }

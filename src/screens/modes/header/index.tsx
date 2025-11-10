@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { DEFAULT_ESP_IP, UDP } from '@services'
+import { UDP } from '@services'
 import { useStore } from '@store'
 
 import { Dialog } from './dialog'
@@ -18,7 +18,7 @@ export const Header = () => {
   const handleSubmit = async () => {
     await UDP.sendMessage('DSCNT')
     await UDP.close()
-    UDP.setIP(DEFAULT_ESP_IP)
+    UDP.resetIP()
     router.replace('/')
   }
 
