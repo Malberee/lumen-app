@@ -10,7 +10,7 @@ import { serializeMode } from './utils'
 let skipNext = false
 
 export const useUdpSync = () => {
-  const { isConnected, isWifiEnabled } = useNetInfo()
+  const { isConnected } = useNetInfo()
 
   const sendCurrentMode = async () => {
     const currentMode = useStore.getState().currentMode
@@ -18,21 +18,21 @@ export const useUdpSync = () => {
   }
 
   useEffect(() => {
-    const init = async () => {
+    const setup = async () => {
       await UDP.init()
-      sendCurrentMode()
+      await sendCurrentMode()
     }
 
-    if (isWifiEnabled && isConnected) init()
+    if (isConnected) setup()
 
     const unsubCurrentMode = useStore.subscribe(
       ({ currentMode }) => currentMode.name,
-      () => {
+      async () => {
         if (!UDP.isInitialized()) return
 
         skipNext = true
 
-        sendCurrentMode()
+        await sendCurrentMode()
 
         setTimeout(() => {
           skipNext = false
@@ -42,41 +42,41 @@ export const useUdpSync = () => {
 
     const unsubColors = useStore.subscribe(
       ({ currentMode }) => currentMode.colors,
-      (colors) => {
+      async (colors) => {
         if (skipNext || !UDP.isInitialized()) return
 
         const data = objToString(colors)
           .replace('primary', 'pri')
           .replace('secondary', 'sec')
 
-        UDP.sendMessage(`MODE ${data}`)
+        await UDP.sendMessage(`MODE ${data}`)
       },
     )
 
     const unsubSpeed = useStore.subscribe(
       ({ currentMode }) => currentMode.speed,
-      (speed) => {
+      async (speed) => {
         if (skipNext || !UDP.isInitialized()) return
 
-        UDP.sendMessage(`MODE spd=${speed}`)
+        await UDP.sendMessage(`MODE spd=${speed}`)
       },
     )
 
     const unsubLength = useStore.subscribe(
       ({ currentMode }) => currentMode.length,
-      (length) => {
+      async (length) => {
         if (skipNext || !UDP.isInitialized()) return
 
-        UDP.sendMessage(`MODE lgt=${length}`)
+        await UDP.sendMessage(`MODE lgt=${length}`)
       },
     )
 
     const unsubPower = useStore.subscribe(
       (state) => state.power,
-      (power) => {
+      async (power) => {
         if (skipNext || !UDP.isInitialized()) return
 
-        UDP.sendMessage(power ? 'P_ON' : 'P_OFF')
+        await UDP.sendMessage(power ? 'P_ON' : 'P_OFF')
       },
     )
 
@@ -86,7 +86,8 @@ export const useUdpSync = () => {
       unsubSpeed()
       unsubLength()
       unsubPower()
-      UDP.close()
+
+      if (UDP.isInitialized()) UDP.close()
     }
-  }, [isConnected, isWifiEnabled])
+  }, [isConnected])
 }

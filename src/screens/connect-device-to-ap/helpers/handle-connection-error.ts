@@ -26,7 +26,7 @@ export const handleConnectionError = (
       })
       break
     default:
-      Toast.show({ type: 'error', text1: 'Unknown error' })
+      Toast.show({ type: 'error', text1: 'Unknown error', text2: error })
       break
   }
 }
