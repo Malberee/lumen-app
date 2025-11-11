@@ -1,6 +1,6 @@
-import type { ModesList } from '@store'
+import type { ModeList } from '@store'
 
-export const modes: ModesList = {
+export const modes: ModeList = {
   solid: {
     colors: { primary: '#ffffff' },
   },

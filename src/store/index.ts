@@ -16,11 +16,11 @@ export type ModeType = {
   length?: number
   colors: Record<string, string>
 }
-export type ModesList = Record<string, Omit<ModeType, 'name'>>
+export type ModeList = Record<string, Omit<ModeType, 'name'>>
 
 export interface State {
   currentMode: ModeType
-  modes: ModesList
+  modes: ModeList
   power: boolean
   setMode: (mode: string) => void
   updateColors: (colors: Record<string, string>) => void
