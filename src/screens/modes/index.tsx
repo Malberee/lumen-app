@@ -1,17 +1,18 @@
 import { chunk } from 'lodash'
 import React from 'react'
-import { Text } from 'react-native'
 
-import { selectAllModes, useStore } from '@store'
+import { selectAllModes, selectCurrentMode, useStore } from '@store'
 import { modesToArray } from '@utils'
 
-import { Grid, HorizontalPager, Surface } from './components'
+import { Grid, HorizontalPager, Mode } from './components'
 import { useUdpSync } from './hooks'
 
 export const Modes = () => {
   useUdpSync()
 
   const modes = useStore(selectAllModes)
+  const currentMode = useStore(selectCurrentMode)
+  const setMode = useStore((state) => state.setMode)
 
   return (
     <>
@@ -25,11 +26,11 @@ export const Modes = () => {
           <Grid
             data={item}
             renderItem={(item) => (
-              <Surface className="aspect-square p-1.5">
-                <Text className="my-auto text-center capitalize text-foreground">
-                  {item.name}
-                </Text>
-              </Surface>
+              <Mode
+                name={item.name}
+                isSelected={item.name === currentMode.name}
+                onSelect={setMode}
+              />
             )}
           />
         )}

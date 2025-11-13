@@ -1,20 +1,32 @@
 import { cn } from 'merlo-ui'
-import type { FC, PropsWithChildren } from 'react'
+import type { ComponentProps, ElementType, ReactNode } from 'react'
 import { View } from 'react-native'
 
-interface SurfaceProps extends PropsWithChildren {
-  className?: string
+type AsProp<T extends ElementType> = {
+  as?: T
+  children?: ReactNode
 }
 
-export const Surface: FC<SurfaceProps> = ({ children, className }) => {
+type PolymorphicProps<T extends ElementType> = AsProp<T> &
+  Omit<ComponentProps<T>, keyof AsProp<T>>
+
+export const Surface = <T extends ElementType = typeof View>({
+  children,
+  className,
+  as,
+  ...props
+}: PolymorphicProps<T>) => {
+  const Component = as ?? View
+
   return (
-    <View
+    <Component
+      {...props}
       className={cn(
         'rounded-xl border border-default-100 bg-surface p-4',
         className,
       )}
     >
       {children}
-    </View>
+    </Component>
   )
 }

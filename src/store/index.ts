@@ -7,22 +7,22 @@ import {
 } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { modes } from '@constants'
+import { type ModeName, modes } from '@constants'
 
 export type ColorType = 'primary' | 'secondary'
 export type ModeType = {
-  name: string
+  name: ModeName
   speed?: number
   length?: number
   colors: Record<string, string>
 }
-export type ModeList = Record<string, Omit<ModeType, 'name'>>
+export type ModeList = Record<ModeName, Omit<ModeType, 'name'>>
 
 export interface State {
   currentMode: ModeType
   modes: ModeList
   power: boolean
-  setMode: (mode: string) => void
+  setMode: (mode: ModeType['name']) => void
   updateColors: (colors: Record<string, string>) => void
   updateParams: (params: { param: 'speed' | 'length'; value: number }) => void
   setPower: (power: boolean) => void

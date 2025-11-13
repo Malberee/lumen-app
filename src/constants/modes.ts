@@ -1,6 +1,6 @@
-import type { ModeList } from '@store'
+export type ModeName = keyof typeof modes
 
-export const modes: ModeList = {
+export const modes = {
   solid: {
     colors: { primary: '#ffffff' },
   },
