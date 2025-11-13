@@ -10,7 +10,7 @@ export const Surface: FC<SurfaceProps> = ({ children, className }) => {
   return (
     <View
       className={cn(
-        'rounded-xl border border-default-100 bg-[#111113] p-4',
+        'rounded-xl border border-default-100 bg-surface p-4',
         className,
       )}
     >

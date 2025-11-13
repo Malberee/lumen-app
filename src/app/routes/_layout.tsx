@@ -2,9 +2,13 @@ import { PortalProvider } from '@gorhom/portal'
 import { router, Stack } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { Button } from 'merlo-ui'
+import { rem } from 'nativewind'
 import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { configureReanimatedLogger } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { colors } from '@constants'
 
 import '../global.css'
 
@@ -12,15 +16,22 @@ global.Buffer = require('buffer/').Buffer
 configureReanimatedLogger({ strict: false })
 
 const RootLayout = () => {
+  const { top, bottom } = useSafeAreaInsets()
+
   return (
     <GestureHandlerRootView>
       <StatusBar style="light" translucent />
-      <View className="flex-1 bg-[#09090B] dark">
+      <View className="flex-1 dark">
         <PortalProvider>
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: '#09090B' },
+              contentStyle: {
+                backgroundColor: colors.background,
+                paddingTop: top,
+                paddingBottom: bottom,
+                paddingHorizontal: rem.get(),
+              },
             }}
           />
         </PortalProvider>
