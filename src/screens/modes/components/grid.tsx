@@ -19,7 +19,7 @@ export const Grid = <T,>({
 
   return (
     <View
-      className="flex-1 flex-row flex-wrap"
+      className="flex-row flex-wrap"
       style={{ gap }}
       onLayout={({ nativeEvent }) => setWidth(nativeEvent.layout.width)}
     >

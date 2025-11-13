@@ -1,11 +1,11 @@
+import { chunk } from 'lodash'
 import React from 'react'
 import { Text } from 'react-native'
 
 import { selectAllModes, useStore } from '@store'
 import { modesToArray } from '@utils'
 
-import { Surface } from './components'
-import { Grid } from './components/grid'
+import { Grid, HorizontalPager, Surface } from './components'
 import { useUdpSync } from './hooks'
 
 export const Modes = () => {
@@ -18,12 +18,20 @@ export const Modes = () => {
       {/* <Header />
       <LedRing />
       <Cards /> */}
-      <Grid
-        data={modesToArray(modes)}
-        renderItem={(item) => (
-          <Surface>
-            <Text className="text-foreground">{item.name}</Text>
-          </Surface>
+
+      <HorizontalPager
+        data={chunk(modesToArray(modes), 6)}
+        renderItem={({ item }) => (
+          <Grid
+            data={item}
+            renderItem={(item) => (
+              <Surface className="aspect-square p-1.5">
+                <Text className="my-auto text-center capitalize text-foreground">
+                  {item.name}
+                </Text>
+              </Surface>
+            )}
+          />
         )}
       />
     </>
