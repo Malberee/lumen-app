@@ -1,3 +1,4 @@
+import { rem } from 'nativewind'
 import type { FC } from 'react'
 import Animated, {
   Extrapolation,
@@ -9,11 +10,12 @@ import Animated, {
 interface DotProps {
   index: number
   scrollX: SharedValue<number>
-  dotSize: number
   pageWidth: number
 }
 
-export const Dot: FC<DotProps> = ({ index, scrollX, dotSize, pageWidth }) => {
+export const Dot: FC<DotProps> = ({ index, scrollX, pageWidth }) => {
+  const dotSize = rem.get() / 2
+
   const animatedStyle = useAnimatedStyle(() => ({
     width: interpolate(
       scrollX.value,
