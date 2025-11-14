@@ -1,10 +1,11 @@
 import { chunk } from 'lodash'
 import React from 'react'
+import { View } from 'react-native'
 
 import { selectAllModes, useStore } from '@store'
 import { modesToArray } from '@utils'
 
-import { Grid, HorizontalPager, Mode } from './components'
+import { Controls, Grid, HorizontalPager, Mode } from './components'
 import { useUdpSync } from './hooks'
 
 export const Modes = () => {
@@ -13,10 +14,10 @@ export const Modes = () => {
   const modes = useStore(selectAllModes)
 
   return (
-    <>
-      {/* <Header />
-      <LedRing />
-      <Cards /> */}
+    <View className="flex-1 flex-col gap-8">
+      {/* <Header /> */}
+      {/* <LedRing /> */}
+      {/* <Cards /> */}
 
       <HorizontalPager
         data={chunk(modesToArray(modes), 6)}
@@ -24,6 +25,7 @@ export const Modes = () => {
           <Grid data={item} renderItem={(item) => <Mode name={item.name} />} />
         )}
       />
-    </>
+      <Controls />
+    </View>
   )
 }
