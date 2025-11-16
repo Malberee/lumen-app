@@ -6,7 +6,7 @@ interface GridProps<T> {
   data: T[]
   numColumns?: number
   gap?: number
-  renderItem: (item: T) => ReactNode
+  renderItem: (item: T, index: number) => ReactNode
 }
 
 export const Grid = <T,>({
@@ -28,7 +28,7 @@ export const Grid = <T,>({
           key={index}
           style={{ width: (width - gap * (numColumns - 1)) / numColumns }}
         >
-          {renderItem(item)}
+          {renderItem(item, index)}
         </View>
       ))}
     </View>

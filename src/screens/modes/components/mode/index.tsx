@@ -2,7 +2,7 @@ import { cn, semanticColors } from 'merlo-ui'
 import type { FC } from 'react'
 import { Pressable, Text } from 'react-native'
 
-import { selectCurrentMode, useStore } from '@store'
+import { useStore } from '@store'
 
 import { Surface } from '../surface'
 import { icons } from './constants'
@@ -14,9 +14,9 @@ interface ModeProps {
 
 export const Mode: FC<ModeProps> = ({ name, index }) => {
   const setMode = useStore((state) => state.setMode)
-  const currentMode = useStore(selectCurrentMode)
+  const currentModeIndex = useStore((state) => state.currentMode)
 
-  const isSelected = currentMode.name === name
+  const isSelected = currentModeIndex === index
   const Icon = icons[name]
 
   return (
