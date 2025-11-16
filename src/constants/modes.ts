@@ -1,7 +1,5 @@
 import type { ModeType } from '@store'
 
-export type ModeName = keyof typeof modes
-
 const DEFAULT_LENGTH = 3
 const DEFAULT_SPEED = 6
 
@@ -39,4 +37,4 @@ export const modes = [
   },
   { name: 'chroma', colors: {}, speed: DEFAULT_SPEED },
   { name: 'rainbow', colors: {}, speed: DEFAULT_SPEED },
-] satisfies ModeType[]
+] as const satisfies ModeType[]

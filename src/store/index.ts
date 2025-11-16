@@ -9,6 +9,8 @@ import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '@constants'
 
+export type ModeName = (typeof modes)[number]['name']
+
 export type ModeType = {
   name: string
   colors: {
@@ -23,7 +25,7 @@ export type Store = {
   modes: ModeType[]
   currentMode: number
   power: boolean
-  setMode: (index: number) => void
+  setMode: (mode: ModeName) => void
   setColors: (colors: ModeType['colors']) => void
   setParams: (param: 'speed' | 'length', value: number) => void
   setPower: (power: boolean) => void
@@ -36,9 +38,9 @@ export const useStore = create<Store>()(
         currentMode: 0,
         modes,
         power: true,
-        setMode: (index) => {
+        setMode: (mode) => {
           set((state) => {
-            state.currentMode = index
+            state.currentMode = state.modes.findIndex((m) => m.name === mode)
           })
         },
         setColors: (colors) => {

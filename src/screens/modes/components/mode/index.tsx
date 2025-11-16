@@ -2,27 +2,26 @@ import { cn, semanticColors } from 'merlo-ui'
 import type { FC } from 'react'
 import { Pressable, Text } from 'react-native'
 
-import { useStore } from '@store'
+import { type ModeName, selectCurrentMode, useStore } from '@store'
 
 import { Surface } from '../surface'
 import { icons } from './constants'
 
 interface ModeProps {
-  name: string
-  index: number
+  name: ModeName
 }
 
-export const Mode: FC<ModeProps> = ({ name, index }) => {
+export const Mode: FC<ModeProps> = ({ name }) => {
   const setMode = useStore((state) => state.setMode)
-  const currentModeIndex = useStore((state) => state.currentMode)
+  const currentMode = useStore(selectCurrentMode)
 
-  const isSelected = currentModeIndex === index
+  const isSelected = currentMode.name === name
   const Icon = icons[name]
 
   return (
     <Surface
       as={Pressable}
-      onPress={() => setMode(index)}
+      onPress={() => setMode(name)}
       className={cn(
         'flex-col items-center justify-center gap-1 px-1.5 py-4 transition-colors duration-200',
         isSelected && 'border-primary bg-primary-50',
