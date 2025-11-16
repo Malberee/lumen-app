@@ -10,7 +10,7 @@ import { GaugeIcon, RulerIcon } from './icons'
 import { Surface } from './surface'
 
 export const Controls = () => {
-  const updateParams = useStore((state) => state.updateParams)
+  const setParams = useStore((state) => state.setParams)
   const currentMode = useStore(selectCurrentMode)
 
   const renderLabel = (Icon: FC<SvgProps>): SliderProps['renderLabel'] => {
@@ -28,25 +28,24 @@ export const Controls = () => {
         <Slider
           size="sm"
           label="Speed"
+          defaultValue={currentMode.speed}
           maxValue={LEDS_COUNT * 2}
           minValue={1}
           getValue={(value) => `${value} FPS`}
           renderLabel={renderLabel(GaugeIcon)}
-          onChangeEnd={(value) =>
-            updateParams({ param: 'speed', value: value as number })
-          }
+          onChangeEnd={(value) => setParams('speed', value as number)}
         />
       ) : null}
       {'length' in currentMode ? (
         <Slider
           size="sm"
           label="Length"
+          defaultValue={currentMode.length}
           maxValue={LEDS_COUNT / 2}
+          minValue={1}
           getValue={(value) => `${value} LEDs`}
           renderLabel={renderLabel(RulerIcon)}
-          onChangeEnd={(value) =>
-            updateParams({ param: 'length', value: value as number })
-          }
+          onChangeEnd={(value) => setParams('length', value as number)}
         />
       ) : null}
 

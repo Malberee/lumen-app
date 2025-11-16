@@ -1,31 +1,42 @@
+import type { ModeType } from '@store'
+
 export type ModeName = keyof typeof modes
 
-export const modes = {
-  solid: {
+const DEFAULT_LENGTH = 3
+const DEFAULT_SPEED = 6
+
+export const modes = [
+  {
+    name: 'solid',
     colors: { primary: '#ffffff' },
   },
-  carousel: {
+  {
+    name: 'carousel',
     colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+    speed: DEFAULT_SPEED,
   },
-  snake: {
+  {
+    name: 'snake',
     colors: { primary: '#ffffff', secondary: '#000000' },
-    length: 3,
-    speed: 250,
+    length: DEFAULT_LENGTH,
+    speed: DEFAULT_SPEED,
   },
-  'double snake': {
+  {
+    name: 'double snake',
     colors: { primary: '#ffffff', secondary: '#000000' },
-    length: 3,
-    speed: 250,
+    length: DEFAULT_LENGTH,
+    speed: DEFAULT_SPEED,
   },
-  fill: {
+  {
+    name: 'fill',
     colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+    speed: DEFAULT_SPEED,
   },
-  'double fill': {
+  {
+    name: 'double fill',
     colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+    speed: DEFAULT_SPEED,
   },
-  chroma: { colors: {}, speed: 250 },
-  rainbow: { colors: {}, speed: 250 },
-}
+  { name: 'chroma', colors: {}, speed: DEFAULT_SPEED },
+  { name: 'rainbow', colors: {}, speed: DEFAULT_SPEED },
+] satisfies ModeType[]

@@ -5,13 +5,14 @@ import { Pressable, Text } from 'react-native'
 import { selectCurrentMode, useStore } from '@store'
 
 import { Surface } from '../surface'
-import { icons, type ModeName } from './constants'
+import { icons } from './constants'
 
 interface ModeProps {
-  name: ModeName
+  name: string
+  index: number
 }
 
-export const Mode: FC<ModeProps> = ({ name }) => {
+export const Mode: FC<ModeProps> = ({ name, index }) => {
   const setMode = useStore((state) => state.setMode)
   const currentMode = useStore(selectCurrentMode)
 
@@ -21,7 +22,7 @@ export const Mode: FC<ModeProps> = ({ name }) => {
   return (
     <Surface
       as={Pressable}
-      onPress={() => setMode(name)}
+      onPress={() => setMode(index)}
       className={cn(
         'flex-col items-center justify-center gap-1 px-1.5 py-4 transition-colors duration-200',
         isSelected && 'border-primary bg-primary-50',
