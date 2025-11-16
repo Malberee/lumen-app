@@ -1,1 +1,1 @@
-export * from './obj-to-string'
+export * from './serialize'

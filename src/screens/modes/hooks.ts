@@ -1,92 +1,40 @@
 import { useNetInfo } from '@react-native-community/netinfo'
 import { useEffect } from 'react'
+import { shallow } from 'zustand/shallow'
 
 import { UDP } from '@services'
-import { useStore } from '@store'
-import { objToString } from '@utils'
+import { type ModeType, selectCurrentMode, useStore } from '@store'
 
-import { serializeMode } from './utils'
-
-let skipNext = false
+import { serializeMode } from './helpers'
 
 export const useUdpSync = () => {
   const { isConnected } = useNetInfo()
+  const currentMode = useStore(selectCurrentMode)
 
-  const sendCurrentMode = async () => {
-    const currentMode = useStore.getState().currentMode
-    await UDP.sendMessage(`MODE ${serializeMode(currentMode)}`)
+  const sendMode = async (mode: ModeType) => {
+    await UDP.sendMessage(`MODE ${serializeMode(mode)}`)
   }
 
   useEffect(() => {
     const setup = async () => {
       await UDP.init()
-      await sendCurrentMode()
+      await sendMode(currentMode)
     }
 
     if (isConnected) setup()
 
-    const unsubCurrentMode = useStore.subscribe(
-      ({ currentMode }) => currentMode.name,
-      async () => {
+    const unsub = useStore.subscribe(
+      (state) => state.modes[state.currentMode],
+      async (mode) => {
         if (!UDP.isInitialized()) return
 
-        skipNext = true
-
-        await sendCurrentMode()
-
-        setTimeout(() => {
-          skipNext = false
-        }, 0)
+        await sendMode(mode)
       },
-    )
-
-    const unsubColors = useStore.subscribe(
-      ({ currentMode }) => currentMode.colors,
-      async (colors) => {
-        if (skipNext || !UDP.isInitialized()) return
-
-        const data = objToString(colors)
-          .replace('primary', 'pri')
-          .replace('secondary', 'sec')
-
-        await UDP.sendMessage(`MODE ${data}`)
-      },
-    )
-
-    const unsubSpeed = useStore.subscribe(
-      ({ currentMode }) => currentMode.speed,
-      async (speed) => {
-        if (skipNext || !UDP.isInitialized()) return
-
-        await UDP.sendMessage(`MODE spd=${speed}`)
-      },
-    )
-
-    const unsubLength = useStore.subscribe(
-      ({ currentMode }) => currentMode.length,
-      async (length) => {
-        if (skipNext || !UDP.isInitialized()) return
-
-        await UDP.sendMessage(`MODE lgt=${length}`)
-      },
-    )
-
-    const unsubPower = useStore.subscribe(
-      (state) => state.power,
-      async (power) => {
-        if (skipNext || !UDP.isInitialized()) return
-
-        await UDP.sendMessage(power ? 'P_ON' : 'P_OFF')
-      },
+      { equalityFn: shallow },
     )
 
     return () => {
-      unsubCurrentMode()
-      unsubColors()
-      unsubSpeed()
-      unsubLength()
-      unsubPower()
-
+      unsub()
       if (UDP.isInitialized()) UDP.close()
     }
   }, [isConnected])

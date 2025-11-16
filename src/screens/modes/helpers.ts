@@ -1,10 +1,10 @@
 import type { ModeType } from '@store'
-import { objToString } from '@utils'
+import { serialize } from '@utils'
 
-import { flatObject } from './flat-object'
+import { flatObject } from './utils'
 
 export const serializeMode = (mode: ModeType) =>
-  objToString(
+  serialize(
     flatObject({
       ...mode,
       name: mode.name.replace(' ', '-'),
@@ -12,3 +12,5 @@ export const serializeMode = (mode: ModeType) =>
   )
     .replace('primary', 'pri')
     .replace('secondary', 'sec')
+    .replace('speed', 'spd')
+    .replace('length', 'lgt')
