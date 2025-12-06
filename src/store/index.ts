@@ -13,13 +13,12 @@ export type ModeName = (typeof modes)[number]['name']
 
 export type ModeType = {
   name: string
-  colors: {
-    primary?: string
-    secondary?: string
-  }
+  colors: string[]
   speed?: number
   length?: number
 }
+
+export type ColorName = keyof ModeType['colors']
 
 export type Store = {
   modes: ModeType[]
