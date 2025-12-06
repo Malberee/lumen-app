@@ -1,31 +1,54 @@
-import { chunk } from 'lodash'
+import chunk from 'lodash.chunk'
 import React from 'react'
 import { View } from 'react-native'
 
-import { selectAllModes, useStore } from '@store'
-import { modesToArray } from '@utils'
+import { selectAllModes, selectCurrentMode, useStore } from '@store'
 
-import { Controls, Grid, HorizontalPager, Mode } from './components'
+import {
+  ColorPicker,
+  Controls,
+  Grid,
+  HorizontalPager,
+  Mode,
+} from './components'
 import { useUdpSync } from './hooks'
 
 export const Modes = () => {
   useUdpSync()
-
   const modes = useStore(selectAllModes)
+  const { colors } = useStore(selectCurrentMode)
+  const setColors = useStore((state) => state.setColors)
 
   return (
-    <View className="flex-1 flex-col gap-8">
-      {/* <Header /> */}
-      {/* <LedRing /> */}
-      {/* <Cards /> */}
+    <ColorPicker.Provider colors={colors} onApply={setColors}>
+      <ColorPicker.Preview />
 
-      <HorizontalPager
-        data={chunk(modesToArray(modes), 6)}
-        renderItem={({ item }) => (
-          <Grid data={item} renderItem={(item) => <Mode name={item.name} />} />
-        )}
-      />
-      <Controls />
-    </View>
+      <View className="mb-8 mt-auto flex-col gap-8">
+        <HorizontalPager
+          data={chunk(modes, 6)}
+          renderItem={({ item }) => (
+            <Grid
+              data={item}
+              renderItem={(item) => <Mode name={item.name} />}
+            />
+          )}
+        />
+
+        <Controls />
+
+        {colors.length ? <ColorPicker.Trigger /> : null}
+      </View>
+
+      <ColorPicker.Consumer>
+        {({ isOpen }) =>
+          isOpen ? (
+            <View className="absolute bottom-12 z-20 flex-col gap-4">
+              <ColorPicker.Controls />
+              {colors.length > 1 ? <ColorPicker.Tabs /> : null}
+            </View>
+          ) : null
+        }
+      </ColorPicker.Consumer>
+    </ColorPicker.Provider>
   )
 }
