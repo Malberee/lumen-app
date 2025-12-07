@@ -9,7 +9,7 @@ import {
 
 import { BrushIcon, ConstrastIcon, PaletteIcon, SunIcon } from '../../icons'
 import { Surface } from '../../surface'
-import { ANIMATION_DURATION } from '../constants'
+import { ANIMATION_DURATION, DROP_SHADOW } from '../constants'
 import { useColorPicker } from '../hooks'
 import { ColorSlider } from './color-slider'
 
@@ -20,6 +20,7 @@ export const Controls = () => {
     <Surface
       as={Animated.View}
       className="flex-col gap-2 rounded-3xl"
+      style={{ filter: DROP_SHADOW }}
       entering={FadeIn.delay(ANIMATION_DURATION)}
       exiting={FadeOut}
     >

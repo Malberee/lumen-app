@@ -4,7 +4,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { selectCurrentMode, useStore } from '@store'
 
 import { Surface } from '../surface'
-import { ANIMATION_DURATION } from './constants'
+import { ANIMATION_DURATION, DROP_SHADOW } from './constants'
 import { useColorPicker } from './hooks'
 
 export const Tabs = () => {
@@ -17,6 +17,7 @@ export const Tabs = () => {
     <Surface
       as={Animated.View}
       className="flex-row rounded-full"
+      style={{ filter: DROP_SHADOW }}
       entering={FadeIn.delay(ANIMATION_DURATION)}
       exiting={FadeOut}
     >
@@ -34,7 +35,7 @@ export const Tabs = () => {
           className="h-16 flex-1"
           onPress={() => selectColor(index)}
         >
-          <Text className="my-auto text-center capitalize text-foreground">
+          <Text className="my-auto text-center text-lg capitalize text-foreground">
             {colorNames[index]}
           </Text>
         </Pressable>
