@@ -83,7 +83,7 @@ export const Preview = () => {
   return (
     <Animated.View
       onTouchStart={close}
-      className="aboslute -left-4 z-10 w-screen"
+      className="absolute -left-4 z-10 w-screen"
       style={animatedStyle}
     >
       <Svg width="100%" height="232" viewBox="0 0 393 232" fill="none">

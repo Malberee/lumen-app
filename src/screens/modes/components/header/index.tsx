@@ -1,19 +1,19 @@
 import { router } from 'expo-router'
-import { Button, Switch } from 'merlo-ui'
+import { Button } from 'merlo-ui'
 import { useState } from 'react'
 import { View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { UDP } from '@services'
 import { useStore } from '@store'
 
+import { LogoutIcon } from '../icons'
 import { Dialog } from './dialog'
-import { LogoutIcon } from './logout-icon'
+import { Toggle } from './toggle'
 
 export const Header = () => {
-  const { top } = useSafeAreaInsets()
   const [showDialog, setShowDialog] = useState(false)
   const setPower = useStore((state) => state.setPower)
+  const power = useStore((state) => state.power)
 
   const handleSubmit = async () => {
     await UDP.sendMessage('DSCNT')
@@ -23,24 +23,22 @@ export const Header = () => {
   }
 
   return (
-    <View
-      className="absolute z-10 w-full flex-row justify-between p-4"
-      style={{ top }}
-    >
+    <View className="absolute z-10 w-full flex-row justify-between pt-4">
       <Button
-        onPress={() => setShowDialog(true)}
-        color="danger"
+        color="default"
         variant="flat"
-        startContent={<LogoutIcon className="text-danger" />}
+        size="lg"
         isIconOnly
+        startContent={
+          <LogoutIcon
+            className="text-default-foreground"
+            width={20}
+            height={20}
+          />
+        }
+        onPress={() => setShowDialog(true)}
       />
-
-      <Switch
-        size="md"
-        onValueChange={setPower}
-        defaultSelected
-        aria-label="Toggle power"
-      />
+      <Toggle value={power} onValueChange={setPower} />
 
       {showDialog ? (
         <Dialog onClose={() => setShowDialog(false)} onSubmit={handleSubmit} />

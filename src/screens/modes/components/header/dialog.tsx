@@ -24,7 +24,7 @@ export const Dialog: FC<DialogProps> = ({ onClose, onSubmit }) => {
       >
         Cancel
       </Button>
-      <Button size="lg" color="danger" variant="flat" onPress={onSubmit}>
+      <Button size="lg" color="danger" onPress={onSubmit}>
         Disconnect
       </Button>
     </Modal>
