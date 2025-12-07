@@ -1,16 +1,19 @@
 import type { ModeType } from '@store'
 import { serialize } from '@utils'
 
-import { flatObject } from './utils'
+export const serializeMode = (mode: ModeType) => {
+  const { colors, ...rest } = mode
 
-export const serializeMode = (mode: ModeType) =>
-  serialize(
-    flatObject({
-      ...mode,
-      name: mode.name.replace(' ', '-'),
-    }),
+  const colorNames = ['pri', 'src']
+  const colorsEntries = Object.fromEntries(
+    colors.map((color, index) => [`${colorNames[index]}`, color]),
   )
-    .replace('primary', 'pri')
-    .replace('secondary', 'sec')
+
+  return serialize({
+    ...rest,
+    ...colorsEntries,
+    name: mode.name.replace(' ', '-'),
+  })
     .replace('speed', 'spd')
     .replace('length', 'lgt')
+}
