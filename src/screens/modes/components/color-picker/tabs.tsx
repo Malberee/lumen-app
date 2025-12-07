@@ -1,9 +1,9 @@
 import { Pressable, Text } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
+import { Surface } from '@components'
 import { selectCurrentMode, useStore } from '@store'
 
-import { Surface } from '../surface'
 import { ANIMATION_DURATION, DROP_SHADOW } from './constants'
 import { useColorPicker } from './hooks'
 

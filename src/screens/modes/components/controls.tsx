@@ -3,11 +3,11 @@ import type { FC } from 'react'
 import { Text, View } from 'react-native'
 import type { SvgProps } from 'react-native-svg'
 
+import { Surface } from '@components'
 import { LEDS_COUNT } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
 import { GaugeIcon, RulerIcon } from './icons'
-import { Surface } from './surface'
 
 export const Controls = () => {
   const setParams = useStore((state) => state.setParams)

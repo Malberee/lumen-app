@@ -7,8 +7,9 @@ import {
   SaturationSlider,
 } from 'reanimated-color-picker'
 
+import { Surface } from '@components'
+
 import { BrushIcon, ConstrastIcon, PaletteIcon, SunIcon } from '../../icons'
-import { Surface } from '../../surface'
 import { ANIMATION_DURATION, DROP_SHADOW } from '../constants'
 import { useColorPicker } from '../hooks'
 import { ColorSlider } from './color-slider'

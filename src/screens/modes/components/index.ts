@@ -1,5 +1,4 @@
 export * from './header'
-export * from './surface'
 export * from './grid'
 export * from './horizontal-pager'
 export * from './mode'

@@ -8,6 +8,8 @@ import Animated, {
   FadeOutDown,
 } from 'react-native-reanimated'
 
+import { Surface } from './surface'
+
 interface ModalProps extends PropsWithChildren {
   transparent?: boolean
   onClose?: () => void
@@ -47,8 +49,9 @@ export const Modal: FC<ModalProps> = ({ children, transparent, onClose }) => {
           entering={FadeIn.duration(ANIMATION_DURATION)}
           exiting={FadeOutDown.duration(ANIMATION_DURATION)}
         />
-        <Animated.View
-          className="rounded-3xl border border-default-100 bg-default-50 p-4"
+        <Surface
+          as={Animated.View}
+          className="rounded-3xl"
           entering={FadeInDown.duration(ANIMATION_DURATION)}
           exiting={FadeOutDown.duration(ANIMATION_DURATION)}
         >
@@ -61,7 +64,7 @@ export const Modal: FC<ModalProps> = ({ children, transparent, onClose }) => {
             onPress={onClose}
           />
           {children}
-        </Animated.View>
+        </Surface>
       </View>
     </Portal>
   )

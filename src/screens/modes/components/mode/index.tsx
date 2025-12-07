@@ -2,9 +2,9 @@ import { cn, semanticColors } from 'merlo-ui'
 import type { FC } from 'react'
 import { Pressable, Text } from 'react-native'
 
+import { Surface } from '@components'
 import { type ModeName, selectCurrentMode, useStore } from '@store'
 
-import { Surface } from '../surface'
 import { icons } from './constants'
 
 interface ModeProps {
