@@ -23,7 +23,7 @@ export const useUdpSync = () => {
 
     if (isConnected) setup()
 
-    const unsub = useStore.subscribe(
+    const unsubCurrentMode = useStore.subscribe(
       (state) => state.modes[state.currentMode],
       async (mode) => {
         if (!UDP.isInitialized()) return
@@ -33,8 +33,18 @@ export const useUdpSync = () => {
       { equalityFn: shallow },
     )
 
+    const unsubPower = useStore.subscribe(
+      (state) => state.power,
+      async (power) => {
+        if (!UDP.isInitialized()) return
+
+        await UDP.sendMessage(power ? 'P_ON' : 'P_OFF')
+      },
+    )
+
     return () => {
-      unsub()
+      unsubCurrentMode()
+      unsubPower()
       if (UDP.isInitialized()) UDP.close()
     }
   }, [isConnected])
