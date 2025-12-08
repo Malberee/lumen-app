@@ -1,4 +1,4 @@
-import { Slider, type SliderProps } from 'merlo-ui'
+import { type SliderProps } from 'merlo-ui'
 import type { FC } from 'react'
 import { Text, View } from 'react-native'
 import type { SvgProps } from 'react-native-svg'
@@ -7,7 +7,8 @@ import { Surface } from '@components'
 import { LEDS_COUNT } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
-import { GaugeIcon, RulerIcon } from './icons'
+import { GaugeIcon, RulerIcon } from '../icons'
+import { ControlledSlider } from './controlled-slider'
 
 export const Controls = () => {
   const setParams = useStore((state) => state.setParams)
@@ -25,7 +26,7 @@ export const Controls = () => {
   return (
     <Surface className="gap-4">
       {'speed' in currentMode ? (
-        <Slider
+        <ControlledSlider
           size="sm"
           label="Speed"
           defaultValue={currentMode.speed}
@@ -37,7 +38,7 @@ export const Controls = () => {
         />
       ) : null}
       {'length' in currentMode ? (
-        <Slider
+        <ControlledSlider
           size="sm"
           label="Length"
           defaultValue={currentMode.length}
