@@ -1,9 +1,8 @@
-import { EyeFilledIcon, Input, type InputProps } from 'merlo-ui'
+import { Input, type InputProps } from 'merlo-ui'
 import { type FC, useState } from 'react'
 import { Pressable } from 'react-native'
 
-import { ClosedEyeIcon } from './closed-eye-icon'
-import { KeyIcon } from './key-icon'
+import { EyeClosedIcon, EyeIcon, KeyIcon } from './icons'
 
 export const PasswordInput: FC<InputProps> = ({ isInvalid, ...props }) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -22,13 +21,9 @@ export const PasswordInput: FC<InputProps> = ({ isInvalid, ...props }) => {
           onPress={() => setShowPassword((prevState) => !prevState)}
         >
           {showPassword ? (
-            <EyeFilledIcon
-              className="text-foreground-400"
-              width={20}
-              height={20}
-            />
+            <EyeIcon className="text-foreground-400" width={20} height={20} />
           ) : (
-            <ClosedEyeIcon
+            <EyeClosedIcon
               className="text-foreground-400"
               width={20}
               height={20}
