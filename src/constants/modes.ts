@@ -1,31 +1,40 @@
-import type { ModesList } from '@store'
+import type { ModeType } from '@store'
 
-export const modes: ModesList = {
-  solid: {
-    colors: { primary: '#ffffff' },
+const DEFAULT_LENGTH = 3
+const DEFAULT_SPEED = 6
+
+export const modes: ModeType[] = [
+  {
+    name: 'solid',
+    colors: ['#ffffff'],
   },
-  carousel: {
-    colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+  {
+    name: 'carousel',
+    colors: ['#ffffff', '#000000'],
+    speed: DEFAULT_SPEED,
   },
-  snake: {
-    colors: { primary: '#ffffff', secondary: '#000000' },
-    length: 3,
-    speed: 250,
+  {
+    name: 'snake',
+    colors: ['#ffffff', '#000000'],
+    length: DEFAULT_LENGTH,
+    speed: DEFAULT_SPEED,
   },
-  'double snake': {
-    colors: { primary: '#ffffff', secondary: '#000000' },
-    length: 3,
-    speed: 250,
+  {
+    name: 'double snake',
+    colors: ['#ffffff', '#000000'],
+    length: DEFAULT_LENGTH,
+    speed: DEFAULT_SPEED,
   },
-  fill: {
-    colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+  {
+    name: 'fill',
+    colors: ['#ffffff', '#000000'],
+    speed: DEFAULT_SPEED,
   },
-  'double fill': {
-    colors: { primary: '#ffffff', secondary: '#000000' },
-    speed: 250,
+  {
+    name: 'double fill',
+    colors: ['#ffffff', '#000000'],
+    speed: DEFAULT_SPEED,
   },
-  chroma: { colors: {}, speed: 250 },
-  rainbow: { colors: {}, speed: 250 },
-}
+  { name: 'chroma', colors: [], speed: DEFAULT_SPEED },
+  { name: 'rainbow', colors: [], speed: DEFAULT_SPEED },
+]

@@ -1,4 +1,5 @@
 const { merloui } = require('merlo-ui/plugin')
+const { colors } = require('./src/constants')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
   ],
   presets: [require('nativewind/preset')],
   theme: {
-    extend: {},
+    extend: { colors },
   },
   darkMode: 'class',
   plugins: [merloui()],

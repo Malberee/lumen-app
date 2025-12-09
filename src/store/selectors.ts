@@ -1,5 +1,6 @@
-import type { State } from './index'
+import type { Store } from './index'
 
-export const selectAllModes = (state: State) => state.modes
-export const selectCurrentMode = (state: State) => state.currentMode
-export const selectPower = (state: State) => state.power
+export const selectAllModes = (state: Store) => state.modes
+export const selectCurrentMode = (state: Store) =>
+  state.modes[state.currentMode]
+export const selectPower = (state: Store) => state.power

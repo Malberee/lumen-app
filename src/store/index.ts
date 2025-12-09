@@ -9,50 +9,47 @@ import { immer } from 'zustand/middleware/immer'
 
 import { modes } from '@constants'
 
-export type ColorType = 'primary' | 'secondary'
+export type ModeName = (typeof modes)[number]['name']
+
 export type ModeType = {
   name: string
+  colors: string[]
   speed?: number
   length?: number
-  colors: Record<string, string>
 }
-export type ModesList = Record<string, Omit<ModeType, 'name'>>
 
-export interface State {
-  currentMode: ModeType
-  modes: ModesList
+export type ColorName = keyof ModeType['colors']
+
+export type Store = {
+  modes: ModeType[]
+  currentMode: number
   power: boolean
-  setMode: (mode: string) => void
-  updateColors: (colors: Record<string, string>) => void
-  updateParams: (params: { param: 'speed' | 'length'; value: number }) => void
+  setMode: (mode: ModeName) => void
+  setColors: (colors: ModeType['colors']) => void
+  setParams: (param: 'speed' | 'length', value: number) => void
   setPower: (power: boolean) => void
 }
 
-export const useStore = create<State>()(
+export const useStore = create<Store>()(
   persist(
     subscribeWithSelector(
       immer((set) => ({
-        currentMode: {
-          name: 'solid',
-          ...modes.solid,
-        },
+        currentMode: 0,
         modes,
         power: true,
         setMode: (mode) => {
           set((state) => {
-            state.currentMode = { name: mode, ...state.modes[mode] }
+            state.currentMode = state.modes.findIndex((m) => m.name === mode)
           })
         },
-        updateColors: (colors) => {
+        setColors: (colors) => {
           set((state) => {
-            state.modes[state.currentMode.name].colors = colors
-            state.currentMode.colors = colors
+            state.modes[state.currentMode].colors = colors
           })
         },
-        updateParams: ({ param, value }) => {
+        setParams: (param, value) => {
           set((state) => {
-            state.modes[state.currentMode.name][param] = value
-            state.currentMode[param] = value
+            state.modes[state.currentMode][param] = value
           })
         },
         setPower: (power) => {
@@ -63,7 +60,7 @@ export const useStore = create<State>()(
       })),
     ),
     {
-      name: 'modes',
+      name: 'lumen-store',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         modes: state.modes,
