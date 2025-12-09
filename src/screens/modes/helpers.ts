@@ -4,7 +4,7 @@ import { serialize } from '@utils'
 export const serializeMode = (mode: ModeType) => {
   const { colors, ...rest } = mode
 
-  const colorNames = ['pri', 'src']
+  const colorNames = ['pri', 'sec']
   const colorsEntries = Object.fromEntries(
     colors.map((color, index) => [`${colorNames[index]}`, color]),
   )

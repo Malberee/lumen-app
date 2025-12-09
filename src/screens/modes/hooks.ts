@@ -5,6 +5,7 @@ import { shallow } from 'zustand/shallow'
 import { UDP } from '@services'
 import { type ModeType, selectCurrentMode, useStore } from '@store'
 
+import { SPEED_VALUES } from './constants'
 import { serializeMode } from './helpers'
 
 export const useUdpSync = () => {
@@ -12,7 +13,13 @@ export const useUdpSync = () => {
   const currentMode = useStore(selectCurrentMode)
 
   const sendMode = async (mode: ModeType) => {
-    await UDP.sendMessage(`MODE ${serializeMode(mode)}`)
+    const modeObj = { ...mode }
+
+    if (typeof modeObj.speed === 'number') {
+      modeObj.speed = SPEED_VALUES[modeObj.speed - 1]
+    }
+
+    await UDP.sendMessage(`MODE ${serializeMode(modeObj)}`)
   }
 
   useEffect(() => {

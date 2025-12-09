@@ -7,6 +7,7 @@ import { Surface } from '@components'
 import { LEDS_COUNT } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
+import { SPEED_VALUES } from '../../constants'
 import { GaugeIcon, RulerIcon } from '../icons'
 import { ControlledSlider } from './controlled-slider'
 
@@ -30,9 +31,8 @@ export const Controls = () => {
           size="sm"
           label="Speed"
           defaultValue={currentMode.speed}
-          maxValue={LEDS_COUNT * 2}
+          maxValue={SPEED_VALUES.length}
           minValue={1}
-          getValue={(value) => `${value} FPS`}
           renderLabel={renderLabel(GaugeIcon)}
           onChangeEnd={(value) => setParams('speed', value as number)}
         />
