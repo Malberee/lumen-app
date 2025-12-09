@@ -2,7 +2,7 @@ import { Input, type InputProps } from 'merlo-ui'
 import { type FC, useState } from 'react'
 import { Pressable } from 'react-native'
 
-import { EyeClosedIcon, EyeIcon, KeyIcon } from './icons'
+import { EyeClosedIcon, EyeIcon, KeyIcon } from '../icons'
 
 export const PasswordInput: FC<InputProps> = ({ isInvalid, ...props }) => {
   const [showPassword, setShowPassword] = useState(false)
