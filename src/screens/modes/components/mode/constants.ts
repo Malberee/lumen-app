@@ -14,6 +14,7 @@ import {
 
 export const icons: Record<ModeName, FC<IconProps>> = {
   solid: LightbulbIcon,
+  fade: LightbulbIcon,
   carousel: FilmIcon,
   snake: SnakeIcon,
   'double snake': SnakeIcon,

@@ -9,6 +9,11 @@ export const modes: ModeType[] = [
     colors: ['#ffffff'],
   },
   {
+    name: 'fade',
+    colors: ['#ffffff'],
+    speed: DEFAULT_SPEED,
+  },
+  {
     name: 'carousel',
     colors: ['#ffffff', '#000000'],
     speed: DEFAULT_SPEED,
