@@ -1,3 +1,3 @@
-import { Connection } from '@screens'
+import { PermissionGate } from '@screens'
 
-export default Connection
+export default PermissionGate
