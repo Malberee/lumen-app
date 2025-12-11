@@ -17,7 +17,6 @@ export const Header = () => {
 
   const handleSubmit = async () => {
     await UDP.sendMessage('DSCNT')
-    await UDP.close()
     UDP.resetIP()
     router.replace('/')
   }

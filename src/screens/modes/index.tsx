@@ -23,7 +23,7 @@ export const Modes = () => {
   return (
     <ColorPicker.Provider colors={colors} onApply={setColors}>
       <ColorPicker.Preview />
-      <Header></Header>
+      <Header />
 
       <View className="mb-8 mt-auto flex-col gap-8">
         <HorizontalPager
