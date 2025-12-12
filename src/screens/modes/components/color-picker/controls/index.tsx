@@ -21,7 +21,13 @@ export const Controls = () => {
     <Surface
       as={Animated.View}
       className="flex-col gap-2 rounded-3xl"
-      style={{ filter: DROP_SHADOW }}
+      style={{
+        filter: [
+          {
+            dropShadow: DROP_SHADOW,
+          },
+        ],
+      }}
       entering={FadeIn.delay(ANIMATION_DURATION)}
       exiting={FadeOut}
     >

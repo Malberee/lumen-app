@@ -17,7 +17,7 @@ export const Tabs = () => {
     <Surface
       as={Animated.View}
       className="flex-row rounded-full"
-      style={{ filter: DROP_SHADOW }}
+      style={{ filter: [{ dropShadow: DROP_SHADOW }] }}
       entering={FadeIn.delay(ANIMATION_DURATION)}
       exiting={FadeOut}
     >
