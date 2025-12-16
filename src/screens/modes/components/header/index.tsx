@@ -1,6 +1,6 @@
 import { router } from 'expo-router'
 import { Button } from 'merlo-ui'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { View } from 'react-native'
 
 import { UDP } from '@services'
@@ -10,7 +10,7 @@ import { LogoutIcon } from '../icons'
 import { Dialog } from './dialog'
 import { Toggle } from './toggle'
 
-export const Header = () => {
+export const Header = memo(() => {
   const [showDialog, setShowDialog] = useState(false)
   const setPower = useStore((state) => state.setPower)
   const power = useStore((state) => state.power)
@@ -44,4 +44,4 @@ export const Header = () => {
       ) : null}
     </View>
   )
-}
+})
