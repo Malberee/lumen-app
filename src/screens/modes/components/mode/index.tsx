@@ -1,9 +1,9 @@
 import { cn, semanticColors } from 'merlo-ui'
-import type { FC } from 'react'
+import { memo } from 'react'
 import { Pressable, Text } from 'react-native'
 
 import { Surface } from '@components'
-import { type ModeName, selectCurrentMode, useStore } from '@store'
+import { type ModeName, useStore } from '@store'
 
 import { icons } from './constants'
 
@@ -11,11 +11,12 @@ interface ModeProps {
   name: ModeName
 }
 
-export const Mode: FC<ModeProps> = ({ name }) => {
+export const Mode = memo<ModeProps>(({ name }) => {
   const setMode = useStore((state) => state.setMode)
-  const currentMode = useStore(selectCurrentMode)
+  const isSelected = useStore(
+    (state) => state.modes[state.currentMode].name === name,
+  )
 
-  const isSelected = currentMode.name === name
   const Icon = icons[name]
 
   return (
@@ -45,4 +46,4 @@ export const Mode: FC<ModeProps> = ({ name }) => {
       </Text>
     </Surface>
   )
-}
+})
