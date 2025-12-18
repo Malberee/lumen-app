@@ -15,6 +15,7 @@ module.exports = () => {
       userInterfaceStyle: 'light',
       newArchEnabled: true,
       android: {
+        edgeToEdgeEnabled: true,
         adaptiveIcon: {
           foregroundImage: './assets/adaptive-icon.png',
           backgroundColor: '#09090B',
