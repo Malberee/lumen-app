@@ -37,12 +37,13 @@ const RootLayout = () => {
         </PortalProvider>
       </View>
 
-      {/* DEV */}
-      <View className="absolute left-1/2 top-12 -translate-x-1/2 flex-row gap-4">
-        <Button onPress={() => router.replace('/')}>Connect</Button>
-        <Button onPress={() => router.replace('/ap')}>Ap</Button>
-        <Button onPress={() => router.replace('/modes')}>Modes</Button>
-      </View>
+      {__DEV__ ? (
+        <View className="absolute left-1/2 top-12 -translate-x-1/2 flex-row gap-4">
+          <Button onPress={() => router.replace('/')}>Connect</Button>
+          <Button onPress={() => router.replace('/ap')}>Ap</Button>
+          <Button onPress={() => router.replace('/modes')}>Modes</Button>
+        </View>
+      ) : null}
     </GestureHandlerRootView>
   )
 }
