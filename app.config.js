@@ -1,5 +1,5 @@
 module.exports = () => {
-  const abiFilters =
+  const buildArchs =
     process.env.BUILD_PROFILE === 'development'
       ? ['arm64-v8a', 'x86_64']
       : ['arm64-v8a']
@@ -48,10 +48,10 @@ module.exports = () => {
             android: {
               enableBundleCompression: true,
               enableMinifyInReleaseBuilds: true,
+              buildArchs,
             },
           },
         ],
-        ['./withAbiFIlters', { abiFilters }],
       ],
       extra: {
         eas: {
