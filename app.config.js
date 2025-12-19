@@ -51,7 +51,7 @@ module.exports = () => {
             },
           },
         ],
-        ['./withAbiFIlters', { abiFilters }],
+        ['./withAbiFilters', { abiFilters }],
       ],
       extra: {
         eas: {
