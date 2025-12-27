@@ -1,6 +1,5 @@
 import { PortalProvider } from '@gorhom/portal'
 import { router, Stack } from 'expo-router'
-import { StatusBar } from 'expo-status-bar'
 import { Button } from 'merlo-ui'
 import { rem } from 'nativewind'
 import { View } from 'react-native'
@@ -24,11 +23,11 @@ const RootLayout = () => {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView>
-        <StatusBar style="light" translucent />
         <View className="flex-1 dark">
           <PortalProvider>
             <Stack
               screenOptions={{
+                statusBarStyle: 'light',
                 headerShown: false,
                 contentStyle: {
                   backgroundColor: colors.background,
