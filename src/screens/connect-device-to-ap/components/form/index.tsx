@@ -10,9 +10,10 @@ import { sendCredentials } from './services'
 
 interface FormProps {
   onSuccess: (espIP: string, network: string) => void
+  onLoading: (value: boolean) => void
 }
 
-export const Form: FC<FormProps> = ({ onSuccess }) => {
+export const Form: FC<FormProps> = ({ onSuccess, onLoading }) => {
   const { state, dispatch, resetErrors } = useForm()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -30,6 +31,7 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
     }
 
     setIsLoading(true)
+    onLoading(true)
 
     try {
       const espIP = await sendCredentials(
@@ -42,6 +44,7 @@ export const Form: FC<FormProps> = ({ onSuccess }) => {
       if (error instanceof Error) handleConnectionError(error.message, dispatch)
     } finally {
       setIsLoading(false)
+      onLoading(false)
     }
   }
 

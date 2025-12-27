@@ -12,6 +12,7 @@ export const ConnectDeviceToAP = () => {
 
   const [isDeviceConnected, setIsDeviceConnected] = useState(false)
   const [network, setNetwork] = useState('')
+  const [isConnecting, setIsConnecting] = useState(false)
 
   const handleSuccess = (espIP: string, network: string) => {
     UDP.setIP(espIP)
@@ -31,8 +32,13 @@ export const ConnectDeviceToAP = () => {
         <ConnectingLoader network={network} />
       ) : (
         <>
-          <Form onSuccess={handleSuccess} />
-          <Link href="/modes" replace className="mb-4 text-primary underline">
+          <Form onSuccess={handleSuccess} onLoading={setIsConnecting} />
+          <Link
+            href="/modes"
+            replace
+            disabled={isConnecting}
+            className={`mb-4 text-center text-primary underline transition-opacity ${isConnecting && 'opacity-50'}`}
+          >
             I want to stay connected to the device's access point.
           </Link>
         </>
