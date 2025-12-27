@@ -24,7 +24,7 @@ module.exports = () => {
         package: 'com.malberee.lumen',
       },
       androidStatusBar: { translucent: true },
-      androidNavigationBar: { backgroundColor: 'transparent' },
+      androidNavigationBar: { backgroundColor: '#00000000' },
       web: {
         bundler: 'metro',
         favicon: './assets/favicon.png',
