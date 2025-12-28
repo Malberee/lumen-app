@@ -12,7 +12,7 @@ module.exports = () => {
       version: '1.0.0',
       orientation: 'portrait',
       icon: './assets/adaptive-icon.png',
-      userInterfaceStyle: 'light',
+      userInterfaceStyle: 'dark',
       newArchEnabled: true,
       android: {
         edgeToEdgeEnabled: true,
@@ -23,8 +23,6 @@ module.exports = () => {
         permissions: ['android.permission.ACCESS_FINE_LOCATION'],
         package: 'com.malberee.lumen',
       },
-      androidStatusBar: { translucent: true },
-      androidNavigationBar: { backgroundColor: '#00000000' },
       web: {
         bundler: 'metro',
         favicon: './assets/favicon.png',
@@ -51,6 +49,15 @@ module.exports = () => {
               enableBundleCompression: true,
               enableMinifyInReleaseBuilds: true,
               buildArchs,
+            },
+          },
+        ],
+        [
+          'react-native-edge-to-edge',
+          {
+            android: {
+              parentTheme: 'Default',
+              enforceNavigationBarContrast: false,
             },
           },
         ],
