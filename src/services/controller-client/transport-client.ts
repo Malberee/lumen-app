@@ -1,4 +1,8 @@
-import { AppState, type AppStateStatus } from 'react-native'
+import {
+  AppState,
+  type NativeEventSubscription,
+  type AppStateStatus,
+} from 'react-native'
 
 import { messages } from './constants'
 
@@ -12,13 +16,19 @@ export class TransportClient {
   private serverIp: string
   private socket: WebSocket | null = null
   private pendingResponse?: PendingResponse
+  private readonly appStateSubscription: NativeEventSubscription
 
   constructor(ip: string) {
     this.serverIp = ip
-    AppState.addEventListener('change', this.handleAppStateChange)
+    this.appStateSubscription = AppState.addEventListener(
+      'change',
+      this.handleAppStateChange,
+    )
   }
 
-  private async handleAppStateChange(nextAppState: AppStateStatus) {
+  private readonly handleAppStateChange = async (
+    nextAppState: AppStateStatus,
+  ) => {
     if (nextAppState === 'active') {
       await this.open()
     } else {
@@ -46,10 +56,7 @@ export class TransportClient {
       }
 
       socket.onclose = () => {
-        if (this.socket === socket) {
-          console.info(messages.info.disconnected, { ip: serverIp })
-          this.socket = null
-        }
+        console.info(messages.info.disconnected, { ip: serverIp })
       }
 
       socket.onerror = () => {
@@ -82,6 +89,7 @@ export class TransportClient {
       const socket = this.socket
       this.socket = null
       socket.close(code, reason)
+      this.appStateSubscription.remove()
     }
   }
 

@@ -14,6 +14,7 @@ export class ControllerClient {
   }
   disconnect() {
     this.transport.send(commandHeaders.disconnect)
+    this.transport.changeIP(DEFAULT_CONTROLLER_IP)
     this.transport.close()
   }
   async ping() {

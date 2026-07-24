@@ -12,10 +12,10 @@ import {
   HorizontalPager,
   Mode,
 } from './components'
-import { useUdpSync } from './hooks'
+import { useControllerSync } from './hooks'
 
 export const Modes = () => {
-  useUdpSync()
+  useControllerSync()
   const modes = useStore(selectAllModes)
   const { colors } = useStore(selectCurrentMode)
   const setColors = useStore((state) => state.setColors)

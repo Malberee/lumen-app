@@ -1,30 +1,39 @@
-import { useNetInfo } from '@react-native-community/netinfo'
 import { Link, router } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 
-import { UDP } from '@services'
+import { controllerClient } from '@services'
 
 import { ConnectingLoader, ErrorToast, Form } from './components'
+import { useCurrentSSID } from './hooks'
 
 export const ConnectDeviceToAP = () => {
-  const { details, type, isConnected } = useNetInfo()
+  const currentSSID = useCurrentSSID()
 
   const [isDeviceConnected, setIsDeviceConnected] = useState(false)
   const [network, setNetwork] = useState('')
   const [isConnecting, setIsConnecting] = useState(false)
 
-  const handleSuccess = (espIP: string, network: string) => {
-    UDP.setIP(espIP)
-    setNetwork(network)
+  const handleSuccess = (networkName: string) => {
+    setNetwork(networkName)
     setIsDeviceConnected(true)
   }
 
-  useEffect(() => {
-    if (type === 'wifi' && network === details.ssid) {
+  const connectToController = useCallback(async () => {
+    try {
+      await controllerClient.connect()
+      await controllerClient.ping()
       router.replace('/modes')
+    } catch (e) {
+      console.error(e)
     }
-  }, [isConnected, details])
+  }, [])
+
+  useEffect(() => {
+    if (network === currentSSID) {
+      connectToController()
+    }
+  }, [currentSSID])
 
   return (
     <>

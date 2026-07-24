@@ -2,14 +2,15 @@ import { Button, Input } from 'merlo-ui'
 import { type FC, useState } from 'react'
 import { Text, View } from 'react-native'
 
+import { controllerClient } from '@services'
+
 import { WiFiIcon } from '../icons'
 import { handleConnectionError, validateFields } from './helpers'
 import { useForm } from './hooks'
 import { PasswordInput } from './password-input'
-import { sendCredentials } from './services'
 
 interface FormProps {
-  onSuccess: (espIP: string, network: string) => void
+  onSuccess: (networkName: string) => void
   onLoading: (value: boolean) => void
 }
 
@@ -34,12 +35,14 @@ export const Form: FC<FormProps> = ({ onSuccess, onLoading }) => {
     onLoading(true)
 
     try {
-      const espIP = await sendCredentials(
-        state.values.ssid.trim(),
+      const newtworkName = state.values.ssid.trim()
+
+      await controllerClient.connectToWiFi(
+        newtworkName,
         state.values.password.trim(),
       )
 
-      onSuccess(espIP, state.values.ssid.trim())
+      onSuccess(newtworkName)
     } catch (error) {
       if (error instanceof Error) handleConnectionError(error.message, dispatch)
     } finally {

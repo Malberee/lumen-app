@@ -3,22 +3,28 @@ import { Button, Spinner } from 'merlo-ui'
 import { useCallback, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 
-import { WiFiOffIcon } from './components'
-import { pingDevice } from './services'
+import { controllerClient } from '@services'
 
-type ConnectionState = 'checking' | 'not-connected'
+import { WiFiOffIcon } from './components'
+
+enum ConnectionState {
+  CHECKING = 'checking',
+  NO_CONNECTION = 'no-connection',
+}
 
 export const Connection = () => {
-  const [connectionState, setConnectionState] =
-    useState<ConnectionState>('checking')
+  const [connectionState, setConnectionState] = useState<ConnectionState>(
+    ConnectionState.CHECKING,
+  )
 
   const checkConnection = useCallback(async () => {
-    setConnectionState('checking')
+    setConnectionState(ConnectionState.CHECKING)
     try {
-      await pingDevice()
+      await controllerClient.connect()
+      await controllerClient.ping()
       router.replace('/ap')
     } catch {
-      setConnectionState('not-connected')
+      setConnectionState(ConnectionState.NO_CONNECTION)
     }
   }, [])
 
@@ -28,7 +34,7 @@ export const Connection = () => {
 
   return (
     <View className="flex-1 flex-row items-center justify-center">
-      {connectionState === 'checking' ? (
+      {connectionState === ConnectionState.CHECKING ? (
         <Spinner
           size="lg"
           color="default"

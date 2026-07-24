@@ -3,7 +3,7 @@ import { Button } from 'merlo-ui'
 import { memo, useState } from 'react'
 import { View } from 'react-native'
 
-import { UDP } from '@services'
+import { controllerClient } from '@services'
 import { useStore } from '@store'
 
 import { LogoutIcon } from '../icons'
@@ -16,8 +16,7 @@ export const Header = memo(() => {
   const power = useStore((state) => state.power)
 
   const handleSubmit = async () => {
-    await UDP.sendMessage('DSCNT')
-    UDP.resetIP()
+    controllerClient.disconnect()
     router.replace('/')
   }
 
