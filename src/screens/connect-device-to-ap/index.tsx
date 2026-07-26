@@ -22,7 +22,6 @@ export const ConnectDeviceToAP = () => {
   const connectToController = useCallback(async () => {
     try {
       await controllerClient.connect()
-      await controllerClient.ping()
       router.replace('/modes')
     } catch (e) {
       console.error(e)

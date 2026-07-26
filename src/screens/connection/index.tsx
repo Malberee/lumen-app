@@ -21,7 +21,6 @@ export const Connection = () => {
     setConnectionState(ConnectionState.CHECKING)
     try {
       await controllerClient.connect()
-      await controllerClient.ping()
       router.replace('/ap')
     } catch {
       setConnectionState(ConnectionState.NO_CONNECTION)

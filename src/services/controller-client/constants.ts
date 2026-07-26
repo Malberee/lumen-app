@@ -17,7 +17,6 @@ export const messages = {
 export const commandHeaders = {
   connect: 'CNT',
   disconnect: 'DSCNT',
-  ping: 'PING',
   mode: 'MODE',
   powerOn: 'P_ON',
   powerOff: 'P_OFF',
