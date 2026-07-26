@@ -40,6 +40,6 @@ export const modes: ModeType[] = [
     colors: ['#ffffff', '#000000'],
     speed: DEFAULT_SPEED,
   },
-  { name: 'chroma', colors: [], speed: DEFAULT_SPEED },
+  { name: 'chrome', colors: [], speed: DEFAULT_SPEED },
   { name: 'rainbow', colors: [], speed: DEFAULT_SPEED },
 ]

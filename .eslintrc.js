@@ -6,7 +6,7 @@ module.exports = {
   ignorePatterns: ['android/*'],
   extends: ['universe', 'universe/shared/typescript-analysis', 'prettier'],
   rules: {
-    'no-console': 'error',
+    'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
     'import/order': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-unused-vars': 'error',

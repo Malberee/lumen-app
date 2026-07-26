@@ -1,5 +1,6 @@
 import type { ModeType } from '@store'
-import { serialize } from '@utils'
+
+import { serializeParams } from './serialize-params'
 
 export const serializeMode = (mode: ModeType) => {
   const { colors, ...rest } = mode
@@ -9,7 +10,7 @@ export const serializeMode = (mode: ModeType) => {
     colors.map((color, index) => [`${colorNames[index]}`, color]),
   )
 
-  return serialize({
+  return serializeParams({
     ...rest,
     ...colorsEntries,
     name: mode.name.replace(' ', '-'),

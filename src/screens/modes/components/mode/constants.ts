@@ -21,5 +21,5 @@ export const icons: Record<ModeName, FC<IconProps>> = {
   fill: PaintBucketIcon,
   'double fill': PaintBucketIcon,
   rainbow: RainbowIcon,
-  chroma: BlendIcon,
+  chrome: BlendIcon,
 }

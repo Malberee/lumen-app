@@ -1,4 +1,4 @@
-export const serialize = (obj: object) => {
+export const serializeParams = (obj: object) => {
   return Object.entries(obj)
     .filter((item) => item[1] !== undefined)
     .map((item) => item.join('='))
