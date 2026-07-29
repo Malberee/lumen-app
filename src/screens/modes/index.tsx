@@ -1,6 +1,7 @@
 import chunk from 'lodash.chunk'
 import React from 'react'
 import { View } from 'react-native'
+import { colorKit } from 'reanimated-color-picker'
 
 import { selectAllModes, selectCurrentMode, useStore } from '@store'
 
@@ -20,8 +21,20 @@ export const Modes = () => {
   const { colors } = useStore(selectCurrentMode)
   const setColors = useStore((state) => state.setColors)
 
+  const handleApply = (colors: string[]) => {
+    const colorObjects = colors.map((color) => {
+      const { a, ...rgb } = colorKit.RGB(color).object()
+      return rgb
+    })
+
+    setColors(colorObjects)
+  }
+
   return (
-    <ColorPicker.Provider colors={colors} onApply={setColors}>
+    <ColorPicker.Provider
+      colors={colors.map((color) => colorKit.RGB(color).string())}
+      onApply={handleApply}
+    >
       <ColorPicker.Preview />
       <Header />
 

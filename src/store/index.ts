@@ -11,9 +11,11 @@ import { modes } from '@constants'
 
 export type ModeName = (typeof modes)[number]['name']
 
+export type RGBObject = Record<'r' | 'g' | 'b', number>
+
 export type ModeType = {
   name: string
-  colors: string[]
+  colors: RGBObject[]
   speed?: number
   length?: number
 }

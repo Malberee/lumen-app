@@ -18,13 +18,11 @@ import ReanimatedColorPicker, {
   type ColorPickerRef,
 } from 'reanimated-color-picker'
 
-import type { ModeType } from '@store'
-
 import { arrayToObject } from './utils'
 
 interface ProviderProps extends PropsWithChildren {
-  colors: ModeType['colors']
-  onApply: (colors: ModeType['colors']) => void
+  colors: string[]
+  onApply: (colors: string[]) => void
 }
 
 export type ContextType = {
@@ -62,11 +60,11 @@ export const Provider: FC<ProviderProps> = ({ colors, children, onApply }) => {
     onApply(arrayCurrentColors.value)
   }
 
-  const handleChange = ({ hex }: ColorFormatsObject) => {
+  const handleChange = ({ rgb }: ColorFormatsObject) => {
     'worklet'
     currentColors.modify((value) => {
       'worklet'
-      value[selectedColor] = hex
+      value[selectedColor] = rgb
       return value
     })
   }
