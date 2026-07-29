@@ -1,8 +1,4 @@
-import {
-  AppState,
-  type NativeEventSubscription,
-  type AppStateStatus,
-} from 'react-native'
+import { AppState, type AppStateStatus } from 'react-native'
 
 import { messages } from './constants'
 
@@ -16,24 +12,37 @@ export class TransportClient {
   private serverIp: string
   private socket: WebSocket | null = null
   private pendingResponse?: PendingResponse
-  private readonly appStateSubscription: NativeEventSubscription
+  private connectPromise?: Promise<void>
 
   constructor(ip: string) {
     this.serverIp = ip
-    this.appStateSubscription = AppState.addEventListener(
-      'change',
-      this.handleAppStateChange,
-    )
+    AppState.addEventListener('change', this.handleAppStateChange)
   }
 
   private readonly handleAppStateChange = async (
     nextAppState: AppStateStatus,
   ) => {
     if (nextAppState === 'active') {
-      await this.open()
-    } else {
-      this.close()
+      try {
+        await this.open()
+      } catch (error) {
+        console.error(error)
+      }
+
+      return
     }
+
+    this.close()
+  }
+
+  private rejectPendingResponse(error: Error) {
+    if (!this.pendingResponse) {
+      return
+    }
+
+    clearTimeout(this.pendingResponse.timeout)
+    this.pendingResponse.reject(error)
+    this.pendingResponse = undefined
   }
 
   get isConnected() {
@@ -45,18 +54,32 @@ export class TransportClient {
       return Promise.resolve()
     }
 
-    return new Promise((resolve, reject) => {
-      const serverIp = this.serverIp
-      const socket = new WebSocket(`ws://${serverIp}`)
+    if (this.connectPromise) {
+      return this.connectPromise
+    }
 
+    const serverIp = this.serverIp
+    const socket = new WebSocket(`ws://${serverIp}`)
+
+    this.socket = socket
+
+    this.connectPromise = new Promise((resolve, reject) => {
       socket.onopen = () => {
         console.info(messages.info.connected, { ip: serverIp })
-        this.socket = socket
+        this.connectPromise = undefined
         resolve()
       }
 
       socket.onclose = () => {
         console.info(messages.info.disconnected, { ip: serverIp })
+
+        if (this.socket === socket) {
+          this.socket = null
+        }
+
+        this.connectPromise = undefined
+
+        this.rejectPendingResponse(new Error(messages.error.connectionLost))
       }
 
       socket.onerror = () => {
@@ -64,11 +87,9 @@ export class TransportClient {
           `${messages.error.connectionFailed}: ${serverIp}`,
         )
 
-        if (this.pendingResponse) {
-          clearTimeout(this.pendingResponse.timeout)
-          this.pendingResponse.reject(error)
-          this.pendingResponse = undefined
-        }
+        this.connectPromise = undefined
+
+        this.rejectPendingResponse(error)
 
         reject(error)
       }
@@ -77,20 +98,26 @@ export class TransportClient {
         if (!this.pendingResponse) {
           return
         }
+
         clearTimeout(this.pendingResponse.timeout)
         this.pendingResponse.resolve(String(event.data))
         this.pendingResponse = undefined
       }
     })
+
+    return this.connectPromise
   }
 
   close(code?: number, reason?: string) {
-    if (this.socket) {
-      const socket = this.socket
-      this.socket = null
+    const socket = this.socket
+
+    this.connectPromise = undefined
+
+    if (socket) {
       socket.close(code, reason)
-      this.appStateSubscription.remove()
     }
+
+    this.rejectPendingResponse(new Error(messages.error.connectionLost))
   }
 
   send(message: string) {

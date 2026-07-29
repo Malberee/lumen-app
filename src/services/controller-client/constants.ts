@@ -11,6 +11,7 @@ export const messages = {
     noConnection: 'No connection',
     timeout: 'Timeout',
     requestInProgress: 'Another request is already in progress',
+    connectionLost: 'Connection lost',
   },
 }
 
