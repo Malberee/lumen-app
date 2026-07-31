@@ -1,3 +1,5 @@
+import { colorKit } from 'reanimated-color-picker'
+
 import type { ModeType } from '@store'
 
 import { serializeParams } from './serialize-params'
@@ -7,7 +9,10 @@ export const serializeMode = (mode: ModeType) => {
 
   const colorNames = ['pri', 'sec']
   const colorsEntries = Object.fromEntries(
-    colors.map((color, index) => [`${colorNames[index]}`, color]),
+    colors.map((color, index) => {
+      const rgbArray = colorKit.RGB(color).array().slice(0, -1)
+      return [String(colorNames[index]), rgbArray]
+    }),
   )
 
   return serializeParams({

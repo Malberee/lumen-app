@@ -4,8 +4,8 @@ const DEFAULT_LENGTH = 3
 const DEFAULT_SPEED = 6
 
 const colors = {
-  white: { r: 255, g: 255, b: 255 },
-  black: { r: 0, g: 0, b: 0 },
+  white: 'rgb(255, 255, 255)',
+  black: 'rgb(0, 0, 0)',
 }
 
 export const modes: ModeType[] = [
