@@ -1,4 +1,4 @@
-import type { ModeType } from '@store'
+import { type ModeType } from '@constants'
 
 import { commandHeaders, DEFAULT_CONTROLLER_IP } from './constants'
 import { serializeMode, serializeParams } from './helpers'

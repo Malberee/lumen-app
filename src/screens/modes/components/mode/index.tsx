@@ -3,19 +3,18 @@ import { memo } from 'react'
 import { Pressable, Text } from 'react-native'
 
 import { Surface } from '@components'
-import { type ModeName, useStore } from '@store'
+import { selectCurrentMode, useStore } from '@store'
 
 import { icons } from './constants'
 
 interface ModeProps {
-  name: ModeName
+  name: string
 }
 
 export const Mode = memo<ModeProps>(({ name }) => {
   const setMode = useStore((state) => state.setMode)
-  const isSelected = useStore(
-    (state) => state.modes[state.currentMode].name === name,
-  )
+  const currentMode = useStore(selectCurrentMode)
+  const isSelected = currentMode.name === name
 
   const Icon = icons[name]
 

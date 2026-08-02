@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { shallow } from 'zustand/shallow'
 
+import { type ModeType } from '@constants'
 import { controllerClient } from '@services'
-import { type ModeType, selectCurrentMode, useStore } from '@store'
+import { selectCurrentMode, useStore } from '@store'
 
 import { SPEED_VALUES } from './constants'
 
@@ -27,7 +28,7 @@ export const useControllerSync = () => {
     sendMode(currentMode)
 
     const unsubCurrentMode = useStore.subscribe(
-      (state) => state.modes[state.currentMode],
+      selectCurrentMode,
       async (mode) => {
         sendMode(mode)
       },

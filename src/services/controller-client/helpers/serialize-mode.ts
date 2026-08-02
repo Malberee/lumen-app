@@ -1,6 +1,6 @@
 import { colorKit } from 'reanimated-color-picker'
 
-import type { ModeType } from '@store'
+import { modeSettingKeys, type ModeType } from '@constants'
 
 import { serializeParams } from './serialize-params'
 
@@ -20,6 +20,6 @@ export const serializeMode = (mode: ModeType) => {
     ...colorsEntries,
     name: mode.name.replace(' ', '-'),
   })
-    .replace('speed', 'spd')
-    .replace('length', 'lgt')
+    .replace(modeSettingKeys.speed, 'spd')
+    .replace(modeSettingKeys.length, 'lgt')
 }

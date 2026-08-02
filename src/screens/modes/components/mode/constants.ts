@@ -1,7 +1,5 @@
 import type { FC } from 'react'
 
-import type { ModeName } from '@store'
-
 import {
   BlendIcon,
   FilmIcon,
@@ -12,7 +10,7 @@ import {
   type IconProps,
 } from '../icons'
 
-export const icons: Record<ModeName, FC<IconProps>> = {
+export const icons: Record<string, FC<IconProps>> = {
   solid: LightbulbIcon,
   fade: LightbulbIcon,
   carousel: FilmIcon,

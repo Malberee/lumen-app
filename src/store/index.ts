@@ -7,26 +7,15 @@ import {
 } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { modes } from '@constants'
-
-export type ModeName = (typeof modes)[number]['name']
-
-export type ModeType = {
-  name: string
-  colors: string[]
-  speed?: number
-  length?: number
-}
-
-export type ColorName = keyof ModeType['colors']
+import { type ModeSetting, type ModeType, modes } from '@constants'
 
 export type Store = {
   modes: ModeType[]
-  currentMode: number
+  currentMode: string
   power: boolean
-  setMode: (mode: ModeName) => void
-  setColors: (colors: ModeType['colors']) => void
-  setParams: (param: 'speed' | 'length', value: number) => void
+  setMode: (mode: string) => void
+  setColors: (colors: string[]) => void
+  setSetting: (param: ModeSetting, value: number) => void
   setPower: (power: boolean) => void
 }
 
@@ -34,22 +23,32 @@ export const useStore = create<Store>()(
   persist(
     subscribeWithSelector(
       immer((set) => ({
-        currentMode: 0,
+        currentMode: 'solid',
         modes,
         power: true,
         setMode: (mode) => {
           set((state) => {
-            state.currentMode = state.modes.findIndex((m) => m.name === mode)
+            state.currentMode = mode
           })
         },
         setColors: (colors) => {
           set((state) => {
-            state.modes[state.currentMode].colors = colors
+            state.modes = state.modes.map((mode) => {
+              if (mode.name === state.currentMode) {
+                return { ...mode, colors }
+              }
+              return mode
+            })
           })
         },
-        setParams: (param, value) => {
+        setSetting: (setting, value) => {
           set((state) => {
-            state.modes[state.currentMode][param] = value
+            state.modes = state.modes.map((mode) => {
+              if (mode.name === state.currentMode) {
+                return { ...mode, [setting]: value }
+              }
+              return mode
+            })
           })
         },
         setPower: (power) => {

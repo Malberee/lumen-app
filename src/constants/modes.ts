@@ -1,4 +1,10 @@
-import type { ModeType } from '@store'
+export type ModeType = {
+  name: string
+  colors: string[]
+  speed?: number
+  length?: number
+}
+export type ModeSetting = keyof typeof modeSettingKeys
 
 const DEFAULT_LENGTH = 3
 const DEFAULT_SPEED = 6
@@ -7,6 +13,11 @@ const colors = {
   white: 'rgb(255, 255, 255)',
   black: 'rgb(0, 0, 0)',
 }
+
+export const modeSettingKeys = {
+  speed: 'speed',
+  length: 'length',
+} as const
 
 export const modes: ModeType[] = [
   {
@@ -47,4 +58,4 @@ export const modes: ModeType[] = [
   },
   { name: 'chrome', colors: [], speed: DEFAULT_SPEED },
   { name: 'rainbow', colors: [], speed: DEFAULT_SPEED },
-]
+] as const

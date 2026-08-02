@@ -4,15 +4,22 @@ import { Text, View } from 'react-native'
 import type { SvgProps } from 'react-native-svg'
 
 import { Surface } from '@components'
-import { LEDS_COUNT } from '@constants'
+import { LEDS_COUNT, type ModeSetting, modeSettingKeys } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
 import { SPEED_VALUES } from '../../constants'
 import { GaugeIcon, RulerIcon } from '../icons'
 import { ControlledSlider } from './controlled-slider'
 
+type RenderControlledSliderProps = {
+  type: ModeSetting
+  maxValue: number
+  icon: FC<SvgProps>
+  getValue?: SliderProps['getValue']
+}
+
 export const Controls = () => {
-  const setParams = useStore((state) => state.setParams)
+  const setSetting = useStore((state) => state.setSetting)
   const currentMode = useStore(selectCurrentMode)
 
   const renderLabel = (Icon: FC<SvgProps>): SliderProps['renderLabel'] => {
@@ -24,33 +31,48 @@ export const Controls = () => {
     )
   }
 
+  const renderControlledSlider = ({
+    type,
+    maxValue,
+    icon,
+    getValue,
+  }: RenderControlledSliderProps) => {
+    return (
+      <ControlledSlider
+        size="sm"
+        label={type}
+        defaultValue={currentMode[type]}
+        maxValue={maxValue}
+        minValue={1}
+        renderLabel={renderLabel(icon)}
+        classNames={{ label: 'capitalize' }}
+        getValue={getValue}
+        onChangeEnd={(value) => setSetting(type, value as number)}
+      />
+    )
+  }
+
+  const hasSettings =
+    modeSettingKeys.speed in currentMode ||
+    modeSettingKeys.length in currentMode
+
   return (
     <Surface className="gap-4">
-      {'speed' in currentMode ? (
-        <ControlledSlider
-          size="sm"
-          label="Speed"
-          defaultValue={currentMode.speed}
-          maxValue={SPEED_VALUES.length}
-          minValue={1}
-          renderLabel={renderLabel(GaugeIcon)}
-          onChangeEnd={(value) => setParams('speed', value as number)}
-        />
-      ) : null}
-      {'length' in currentMode ? (
-        <ControlledSlider
-          size="sm"
-          label="Length"
-          defaultValue={currentMode.length}
-          maxValue={LEDS_COUNT / 2}
-          minValue={1}
-          getValue={(value) => `${value} LEDs`}
-          renderLabel={renderLabel(RulerIcon)}
-          onChangeEnd={(value) => setParams('length', value as number)}
-        />
-      ) : null}
+      {modeSettingKeys.speed in currentMode &&
+        renderControlledSlider({
+          type: modeSettingKeys.speed,
+          maxValue: SPEED_VALUES.length,
+          icon: GaugeIcon,
+        })}
+      {modeSettingKeys.length in currentMode &&
+        renderControlledSlider({
+          type: modeSettingKeys.length,
+          maxValue: LEDS_COUNT / 2,
+          icon: RulerIcon,
+          getValue: (value) => `${value} LEDs`,
+        })}
 
-      {!('speed' in currentMode) && !('length' in currentMode) ? (
+      {!hasSettings ? (
         <Text className="text-center text-lg text-foreground-300">
           There are no parameters for this mode
         </Text>
