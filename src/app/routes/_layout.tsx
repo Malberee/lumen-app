@@ -10,7 +10,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context'
 
-import { colors } from '@constants'
+import { colors, routes } from '@constants'
 
 import '../global.css'
 
@@ -42,9 +42,11 @@ const RootLayout = () => {
 
         {__DEV__ ? (
           <View className="absolute left-1/2 top-12 -translate-x-1/2 flex-row gap-4">
-            <Button onPress={() => router.replace('/')}>Connect</Button>
-            <Button onPress={() => router.replace('/ap')}>Ap</Button>
-            <Button onPress={() => router.replace('/modes')}>Modes</Button>
+            <Button onPress={() => router.replace(routes.home)}>Connect</Button>
+            <Button onPress={() => router.replace(routes.connectDeviceToAp)}>
+              Ap
+            </Button>
+            <Button onPress={() => router.replace(routes.modes)}>Modes</Button>
           </View>
         ) : null}
       </GestureHandlerRootView>

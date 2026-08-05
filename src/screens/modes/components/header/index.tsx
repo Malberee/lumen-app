@@ -3,6 +3,7 @@ import { Button } from 'merlo-ui'
 import { memo, useState } from 'react'
 import { View } from 'react-native'
 
+import { routes } from '@constants'
 import { controllerClient } from '@services'
 import { useStore } from '@store'
 
@@ -17,7 +18,7 @@ export const Header = memo(() => {
 
   const handleSubmit = async () => {
     controllerClient.disconnect()
-    router.replace('/')
+    router.replace(routes.home)
   }
 
   return (

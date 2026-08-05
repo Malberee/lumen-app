@@ -3,6 +3,7 @@ import { Button, Spinner } from 'merlo-ui'
 import { useCallback, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 
+import { routes } from '@constants'
 import { controllerClient } from '@services'
 
 import { WiFiOffIcon } from './components'
@@ -21,7 +22,7 @@ export const Connection = () => {
     setConnectionState(ConnectionState.CHECKING)
     try {
       await controllerClient.connect()
-      router.replace('/ap')
+      router.replace(routes.connectDeviceToAp)
     } catch {
       setConnectionState(ConnectionState.NO_CONNECTION)
     }

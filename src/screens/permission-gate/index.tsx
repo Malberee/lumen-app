@@ -3,6 +3,8 @@ import { Button } from 'merlo-ui'
 import { useEffect } from 'react'
 import { Linking, PermissionsAndroid, Text, View } from 'react-native'
 
+import { routes } from '@constants'
+
 export const PermissionGate = () => {
   useEffect(() => {
     const request = async () => {
@@ -11,7 +13,7 @@ export const PermissionGate = () => {
       )
 
       if (result === PermissionsAndroid.RESULTS.GRANTED) {
-        router.replace('/connection')
+        router.replace(routes.connection)
       }
     }
 

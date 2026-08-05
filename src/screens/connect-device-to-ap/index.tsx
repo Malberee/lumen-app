@@ -2,6 +2,7 @@ import { Link, router } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message'
 
+import { routes } from '@constants'
 import { controllerClient } from '@services'
 
 import { ConnectingLoader, ErrorToast, Form } from './components'
@@ -22,7 +23,7 @@ export const ConnectDeviceToAP = () => {
   const connectToController = useCallback(async () => {
     try {
       await controllerClient.connect()
-      router.replace('/modes')
+      router.replace(routes.modes)
     } catch (e) {
       console.error(e)
     }
@@ -42,7 +43,7 @@ export const ConnectDeviceToAP = () => {
         <>
           <Form onSuccess={handleSuccess} onLoading={setIsConnecting} />
           <Link
-            href="/modes"
+            href={routes.modes}
             replace
             disabled={isConnecting}
             className={`mb-4 text-center text-primary underline transition-opacity ${isConnecting && 'opacity-50'}`}
