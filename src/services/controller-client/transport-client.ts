@@ -1,18 +1,13 @@
 import { AppState, type AppStateStatus } from 'react-native'
 
 import { messages } from './constants'
-
-interface PendingResponse {
-  resolve: (message: string) => void
-  reject: (error: Error) => void
-  timeout: ReturnType<typeof setTimeout>
-}
+import { Deferred } from './deferred'
 
 export class TransportClient {
   private serverIp: string
   private socket: WebSocket | null = null
-  private pendingResponse?: PendingResponse
-  private connectPromise?: Promise<void>
+  private pendingResponse?: Deferred<string>
+  private pendingConnection?: Deferred<void>
 
   constructor(ip: string) {
     this.serverIp = ip
@@ -35,16 +30,6 @@ export class TransportClient {
     this.close()
   }
 
-  private rejectPendingResponse(error: Error) {
-    if (!this.pendingResponse) {
-      return
-    }
-
-    clearTimeout(this.pendingResponse.timeout)
-    this.pendingResponse.reject(error)
-    this.pendingResponse = undefined
-  }
-
   get isConnected() {
     return this.socket?.readyState === WebSocket.OPEN
   }
@@ -54,8 +39,8 @@ export class TransportClient {
       return Promise.resolve()
     }
 
-    if (this.connectPromise) {
-      return this.connectPromise
+    if (this.pendingConnection) {
+      return this.pendingConnection.promise
     }
 
     const serverIp = this.serverIp
@@ -63,61 +48,59 @@ export class TransportClient {
 
     this.socket = socket
 
-    this.connectPromise = new Promise((resolve, reject) => {
-      socket.onopen = () => {
-        console.info(messages.info.connected, { ip: serverIp })
-        this.connectPromise = undefined
-        resolve()
-      }
-
-      socket.onclose = () => {
-        console.info(messages.info.disconnected, { ip: serverIp })
-
-        if (this.socket === socket) {
-          this.socket = null
-        }
-
-        this.connectPromise = undefined
-
-        this.rejectPendingResponse(new Error(messages.error.connectionLost))
-      }
-
-      socket.onerror = () => {
-        const error = new Error(
-          `${messages.error.connectionFailed}: ${serverIp}`,
-        )
-
-        this.connectPromise = undefined
-
-        this.rejectPendingResponse(error)
-
-        reject(error)
-      }
-
-      socket.onmessage = (event) => {
-        if (!this.pendingResponse) {
-          return
-        }
-
-        clearTimeout(this.pendingResponse.timeout)
-        this.pendingResponse.resolve(String(event.data))
-        this.pendingResponse = undefined
-      }
+    const pendingConnection = new Deferred<void>(() => {
+      this.pendingConnection = undefined
     })
 
-    return this.connectPromise
+    this.pendingConnection = pendingConnection
+
+    const isCurrentSocket = () => this.socket === socket
+
+    socket.onopen = () => {
+      if (!isCurrentSocket()) return
+
+      console.info(messages.info.connected, { ip: serverIp })
+      pendingConnection.resolve()
+    }
+
+    socket.onclose = () => {
+      if (!isCurrentSocket()) return
+
+      console.info(messages.info.disconnected, { ip: serverIp })
+
+      this.socket = null
+
+      const error = new Error(messages.error.connectionFailed)
+
+      this.pendingResponse?.reject(error)
+      pendingConnection.reject(error)
+    }
+
+    socket.onerror = () => {
+      if (!isCurrentSocket()) return
+
+      const error = new Error(`${messages.error.connectionFailed}: ${serverIp}`)
+
+      this.pendingResponse?.reject(error)
+      pendingConnection.reject(error)
+    }
+
+    socket.onmessage = (event) => {
+      if (!isCurrentSocket() || !this.pendingResponse) return
+
+      this.pendingResponse.resolve(String(event.data))
+    }
+
+    return pendingConnection.promise
   }
 
   close(code?: number, reason?: string) {
-    const socket = this.socket
+    const error = new Error(messages.error.connectionLost)
 
-    this.connectPromise = undefined
+    this.pendingResponse?.reject(error)
+    this.pendingConnection?.reject(error)
 
-    if (socket) {
-      socket.close(code, reason)
-    }
-
-    this.rejectPendingResponse(new Error(messages.error.connectionLost))
+    this.socket?.close(code, reason)
   }
 
   send(message: string) {
@@ -137,20 +120,22 @@ export class TransportClient {
       return Promise.reject(new Error(messages.error.requestInProgress))
     }
 
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        this.pendingResponse = undefined
-        reject(new Error(messages.error.timeout))
-      }, timeoutMs)
+    let timeout: ReturnType<typeof setTimeout>
 
-      this.pendingResponse = {
-        resolve,
-        reject,
-        timeout,
-      }
-
-      this.socket!.send(message)
+    const pendingResponse = new Deferred<string>(() => {
+      clearTimeout(timeout)
+      this.pendingResponse = undefined
     })
+
+    timeout = setTimeout(() => {
+      pendingResponse.reject(new Error(messages.error.timeout))
+    }, timeoutMs)
+
+    this.pendingResponse = pendingResponse
+
+    this.socket.send(message)
+
+    return pendingResponse.promise
   }
 
   changeIP(newIp: string) {
