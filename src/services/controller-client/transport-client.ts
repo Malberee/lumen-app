@@ -3,15 +3,27 @@ import { AppState, type AppStateStatus } from 'react-native'
 import { messages } from './constants'
 import { Deferred } from './deferred'
 
+export type TransportEvent =
+  | WebSocket['CONNECTING']
+  | WebSocket['OPEN']
+  | WebSocket['CLOSED']
+type TransportEventListener = (event: TransportEvent) => void
+
 export class TransportClient {
   private serverIp: string
   private socket: WebSocket | null = null
   private pendingResponse?: Deferred<string>
   private pendingConnection?: Deferred<void>
 
+  private readonly listeners = new Set<TransportEventListener>()
+
   constructor(ip: string) {
     this.serverIp = ip
     AppState.addEventListener('change', this.handleAppStateChange)
+  }
+
+  private get isConnected() {
+    return this.socket?.readyState === WebSocket.OPEN
   }
 
   private readonly handleAppStateChange = async (
@@ -30,8 +42,18 @@ export class TransportClient {
     this.close()
   }
 
-  get isConnected() {
-    return this.socket?.readyState === WebSocket.OPEN
+  private emit(event: TransportEvent) {
+    this.listeners.forEach((listener) => {
+      listener(event)
+    })
+  }
+
+  subscribe(listener: TransportEventListener) {
+    this.listeners.add(listener)
+
+    return () => {
+      this.listeners.delete(listener)
+    }
   }
 
   open(): Promise<void> {
@@ -54,13 +76,17 @@ export class TransportClient {
 
     this.pendingConnection = pendingConnection
 
+    this.emit(WebSocket.CONNECTING)
+
     const isCurrentSocket = () => this.socket === socket
 
     socket.onopen = () => {
       if (!isCurrentSocket()) return
 
       console.info(messages.info.connected, { ip: serverIp })
+
       pendingConnection.resolve()
+      this.emit(WebSocket.OPEN)
     }
 
     socket.onclose = () => {
@@ -74,6 +100,8 @@ export class TransportClient {
 
       this.pendingResponse?.reject(error)
       pendingConnection.reject(error)
+
+      this.emit(WebSocket.CLOSED)
     }
 
     socket.onerror = () => {
@@ -95,12 +123,22 @@ export class TransportClient {
   }
 
   close(code?: number, reason?: string) {
+    const socket = this.socket
+
+    if (!socket) {
+      return
+    }
+
+    this.socket = null
+
     const error = new Error(messages.error.connectionLost)
 
     this.pendingResponse?.reject(error)
     this.pendingConnection?.reject(error)
 
-    this.socket?.close(code, reason)
+    this.emit(WebSocket.CLOSED)
+
+    socket?.close(code, reason)
   }
 
   send(message: string) {
