@@ -3,10 +3,17 @@ import { AppState, type AppStateStatus } from 'react-native'
 import { messages } from './constants'
 import { Deferred } from './deferred'
 
+export enum CloseReason {
+  MANUAL = 'MANUAL',
+  APP_BACKGROUND = 'APP_BACKGROUND',
+  CONNECTION_LOST = 'CONNECTION_LOST',
+}
+
 export type TransportEvent =
-  | WebSocket['CONNECTING']
-  | WebSocket['OPEN']
-  | WebSocket['CLOSED']
+  | { type: WebSocket['CONNECTING'] }
+  | { type: WebSocket['OPEN'] }
+  | { type: WebSocket['CLOSED']; reason: CloseReason }
+
 type TransportEventListener = (event: TransportEvent) => void
 
 export class TransportClient {
@@ -14,6 +21,7 @@ export class TransportClient {
   private socket: WebSocket | null = null
   private pendingResponse?: Deferred<string>
   private pendingConnection?: Deferred<void>
+  private closeReason?: CloseReason
 
   private readonly listeners = new Set<TransportEventListener>()
 
@@ -30,16 +38,18 @@ export class TransportClient {
     nextAppState: AppStateStatus,
   ) => {
     if (nextAppState === 'active') {
-      try {
-        await this.open()
-      } catch (error) {
-        console.error(error)
+      if (this.closeReason === CloseReason.APP_BACKGROUND) {
+        try {
+          await this.open()
+        } catch (error) {
+          console.error(error)
+        }
       }
 
       return
     }
 
-    this.close()
+    this.close(CloseReason.APP_BACKGROUND)
   }
 
   private emit(event: TransportEvent) {
@@ -76,7 +86,7 @@ export class TransportClient {
 
     this.pendingConnection = pendingConnection
 
-    this.emit(WebSocket.CONNECTING)
+    this.emit({ type: WebSocket.CONNECTING })
 
     const isCurrentSocket = () => this.socket === socket
 
@@ -86,7 +96,7 @@ export class TransportClient {
       console.info(messages.info.connected, { ip: serverIp })
 
       pendingConnection.resolve()
-      this.emit(WebSocket.OPEN)
+      this.emit({ type: WebSocket.OPEN })
     }
 
     socket.onclose = () => {
@@ -101,7 +111,9 @@ export class TransportClient {
       this.pendingResponse?.reject(error)
       pendingConnection.reject(error)
 
-      this.emit(WebSocket.CLOSED)
+      const reason = this.closeReason ?? CloseReason.CONNECTION_LOST
+
+      this.emit({ type: WebSocket.CLOSED, reason })
     }
 
     socket.onerror = () => {
@@ -111,6 +123,8 @@ export class TransportClient {
 
       this.pendingResponse?.reject(error)
       pendingConnection.reject(error)
+
+      this.closeReason = CloseReason.CONNECTION_LOST
     }
 
     socket.onmessage = (event) => {
@@ -122,7 +136,7 @@ export class TransportClient {
     return pendingConnection.promise
   }
 
-  close(code?: number, reason?: string) {
+  close(reason = CloseReason.MANUAL) {
     const socket = this.socket
 
     if (!socket) {
@@ -130,15 +144,16 @@ export class TransportClient {
     }
 
     this.socket = null
+    this.closeReason = reason
 
     const error = new Error(messages.error.connectionLost)
 
     this.pendingResponse?.reject(error)
     this.pendingConnection?.reject(error)
 
-    this.emit(WebSocket.CLOSED)
+    this.emit({ type: WebSocket.CLOSED, reason })
 
-    socket?.close(code, reason)
+    socket?.close()
   }
 
   send(message: string) {

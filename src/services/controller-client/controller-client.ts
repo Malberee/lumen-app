@@ -2,7 +2,11 @@ import { type ModeType } from '@constants'
 
 import { commandHeaders, DEFAULT_CONTROLLER_IP } from './constants'
 import { serializeMode, serializeParams } from './helpers'
-import { TransportClient, type TransportEvent } from './transport-client'
+import {
+  CloseReason,
+  TransportClient,
+  type TransportEvent,
+} from './transport-client'
 import { isIPAddress } from './utils'
 
 export enum ConnectionStatus {
@@ -11,38 +15,55 @@ export enum ConnectionStatus {
   CONNECTED = 'CONNECTED',
 }
 
-type ConnectionStatusListener = (status: ConnectionStatus) => void
+type ConnectionState =
+  | {
+      status: ConnectionStatus.CONNECTING
+    }
+  | {
+      status: ConnectionStatus.CONNECTED
+    }
+  | {
+      status: ConnectionStatus.DISCONNECTED
+      reason: CloseReason
+    }
+type ConnectionStateListener = (status: ConnectionState) => void
 
 export class ControllerClient {
   private readonly transport = new TransportClient(DEFAULT_CONTROLLER_IP)
-  private connectionStatus = ConnectionStatus.DISCONNECTED
+  private connectionState: ConnectionState = {
+    status: ConnectionStatus.DISCONNECTED,
+    reason: CloseReason.MANUAL,
+  }
 
-  private readonly statusListeners = new Set<ConnectionStatusListener>()
+  private readonly statusListeners = new Set<ConnectionStateListener>()
 
   constructor() {
     this.transport.subscribe(this.handleTransportEvent)
   }
 
-  private readonly setConnectionStatus = (status: ConnectionStatus) => {
-    if (this.connectionStatus === status) return
+  private readonly setConnectionState = (state: ConnectionState) => {
+    if (this.connectionState.status === state.status) return
 
-    this.connectionStatus = status
+    this.connectionState = state
 
-    this.statusListeners.forEach((listener) => listener(status))
+    this.statusListeners.forEach((listener) => listener(state))
   }
 
   private readonly handleTransportEvent = (event: TransportEvent) => {
-    switch (event) {
+    switch (event.type) {
       case WebSocket.CONNECTING:
-        this.setConnectionStatus(ConnectionStatus.CONNECTING)
+        this.setConnectionState({ status: ConnectionStatus.CONNECTING })
         break
 
       case WebSocket.OPEN:
-        this.setConnectionStatus(ConnectionStatus.CONNECTED)
+        this.setConnectionState({ status: ConnectionStatus.CONNECTED })
         break
 
       case WebSocket.CLOSED:
-        this.setConnectionStatus(ConnectionStatus.DISCONNECTED)
+        this.setConnectionState({
+          status: ConnectionStatus.DISCONNECTED,
+          reason: event.reason,
+        })
         break
 
       default:
@@ -50,7 +71,7 @@ export class ControllerClient {
     }
   }
 
-  subscribeToConnectionState = (listener: ConnectionStatusListener) => {
+  subscribeToConnectionState = (listener: ConnectionStateListener) => {
     this.statusListeners.add(listener)
 
     return () => {
@@ -58,7 +79,7 @@ export class ControllerClient {
     }
   }
   getConnectionStatus = () => {
-    return this.connectionStatus
+    return this.connectionState
   }
 
   async connect() {
