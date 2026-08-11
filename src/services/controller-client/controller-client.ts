@@ -78,13 +78,23 @@ export class ControllerClient {
       this.statusListeners.delete(listener)
     }
   }
-  getConnectionStatus = () => {
+  getConnectionState = () => {
     return this.connectionState
   }
 
-  async connect() {
-    await this.transport.open()
-    this.transport.send(commandHeaders.connect)
+  connect() {
+    if (this.getConnectionState().status === ConnectionStatus.CONNECTED) return
+
+    const unsubscribe = this.subscribeToConnectionState(({ status }) => {
+      if (status === ConnectionStatus.CONNECTED) {
+        unsubscribe()
+        this.transport.send(commandHeaders.connect)
+      } else if (status === ConnectionStatus.DISCONNECTED) {
+        unsubscribe()
+      }
+    })
+
+    this.transport.open()
   }
   disconnect() {
     this.transport.send(commandHeaders.disconnect)

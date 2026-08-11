@@ -20,7 +20,6 @@ export class TransportClient {
   private serverIp: string
   private socket: WebSocket | null = null
   private pendingResponse?: Deferred<string>
-  private pendingConnection?: Deferred<void>
   private closeReason?: CloseReason
 
   private readonly listeners = new Set<TransportEventListener>()
@@ -34,13 +33,11 @@ export class TransportClient {
     return this.socket?.readyState === WebSocket.OPEN
   }
 
-  private readonly handleAppStateChange = async (
-    nextAppState: AppStateStatus,
-  ) => {
+  private readonly handleAppStateChange = (nextAppState: AppStateStatus) => {
     if (nextAppState === 'active') {
       if (this.closeReason === CloseReason.APP_BACKGROUND) {
         try {
-          await this.open()
+          this.open()
         } catch (error) {
           console.error(error)
         }
@@ -66,25 +63,13 @@ export class TransportClient {
     }
   }
 
-  open(): Promise<void> {
-    if (this.isConnected) {
-      return Promise.resolve()
-    }
-
-    if (this.pendingConnection) {
-      return this.pendingConnection.promise
-    }
+  open() {
+    if (this.isConnected) return
 
     const serverIp = this.serverIp
     const socket = new WebSocket(`ws://${serverIp}`)
 
     this.socket = socket
-
-    const pendingConnection = new Deferred<void>(() => {
-      this.pendingConnection = undefined
-    })
-
-    this.pendingConnection = pendingConnection
 
     this.emit({ type: WebSocket.CONNECTING })
 
@@ -95,7 +80,6 @@ export class TransportClient {
 
       console.info(messages.info.connected, { ip: serverIp })
 
-      pendingConnection.resolve()
       this.emit({ type: WebSocket.OPEN })
     }
 
@@ -109,7 +93,6 @@ export class TransportClient {
       const error = new Error(messages.error.connectionFailed)
 
       this.pendingResponse?.reject(error)
-      pendingConnection.reject(error)
 
       const reason = this.closeReason ?? CloseReason.CONNECTION_LOST
 
@@ -122,7 +105,6 @@ export class TransportClient {
       const error = new Error(`${messages.error.connectionFailed}: ${serverIp}`)
 
       this.pendingResponse?.reject(error)
-      pendingConnection.reject(error)
 
       this.closeReason = CloseReason.CONNECTION_LOST
     }
@@ -132,8 +114,6 @@ export class TransportClient {
 
       this.pendingResponse.resolve(String(event.data))
     }
-
-    return pendingConnection.promise
   }
 
   close(reason = CloseReason.MANUAL) {
@@ -149,7 +129,6 @@ export class TransportClient {
     const error = new Error(messages.error.connectionLost)
 
     this.pendingResponse?.reject(error)
-    this.pendingConnection?.reject(error)
 
     this.emit({ type: WebSocket.CLOSED, reason })
 
