@@ -35,14 +35,14 @@ export const Form: FC<FormProps> = ({ onSuccess, onLoading }) => {
     onLoading(true)
 
     try {
-      const newtworkName = state.values.ssid.trim()
+      const networkName = state.values.ssid.trim()
 
       await controllerClient.connectToWiFi(
-        newtworkName,
+        networkName,
         state.values.password.trim(),
       )
 
-      onSuccess(newtworkName)
+      onSuccess(networkName)
     } catch (error) {
       if (error instanceof Error) handleConnectionError(error.message, dispatch)
     } finally {
