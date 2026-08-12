@@ -1,9 +1,7 @@
-import { router } from 'expo-router'
 import { Button } from 'merlo-ui'
 import { memo, useState } from 'react'
 import { View } from 'react-native'
 
-import { routes } from '@constants'
 import { controllerClient } from '@services'
 import { useStore } from '@store'
 
@@ -15,11 +13,6 @@ export const Header = memo(() => {
   const [showDialog, setShowDialog] = useState(false)
   const setPower = useStore((state) => state.setPower)
   const power = useStore((state) => state.power)
-
-  const handleSubmit = async () => {
-    controllerClient.disconnect()
-    router.replace(routes.home)
-  }
 
   return (
     <View className="absolute z-10 w-full flex-row justify-between pt-4">
@@ -40,7 +33,10 @@ export const Header = memo(() => {
       <Toggle value={power} onValueChange={setPower} />
 
       {showDialog ? (
-        <Dialog onClose={() => setShowDialog(false)} onSubmit={handleSubmit} />
+        <Dialog
+          onClose={() => setShowDialog(false)}
+          onSubmit={() => controllerClient.disconnect()}
+        />
       ) : null}
     </View>
   )

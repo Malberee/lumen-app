@@ -1,7 +1,11 @@
+import { router } from 'expo-router'
 import chunk from 'lodash.chunk'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 
+import { routes } from '@constants'
+import { useConnectionState } from '@hooks'
+import { ConnectionStatus, DisconnectReason } from '@services'
 import { selectAllModes, selectCurrentMode, useStore } from '@store'
 
 import {
@@ -19,6 +23,28 @@ export const Modes = () => {
   const modes = useStore(selectAllModes)
   const { colors } = useStore(selectCurrentMode)
   const setColors = useStore((state) => state.setColors)
+
+  const connectionState = useConnectionState()
+
+  useEffect(() => {
+    let pathname: string | undefined
+
+    if (connectionState.status === ConnectionStatus.CONNECTING) {
+      pathname = routes.connection
+    } else if (connectionState.status === ConnectionStatus.DISCONNECTED) {
+      pathname =
+        connectionState.reason === DisconnectReason.MANUAL
+          ? routes.home
+          : routes.connection
+    }
+
+    if (pathname) {
+      router.replace({
+        pathname,
+        params: { redirectTo: routes.modes },
+      })
+    }
+  }, [connectionState])
 
   return (
     <ColorPicker.Provider colors={colors} onApply={setColors}>
