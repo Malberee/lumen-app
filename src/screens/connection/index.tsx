@@ -1,40 +1,39 @@
-import { router } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import { Button, Spinner } from 'merlo-ui'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Text, View } from 'react-native'
 
 import { routes } from '@constants'
-import { controllerClient } from '@services'
+import { useConnectionState } from '@hooks'
+import { ConnectionStatus, controllerClient, DisconnectReason } from '@services'
 
 import { WiFiOffIcon } from './components'
 
-enum ConnectionState {
-  CHECKING = 'checking',
-  NO_CONNECTION = 'no-connection',
+type ConnectionSearchParams = {
+  redirectTo: string
 }
 
 export const Connection = () => {
-  const [connectionState, setConnectionState] = useState<ConnectionState>(
-    ConnectionState.CHECKING,
-  )
-
-  const checkConnection = useCallback(async () => {
-    setConnectionState(ConnectionState.CHECKING)
-    try {
-      await controllerClient.connect()
-      router.replace(routes.connectDeviceToAp)
-    } catch {
-      setConnectionState(ConnectionState.NO_CONNECTION)
-    }
-  }, [])
+  const { redirectTo = routes.connectDeviceToAp } =
+    useLocalSearchParams<ConnectionSearchParams>()
+  const connectionState = useConnectionState()
 
   useEffect(() => {
-    checkConnection()
-  }, [checkConnection])
+    const status = connectionState.status
+
+    if (status === ConnectionStatus.CONNECTED) {
+      router.replace(redirectTo)
+    } else if (
+      status === ConnectionStatus.DISCONNECTED &&
+      connectionState.reason === DisconnectReason.MANUAL
+    ) {
+      controllerClient.connect()
+    }
+  }, [connectionState])
 
   return (
     <View className="flex-1 flex-row items-center justify-center">
-      {connectionState === ConnectionState.CHECKING ? (
+      {connectionState.status === ConnectionStatus.CONNECTING ? (
         <Spinner
           size="lg"
           color="default"
@@ -49,7 +48,11 @@ export const Connection = () => {
           <Text className="mb-6 text-large text-warning-700">
             You may not be connected to an access point.
           </Text>
-          <Button size="lg" color="warning" onPress={checkConnection}>
+          <Button
+            size="lg"
+            color="warning"
+            onPress={() => controllerClient.connect()}
+          >
             Try again
           </Button>
         </View>
