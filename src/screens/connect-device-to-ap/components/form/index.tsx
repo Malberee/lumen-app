@@ -10,11 +10,12 @@ import { useForm } from './hooks'
 import { PasswordInput } from './password-input'
 
 interface FormProps {
-  onSuccess: (networkName: string) => void
-  onLoading: (value: boolean) => void
+  onSubmit: () => void
+  onSuccess: (network: string) => void
+  onError: (error: Error) => void
 }
 
-export const Form: FC<FormProps> = ({ onSuccess, onLoading }) => {
+export const Form: FC<FormProps> = ({ onSubmit, onSuccess, onError }) => {
   const { state, dispatch, resetErrors } = useForm()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -32,22 +33,24 @@ export const Form: FC<FormProps> = ({ onSuccess, onLoading }) => {
     }
 
     setIsLoading(true)
-    onLoading(true)
+    onSubmit()
 
     try {
-      const networkName = state.values.ssid.trim()
+      const network = state.values.ssid.trim()
 
       await controllerClient.connectToWiFi(
-        networkName,
+        network,
         state.values.password.trim(),
       )
 
-      onSuccess(networkName)
+      onSuccess(network)
     } catch (error) {
-      if (error instanceof Error) handleConnectionError(error.message, dispatch)
+      if (error instanceof Error) {
+        handleConnectionError(error.message, dispatch)
+        onError(error)
+      }
     } finally {
       setIsLoading(false)
-      onLoading(false)
     }
   }
 

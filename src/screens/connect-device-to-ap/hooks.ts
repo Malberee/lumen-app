@@ -8,6 +8,8 @@ export const useCurrentSSID = () => {
   useEffect(() => {
     if (isConnected && type === NetInfoStateType.wifi) {
       setSSID(details.ssid)
+    } else {
+      setSSID(null)
     }
   }, [isConnected, type, details])
 
