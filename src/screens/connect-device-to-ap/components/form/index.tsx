@@ -1,6 +1,6 @@
 import { Button, Input } from 'merlo-ui'
 import { type FC, useState } from 'react'
-import { Text, View } from 'react-native'
+import { KeyboardAvoidingView, Text, View } from 'react-native'
 
 import { controllerClient } from '@services'
 
@@ -55,38 +55,43 @@ export const Form: FC<FormProps> = ({ onSubmit, onSuccess, onError }) => {
   }
 
   return (
-    <View className="mb-auto mt-auto flex-col gap-4">
-      <Text className="text-xl text-foreground">
-        Connect device to access point
-      </Text>
+    <View className="flex-1">
+      <KeyboardAvoidingView
+        behavior="height"
+        className="h-full flex-col justify-center gap-4"
+      >
+        <Text className="text-xl text-foreground">
+          Connect device to access point
+        </Text>
 
-      <Input
-        size="lg"
-        variant="faded"
-        placeholder="Enter SSID"
-        startContent={
-          <WiFiIcon className="text-foreground-400" width={20} height={20} />
-        }
-        value={state.values.ssid}
-        isInvalid={!!state.errors.ssid}
-        errorMessage={state.errors.ssid}
-        onValueChange={(value) => dispatch({ field: 'ssid', value })}
-        autoCapitalize="none"
-      />
-      <PasswordInput
-        size="lg"
-        variant="faded"
-        placeholder="Enter password"
-        value={state.values.password}
-        isInvalid={!!state.errors.password}
-        errorMessage={state.errors.password}
-        onValueChange={(value) => dispatch({ field: 'password', value })}
-        autoCapitalize="none"
-      />
+        <Input
+          size="lg"
+          variant="faded"
+          placeholder="Enter SSID"
+          startContent={
+            <WiFiIcon className="text-foreground-400" width={20} height={20} />
+          }
+          value={state.values.ssid}
+          isInvalid={!!state.errors.ssid}
+          errorMessage={state.errors.ssid}
+          onValueChange={(value) => dispatch({ field: 'ssid', value })}
+          autoCapitalize="none"
+        />
+        <PasswordInput
+          size="lg"
+          variant="faded"
+          placeholder="Enter password"
+          value={state.values.password}
+          isInvalid={!!state.errors.password}
+          errorMessage={state.errors.password}
+          onValueChange={(value) => dispatch({ field: 'password', value })}
+          autoCapitalize="none"
+        />
 
-      <Button size="lg" onPress={handleSubmit} isLoading={isLoading}>
-        {isLoading ? 'Connecting...' : 'Connect'}
-      </Button>
+        <Button size="lg" onPress={handleSubmit} isLoading={isLoading}>
+          {isLoading ? 'Connecting...' : 'Connect'}
+        </Button>
+      </KeyboardAvoidingView>
     </View>
   )
 }
