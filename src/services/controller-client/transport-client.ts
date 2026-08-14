@@ -36,11 +36,7 @@ export class TransportClient {
   private readonly handleAppStateChange = (nextAppState: AppStateStatus) => {
     if (nextAppState === 'active') {
       if (this.closeReason === CloseReason.APP_BACKGROUND) {
-        try {
-          this.open()
-        } catch (error) {
-          console.error(error)
-        }
+        this.open()
       }
 
       return

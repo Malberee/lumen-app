@@ -29,9 +29,7 @@ export const useControllerSync = () => {
 
     const unsubCurrentMode = useStore.subscribe(
       selectCurrentMode,
-      async (mode) => {
-        sendMode(mode)
-      },
+      (mode) => sendMode(mode),
       { equalityFn: shallow },
     )
 
