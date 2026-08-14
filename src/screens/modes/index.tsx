@@ -27,21 +27,21 @@ export const Modes = () => {
   const connectionState = useConnectionState()
 
   useEffect(() => {
-    let pathname: string | undefined
+    let redirectTo: string | undefined
 
     if (connectionState.status === ConnectionStatus.CONNECTING) {
-      pathname = routes.connection
+      redirectTo = routes.modes
     } else if (connectionState.status === ConnectionStatus.DISCONNECTED) {
-      pathname =
+      redirectTo =
         connectionState.reason === DisconnectReason.MANUAL
-          ? routes.home
-          : routes.connection
+          ? routes.connectDeviceToAp
+          : routes.modes
     }
 
-    if (pathname) {
+    if (redirectTo) {
       router.replace({
-        pathname,
-        params: { redirectTo: routes.modes },
+        pathname: routes.connection,
+        params: { redirectTo },
       })
     }
   }, [connectionState])
