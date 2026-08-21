@@ -5,20 +5,12 @@ import { type ModeType } from '@constants'
 import { controllerClient } from '@services'
 import { selectCurrentMode, useStore } from '@store'
 
-import { SPEED_VALUES } from './constants'
-
 export const useControllerSync = () => {
   const currentMode = useStore(selectCurrentMode)
 
   const sendMode = (mode: ModeType) => {
-    const modeObj = { ...mode }
-
-    if (typeof modeObj.speed === 'number') {
-      modeObj.speed = SPEED_VALUES[modeObj.speed - 1]
-    }
-
     try {
-      controllerClient.setMode(modeObj)
+      controllerClient.setMode(mode)
     } catch (e) {
       console.error(e)
     }

@@ -7,13 +7,12 @@ import { Surface } from '@components'
 import { LEDS_COUNT, type ModeSetting, modeSettingKeys } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
-import { SPEED_VALUES } from '../../constants'
 import { GaugeIcon, RulerIcon } from '../icons'
 import { ControlledSlider } from './controlled-slider'
 
 type RenderControlledSliderProps = {
   type: ModeSetting
-  maxValue: number
+  maxValue?: number
   icon: FC<SvgProps>
   getValue?: SliderProps['getValue']
 }
@@ -61,7 +60,6 @@ export const Controls = () => {
       {modeSettingKeys.speed in currentMode &&
         renderControlledSlider({
           type: modeSettingKeys.speed,
-          maxValue: SPEED_VALUES.length,
           icon: GaugeIcon,
         })}
       {modeSettingKeys.length in currentMode &&
