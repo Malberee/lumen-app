@@ -25,7 +25,7 @@ export const modes: ModeType[] = [
     colors: [colors.white],
   },
   {
-    name: 'fade',
+    name: 'breathing',
     colors: [colors.white],
     speed: DEFAULT_SPEED,
   },

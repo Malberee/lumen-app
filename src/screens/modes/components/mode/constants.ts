@@ -12,7 +12,7 @@ import {
 
 export const icons: Record<string, FC<IconProps>> = {
   solid: LightbulbIcon,
-  fade: LightbulbIcon,
+  breathing: LightbulbIcon,
   carousel: FilmIcon,
   snake: SnakeIcon,
   'double snake': SnakeIcon,
