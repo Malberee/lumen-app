@@ -49,6 +49,7 @@ module.exports = () => {
               enableBundleCompression: true,
               enableMinifyInReleaseBuilds: true,
               buildArchs,
+              usesCleartextTraffic: true,
             },
           },
         ],
