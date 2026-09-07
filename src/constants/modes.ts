@@ -7,7 +7,7 @@ export type ModeType = {
 export type ModeSetting = keyof typeof modeSettingKeys
 
 const DEFAULT_LENGTH = 3
-const DEFAULT_SPEED = 6
+const DEFAULT_SPEED = 50
 
 const colors = {
   white: 'rgb(255, 255, 255)',
