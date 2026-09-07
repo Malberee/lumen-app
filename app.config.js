@@ -47,9 +47,12 @@ module.exports = () => {
           {
             android: {
               enableBundleCompression: true,
+              enableShrinkResourcesInReleaseBuilds: true,
               enableMinifyInReleaseBuilds: true,
-              buildArchs,
               usesCleartextTraffic: true,
+              gifEnabled: false,
+              webpEnabled: false,
+              buildArchs,
             },
           },
         ],
