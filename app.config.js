@@ -9,7 +9,7 @@ module.exports = () => {
       name: 'Lumen',
       slug: 'lumen-app',
       scheme: 'com.malberee.lumen',
-      version: '1.0.0',
+      version: '0.1.0',
       orientation: 'portrait',
       icon: './assets/adaptive-icon.png',
       userInterfaceStyle: 'dark',
