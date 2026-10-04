@@ -3,4 +3,5 @@ export const routes = {
   connection: '/connection',
   connectDeviceToAp: '/ap',
   modes: '/modes',
+  ledCountSetup: '/led-count-setup',
 } as const

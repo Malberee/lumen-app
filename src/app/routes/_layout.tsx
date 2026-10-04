@@ -47,6 +47,9 @@ const RootLayout = () => {
               Ap
             </Button>
             <Button onPress={() => router.replace(routes.modes)}>Modes</Button>
+            <Button onPress={() => router.replace(routes.ledCountSetup)}>
+              LEDs
+            </Button>
           </View>
         ) : null}
       </GestureHandlerRootView>

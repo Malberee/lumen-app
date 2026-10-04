@@ -13,10 +13,12 @@ export type Store = {
   modes: ModeType[]
   currentMode: string
   power: boolean
+  ledCount: number
   setMode: (mode: string) => void
   setColors: (colors: string[]) => void
   setSetting: (param: ModeSetting, value: number) => void
   setPower: (power: boolean) => void
+  setLedCount: (value: number) => void
 }
 
 export const useStore = create<Store>()(
@@ -26,6 +28,7 @@ export const useStore = create<Store>()(
         currentMode: 'solid',
         modes,
         power: true,
+        ledCount: 1,
         setMode: (mode) => {
           set((state) => {
             state.currentMode = mode
@@ -54,6 +57,11 @@ export const useStore = create<Store>()(
         setPower: (power) => {
           set((state) => {
             state.power = power
+          })
+        },
+        setLedCount: (value) => {
+          set((state) => {
+            state.ledCount = value
           })
         },
       })),

@@ -14,7 +14,7 @@ type ConnectionSearchParams = {
 }
 
 export const Connection = () => {
-  const { redirectTo = routes.connectDeviceToAp } =
+  const { redirectTo = routes.ledCountSetup } =
     useLocalSearchParams<ConnectionSearchParams>()
   const connectionState = useConnectionState()
 
