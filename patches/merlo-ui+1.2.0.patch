@@ -1,0 +1,13 @@
+diff --git a/node_modules/merlo-ui/lib/module/components/button/hooks/use-button.js b/node_modules/merlo-ui/lib/module/components/button/hooks/use-button.js
+index cfe6556..5e9fb93 100644
+--- a/node_modules/merlo-ui/lib/module/components/button/hooks/use-button.js
++++ b/node_modules/merlo-ui/lib/module/components/button/hooks/use-button.js
+@@ -54,7 +54,7 @@ export const useButton = (props) => {
+         ref,
+         className: slots.base({ class: baseStyles }),
+         onLayout,
+-        ...mergeProps(ariaButtonProps, props, otherProps),
++        ...mergeProps(ariaButtonProps, props),
+     }), [slots, baseStyles, otherProps, ariaButtonProps]);
+     const getIconClone = (icon) => isValidElement(icon) ? cloneElement(icon) : null;
+     const startContent = getIconClone(startContentProp);

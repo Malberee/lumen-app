@@ -18,7 +18,7 @@ export const serializeMode = (mode: ModeType) => {
   return serializeParams({
     ...rest,
     ...colorsEntries,
-    name: mode.name.replace(' ', '-'),
+    name: mode.name.replaceAll(' ', '-'),
   })
     .replace(modeSettingKeys.speed, 'spd')
     .replace(modeSettingKeys.length, 'lgt')

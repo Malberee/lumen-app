@@ -4,7 +4,7 @@ import { Text, View } from 'react-native'
 import type { SvgProps } from 'react-native-svg'
 
 import { Surface } from '@components'
-import { LEDS_COUNT, type ModeSetting, modeSettingKeys } from '@constants'
+import { type ModeSetting, modeSettingKeys } from '@constants'
 import { selectCurrentMode, useStore } from '@store'
 
 import { GaugeIcon, RulerIcon } from '../icons'
@@ -12,6 +12,7 @@ import { ControlledSlider } from './controlled-slider'
 
 type RenderControlledSliderProps = {
   type: ModeSetting
+  minValue?: number
   maxValue?: number
   icon: FC<SvgProps>
   getValue?: SliderProps['getValue']
@@ -19,6 +20,7 @@ type RenderControlledSliderProps = {
 
 export const Controls = () => {
   const setSetting = useStore((state) => state.setSetting)
+  const ledCount = useStore((state) => state.ledCount)
   const currentMode = useStore(selectCurrentMode)
 
   const renderLabel = (Icon: FC<SvgProps>): SliderProps['renderLabel'] => {
@@ -32,6 +34,7 @@ export const Controls = () => {
 
   const renderControlledSlider = ({
     type,
+    minValue,
     maxValue,
     icon,
     getValue,
@@ -42,7 +45,7 @@ export const Controls = () => {
         label={type}
         defaultValue={currentMode[type]}
         maxValue={maxValue}
-        minValue={1}
+        minValue={minValue ?? 1}
         renderLabel={renderLabel(icon)}
         classNames={{ label: 'capitalize' }}
         getValue={getValue}
@@ -65,7 +68,7 @@ export const Controls = () => {
       {modeSettingKeys.length in currentMode &&
         renderControlledSlider({
           type: modeSettingKeys.length,
-          maxValue: LEDS_COUNT / 2,
+          maxValue: ledCount / 2,
           icon: RulerIcon,
           getValue: (value) => `${value} LEDs`,
         })}
