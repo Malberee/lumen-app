@@ -30,9 +30,15 @@ export const useControllerSync = () => {
       (power) => controllerClient.setPower(power),
     )
 
+    const unsubBrightness = useStore.subscribe(
+      (state) => state.brightness,
+      (power) => controllerClient.setBrightness(power),
+    )
+
     return () => {
       unsubCurrentMode()
       unsubPower()
+      unsubBrightness()
     }
   }, [])
 }

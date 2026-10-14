@@ -22,6 +22,5 @@ export const commandHeaders = {
   powerOn: 'P_ON',
   powerOff: 'P_OFF',
   credentials: 'CRD',
-  setLeds: 'SET_LEDS',
-  saveLeds: 'SAVE_LEDS',
+  brightness: 'BRI',
 }
