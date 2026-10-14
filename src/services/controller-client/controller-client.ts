@@ -111,6 +111,10 @@ export class ControllerClient {
       power ? commandHeaders.powerOn : commandHeaders.powerOff,
     )
   }
+  setBrightness(value: number) {
+    const brightness = Math.round(1 + ((value - 1) / 99) * 254)
+    this.transport.send(`${commandHeaders.brightness} ${brightness}`)
+  }
 
   async connectToWiFi(ssid: string, pass: string) {
     const serializedParams = serializeParams({ ssid, pass })
