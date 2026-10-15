@@ -9,7 +9,7 @@ module.exports = () => {
       name: 'Lumen',
       slug: 'lumen-app',
       scheme: 'com.malberee.lumen',
-      version: '0.1.0',
+      version: '0.1.0-alpha.1',
       orientation: 'portrait',
       icon: './assets/adaptive-icon.png',
       userInterfaceStyle: 'dark',
@@ -22,6 +22,7 @@ module.exports = () => {
         },
         permissions: ['android.permission.ACCESS_FINE_LOCATION'],
         package: 'com.malberee.lumen',
+        versionName: '0.1.0-alpha.1',
       },
       web: {
         bundler: 'metro',
